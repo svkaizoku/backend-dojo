@@ -114,3 +114,4 @@ good sources in `refs` instead.
 
 - App code: [MIT](LICENSE).
 - Exercises in `content/`: [CC BY 4.0](content/LICENSE.md).
+- IBM Plex Mono font in `fonts/`: [SIL Open Font License 1.1](fonts/OFL.txt).

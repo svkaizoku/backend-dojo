@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Redis questions (2 of 2)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/redis/redis-questions-02.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Keep commands cheap: avoid KEYS and SMEMBERS on huge sets, use SCAN for iteration, and bound list and sorted-set sizes. Batch round trips with pipelining or MGET, and use Lua scripts or transactions to make multi-step changes atomic. Watch for big keys, which block the main thread when deleted, and use UNLINK or lazy freeing. Use connection pools in the app, and monitor latency with SLOWLOG and LATENCY. Spread load with replicas and sharding.",
   "points": [

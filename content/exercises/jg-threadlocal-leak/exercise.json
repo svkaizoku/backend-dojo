@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java concurrency questions (2 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-02.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "In a thread pool, threads live for a long time. If you set a ThreadLocal value and never remove it, the value stays in the thread's map. When the ThreadLocal instance itself is no longer referenced, its weak key is cleared, but the strong value remains, so the value can't be collected. Call `remove()` in a finally block when the task ends. Use static final ThreadLocals, or a request-scoped mechanism, so you don't create one per request.",
   "points": [

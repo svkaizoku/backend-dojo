@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java basics questions (2 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-02.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "`String` is immutable: any change creates a new object. `StringBuffer` and `StringBuilder` are mutable. `StringBuffer` synchronises its methods, so it is thread-safe but slower. `StringBuilder`, added in Java 5, has the same API without synchronisation and is the default for building strings in one thread. Use `String` for values that don't change and `StringBuilder` for loops and step-by-step building.",
   "points": [

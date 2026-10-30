@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java basics questions (3 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-03.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Checked exceptions extend `Exception` but not `RuntimeException`. The compiler forces callers to catch them or declare them with `throws`. They suit recoverable conditions such as a missing file. Unchecked exceptions extend `RuntimeException` or `Error`. The compiler doesn't force handling. They usually signal programming bugs, such as a null pointer or a bad argument. Error is for JVM-level failures, such as OutOfMemoryError, that application code should not catch.",
   "points": [

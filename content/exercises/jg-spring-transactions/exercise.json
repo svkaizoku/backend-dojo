@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Spring knowledge and questions",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/system-design/framework/spring/spring-knowledge-and-questions-summary.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "`@Transactional` makes Spring open a transaction around a public method through a proxy. Propagation says how it joins an existing transaction: REQUIRED, the default, joins it or starts one, while REQUIRES_NEW always starts a new one. By default, rollback happens for unchecked exceptions and errors, not for checked exceptions, unless `rollbackFor` says otherwise. Pitfalls: calling a @Transactional method from the same class skips the proxy, private methods are not proxied, and catching the exception inside the method hides the rollback.",
   "points": [

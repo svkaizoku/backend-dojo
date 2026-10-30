@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): MySQL questions",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/mysql/mysql-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Use VARCHAR. Phone numbers are identifiers, not quantities: they can start with zero, include a plus sign, spaces or country codes, and need no arithmetic. An INT drops leading zeros and overflows for long international numbers. Store the normalised form, such as E.164 with a plus sign, in a VARCHAR, and add a unique index if each number must belong to one user.",
   "points": [

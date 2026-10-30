@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java basics questions (2 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-02.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Both can declare methods that subclasses must implement, and neither can be instantiated. An abstract class can hold state (fields), constructors, and concrete methods. A class can extend only one abstract class. An interface defines a contract. A class can implement many interfaces. Since Java 8 interfaces can have default and static methods, but they still hold no instance state. Use an interface for a capability shared across unrelated classes, and an abstract class for shared base behaviour.",
   "points": [

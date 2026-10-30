@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java concurrency questions (2 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-02.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "A volatile field guarantees visibility: a write is seen by all later reads of that field, and reads and writes are not reordered around it in a way that breaks the happens-before rules. It also makes a long or double read and write atomic. It does not make compound actions atomic: `count++` is three steps, read, add and write, so two threads can lose an update. For that use AtomicInteger, a lock, or synchronized. Use volatile for a simple flag or a published immutable reference.",
   "points": [

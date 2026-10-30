@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java concurrency questions (3 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-03.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "`Executors.newFixedThreadPool` and `newSingleThreadExecutor` use an unbounded LinkedBlockingQueue, so queued tasks can grow until memory runs out. `newCachedThreadPool` and `newScheduledThreadPool` can create threads without a limit (cached) or grow the queue (scheduled). Build a ThreadPoolExecutor directly, with a bounded queue, a max pool size, a named ThreadFactory and a rejection policy. Then the limits are visible in the code.",
   "points": [

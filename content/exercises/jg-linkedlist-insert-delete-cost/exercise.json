@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java collections questions (1 of 2)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Inserting or removing at either end is O(1). Removing a node you already hold a reference to is O(1) too. But finding a position by index or by value is O(n), because the list must be walked from one end. So the insert and delete cost depends on finding the node first. In practice ArrayList is often faster, because nodes are scattered in memory and each node costs an extra object.",
   "points": [

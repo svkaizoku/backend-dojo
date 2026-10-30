@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Redis questions (1 of 2)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/redis/redis-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "A local cache, such as Caffeine, is the fastest option, with no network hop. But each server has its own copy, so the copies can disagree and each one warms up separately. Redis is one shared cache. Every instance sees the same data and invalidation applies everywhere. The cost is a network round trip and an extra system to run. Many systems use both: a small local cache in front of Redis.",
   "points": [

@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java concurrency questions (2 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-02.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Pessimistic locking assumes conflict is likely and locks the data before reading or updating it, for example with `SELECT ... FOR UPDATE`. Others must wait. Optimistic locking assumes conflicts are rare. It reads a version or timestamp, and the update succeeds only if the version is unchanged (`UPDATE ... WHERE version = ?`). If not, it fails and the caller retries. Optimistic locking avoids holding locks and suits read-heavy work. Pessimistic locking suits high contention where retries would be wasteful.",
   "points": [

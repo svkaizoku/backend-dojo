@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Spring knowledge and questions",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/system-design/framework/spring/spring-knowledge-and-questions-summary.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "The DispatcherServlet receives the request. A HandlerMapping finds the controller method for the URL. A HandlerAdapter invokes it, after argument resolvers have bound the parameters and converters have read the body. The controller returns a view name, a model, or a body annotated with @ResponseBody, which is serialised by a message converter. For views, a ViewResolver picks the template. Interceptors and filters run around this chain.",
   "points": [

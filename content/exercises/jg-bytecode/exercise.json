@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java basics questions (1 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Bytecode is the platform-neutral instruction set that `javac` produces from Java source, stored in .class files. Any machine with a JVM can run it, so the same build runs on Linux, macOS or Windows. The JVM also verifies bytecode before running it, which protects against unsafe code, and the JIT compiler can optimise hot paths at runtime. The trade-off is a small startup cost and the need for a JVM.",
   "points": [

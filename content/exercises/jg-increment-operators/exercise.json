@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java basics questions (1 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "`i++` is post-increment. It returns the old value and then adds one. `++i` is pre-increment. It adds one first and returns the new value. In `i = i++`, the old value is read and stored, then the variable is incremented, and the assignment overwrites that increment. So after `int i = 1; i = i++;` the value is still 1. Avoid writing code like this.",
   "points": [

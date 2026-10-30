@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java concurrency questions (3 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-03.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Pass a ThreadFactory to the executor. Build it with a name prefix and a counter, for example `order-worker-%d` using `ThreadFactoryBuilder` from Guava, or a small lambda that sets `thread.setName`. Good names show up in thread dumps, logs and metrics, so you can see which pool is busy or stuck. Without a factory, threads are named pool-1-thread-1, which tells you nothing about the code.",
   "points": [

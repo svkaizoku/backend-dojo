@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java basics questions (1 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "`<<` shifts bits left and fills with zeros. It multiplies by 2 for each shift, as long as no sign bit changes. `>>` is an arithmetic right shift and keeps the sign by copying the top bit. `>>>` is an unsigned right shift and fills with zeros, even for negative numbers. Shift counts are masked: for `int` only the low 5 bits count, so `1 << 32` equals `1`. For `long` the mask is 6 bits.",
   "points": [

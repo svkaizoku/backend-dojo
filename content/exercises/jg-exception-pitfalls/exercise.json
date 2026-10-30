@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java basics questions (3 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-03.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Don't catch `Exception` or `Throwable` broadly, because it hides bugs. Don't swallow an exception with an empty catch block: log it or rethrow it. Keep the original cause when wrapping, by passing it as the cause argument. Put cleanup in try-with-resources, not in `finally` blocks that can throw. Don't use exceptions for normal control flow, because creating and filling a stack trace is expensive. Don't `return` from `finally`, since it discards the exception.",
   "points": [

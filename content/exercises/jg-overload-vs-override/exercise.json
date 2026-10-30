@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java basics questions (1 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Overloading is several methods in one class with the same name and different parameter lists. The compiler picks one at compile time from the argument types. Overriding is a subclass providing its own version of an inherited instance method with the same signature. The JVM picks the version at run time from the actual object type. Overloading does not depend on the return type. Overriding needs a compatible return type, and `@Override` makes the compiler check the signature.",
   "points": [

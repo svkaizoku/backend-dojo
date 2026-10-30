@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java collections questions (1 of 2)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Both are thread-safe bounded or unbounded queues where producers wait when the queue is full and consumers wait when it is empty. ArrayBlockingQueue uses a fixed-size array and one lock for both ends. Its capacity is fixed at construction. LinkedBlockingQueue uses linked nodes and two separate locks, one for put and one for take, so producers and consumers contend less. It is unbounded unless you give a capacity. Choose ArrayBlockingQueue for a strict bound and predictable memory.",
   "points": [

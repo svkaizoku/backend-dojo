@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java concurrency questions (2 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-02.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Every object has a monitor, stored in its header. `synchronized` acquires the monitor on entry and releases it on exit, including when an exception is thrown. A synchronized method locks `this` or the class object for static methods. Since Java 6 the JVM optimises locks: biased locking has been disabled by default since JDK 15, and thin locks use a CAS on the header first, then inflate to a full OS mutex under contention. Only one thread holds a monitor at a time, and the memory rules give visibility.",
   "points": [

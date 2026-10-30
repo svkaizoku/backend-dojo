@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): MySQL questions",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/mysql/mysql-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "UNSIGNED removes the negative range and doubles the positive range. For example, TINYINT has -128 to 127, while TINYINT UNSIGNED has 0 to 255. Use it for values that can never be negative, such as counts, IDs or ages, when you need the extra room. Be careful with arithmetic: subtracting past zero on an UNSIGNED column raises an out-of-range error in strict mode, instead of going negative.",
   "points": [

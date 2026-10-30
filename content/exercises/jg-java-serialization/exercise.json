@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java basics questions (3 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-03.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Serialization turns an object graph into bytes, so it can be stored or sent, and deserialization rebuilds it. A class opts in by implementing `Serializable`. Its risks are large. Deserializing untrusted data can run gadget chains that execute code. Class changes break old data unless you set `serialVersionUID`. The format is bulky and slow. Prefer JSON or a schema-based format with explicit DTOs. If you must use Java serialization, add an allow-list filter for classes.",
   "points": [

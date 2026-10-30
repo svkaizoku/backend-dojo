@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java collections questions (2 of 2)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-02.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Requests share the map and write to it without a lock, so entries can vanish, counts can be wrong, and reads can return stale or partly written values. The bug shows up only under load, so it is hard to reproduce. A shared static HashMap used as a cache is a common cause. Fix it with ConcurrentHashMap, with compute and merge for atomic updates, or by keeping the map local to one thread.",
   "points": [

@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java concurrency questions (3 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-03.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Without an executor argument, supplyAsync and the *Async methods use ForkJoinPool.commonPool(). That pool is shared by the whole JVM and sized to the CPU count, so slow I/O tasks can starve parallel streams and other libraries. Pass a dedicated ThreadPoolExecutor for blocking work, with a named ThreadFactory and bounded queue, so the impact stays contained and you can monitor it.",
   "points": [

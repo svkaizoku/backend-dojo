@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): MySQL questions",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/mysql/mysql-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "MyISAM has no transactions, no foreign keys and table-level locking, so writes block readers of the whole table. It crashes more easily and needs repair after failures. InnoDB supports ACID transactions, row-level locking, foreign keys and crash recovery through the redo log. InnoDB has been the default since MySQL 5.5. Use InnoDB for almost all new tables.",
   "points": [

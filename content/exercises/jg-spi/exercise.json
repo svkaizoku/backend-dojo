@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java basics questions (3 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-03.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "SPI lets a library define an interface and load its implementations found on the classpath. The implementing jar lists its class names in `META-INF/services/<interface name>`. `ServiceLoader` reads those files and creates the instances. This decouples the core from its plugins: JDBC drivers are found this way. The trade-off is that providers are found and created lazily at run time, so a broken provider fails only when it is loaded. Tests should load every provider.",
   "points": [

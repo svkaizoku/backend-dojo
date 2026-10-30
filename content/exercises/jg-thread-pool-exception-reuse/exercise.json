@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java concurrency questions (3 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-03.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "With `execute`, an uncaught exception ends the worker thread. The pool notices and starts a replacement, so the pool size stays the same, but the stack trace goes to the thread's uncaught handler. With `submit`, the exception is captured in the Future and rethrown by get(), so the worker survives. Either way, catch and log exceptions in the task yourself, and set an UncaughtExceptionHandler on the pool's ThreadFactory.",
   "points": [

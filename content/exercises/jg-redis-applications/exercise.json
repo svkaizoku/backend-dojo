@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Redis questions (1 of 2)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/redis/redis-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Caching database results with a TTL is the most common use. Other uses: session storage, rate limiting with INCR and EXPIRE, counters and statistics, leaderboards with sorted sets, distributed locks with SET NX PX, pub/sub notifications, and simple queues with lists or streams. Each use depends on the right data type and on handling expiry, eviction and failure of the Redis server.",
   "points": [

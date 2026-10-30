@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): MySQL questions",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/mysql/mysql-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "MySQL has no native boolean. `BOOLEAN` is an alias for `TINYINT(1)`, where 0 is false and any non-zero value is true. Reads may return 0 or 1, and drivers map them to booleans. For clarity in a schema, many teams use `TINYINT(1)` or `BIT(1)` and document the meaning. Prefer a `NOT NULL` constraint so the value is always 0 or 1.",
   "points": [

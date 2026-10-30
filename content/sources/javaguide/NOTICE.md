@@ -1,16 +1,16 @@
-# Notice for imported JavaGuide material
+# Notice for JavaGuide material
 
-The Concepts exercises whose `source` field names JavaGuide are adapted from the "starred" (⭐) interview
-questions in JavaGuide, by Snailclimb (https://github.com/Snailclimb/JavaGuide), licensed under the Apache License 2.0
-(copy in `LICENSE` next to this file).
+The Concepts exercises whose `source` field names JavaGuide take their question and topic from the "starred" (⭐)
+interview questions in JavaGuide, by Snailclimb (https://github.com/Snailclimb/JavaGuide), licensed under the Apache
+License 2.0 (copy in `LICENSE` next to this file).
 
-Changes made to the original text:
+What was taken from JavaGuide:
 
-- Translated from Chinese into English.
-- Condensed into focused model answers. Original sections are not reproduced in full.
-- Some chapter-length sections became one interview question each.
-- Examples and wording were rewritten; sentences are not copied.
-- Each exercise's `source` field links to the original article it came from.
+- The question wording (translated from Chinese into English) and the choice of topics.
+- The article each exercise links to in its `source` field.
 
-This notice is provided to meet the Apache License 2.0 requirement to mark modified files. The exercises themselves
-remain under CC BY 4.0 (see `content/LICENSE.md`).
+What was not taken: the article's text, examples and layout. Each model answer is an independent English write-up
+written for this project. Sentences from the original are not copied.
+
+Credit is given because JavaGuide's license asks for attribution. The exercises themselves remain under CC BY 4.0
+(see `content/LICENSE.md`).

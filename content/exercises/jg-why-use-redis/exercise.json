@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Redis questions (1 of 2)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/redis/redis-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Redis is an in-memory data store with rich types, so it serves as a cache, a session store, a rate limiter, a queue, a leaderboard or a lock service. It is shared by all application instances, unlike a process-local cache. It has persistence options and replication, so it can survive restarts. Typical use is to reduce load on a slower database, and to share fast state between servers.",
   "points": [

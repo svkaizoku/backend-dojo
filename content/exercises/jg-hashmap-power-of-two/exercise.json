@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java collections questions (2 of 2)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-02.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "With a power-of-two capacity, the bucket index is `hash & (n - 1)`, a fast bit mask, instead of a slower modulo. Doubling keeps the mask valid, and each entry either stays in its bucket or moves to bucket plus old capacity, so resizing is simple. A power of two also spreads bits well when the hash is mixed. If you pass a capacity such as 100, HashMap rounds it up to 128.",
   "points": [

@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java collections questions (2 of 2)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-02.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Since Java 8, ConcurrentHashMap uses an array of nodes. An empty bin is filled with a compare-and-swap, which needs no lock. A non-empty bin is locked with synchronized on its first node, so writers to different bins don't interfere. Reads take no lock and rely on volatile fields. Lists in a bin turn into trees when they grow, as in HashMap. Resizing is cooperative: threads that hit a moved bin help copy it. The size is counted in a set of cells to avoid one hot counter.",
   "points": [

@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java collections questions (2 of 2)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-02.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Each single method, such as put, get or remove, is atomic. A compound operation made of get then put is not. Two threads can both read the same count and both write count plus one. Use the atomic methods instead: putIfAbsent, computeIfAbsent, compute, merge. For example `map.merge(key, 1, Integer::sum)` updates the count without a race. For a multi-key invariant, a lock is still needed.",
   "points": [

@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): MySQL questions",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/mysql/mysql-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "MySQL is open source and free to use in most cases. It is fast for read-heavy workloads, runs on many platforms, and has a large ecosystem, tools and hosting support. InnoDB, the default engine, gives transactions, row-level locking and crash recovery. Replication is easy to set up for read scaling. Its weak points are fewer advanced SQL features than some rivals and some behaviour that depends on configuration, such as strict mode.",
   "points": [

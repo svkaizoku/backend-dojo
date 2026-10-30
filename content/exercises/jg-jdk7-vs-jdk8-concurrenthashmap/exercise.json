@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java collections questions (2 of 2)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-02.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "JDK 7 split the map into a fixed number of segments, each a ReentrantLock-protected HashMap, so concurrency was limited to that many threads. JDK 8 removed segments. It locks individual bins with synchronized and uses CAS for empty bins, which gives finer locking and better throughput. JDK 8 also uses trees for long bins, which the segment design did not.",
   "points": [

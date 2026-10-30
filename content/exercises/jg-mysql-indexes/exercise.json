@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): MySQL questions",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/mysql/mysql-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "InnoDB indexes are B+ trees. Leaves hold rows in the clustered (primary key) index, or primary keys in secondary indexes. A secondary lookup needs a second lookup in the clustered index, unless the index covers the query. Composite indexes follow the leftmost-prefix rule: an index on (a, b, c) helps queries on a, on a and b, or on all three, but not on b alone. Functions on the column, leading wildcards in LIKE, and implicit type conversion usually stop an index from being used. Check with EXPLAIN.",
   "points": [

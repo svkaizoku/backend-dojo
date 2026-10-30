@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java collections questions (1 of 2)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "A fail-fast iterator, such as ArrayList's, checks a modification count. If the list changes during iteration outside the iterator, it throws ConcurrentModificationException on the next step. This is best-effort, not a guarantee. A fail-safe iterator, such as the one from CopyOnWriteArrayList or ConcurrentHashMap, works on a snapshot or tolerates changes, so it never throws, but it may not show the latest data. Remove items through the iterator's own remove method, or use removeIf.",
   "points": [

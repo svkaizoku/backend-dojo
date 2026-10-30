@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java concurrency questions (1 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "A process is an independent program with its own memory space, file handles and resources. Processes are isolated, so a crash in one usually doesn't affect another. A thread is a unit of execution inside a process. Threads in the same process share its heap and resources, but each has its own stack and program counter. Creating and switching threads is cheaper than processes, but shared memory makes bugs such as races possible.",
   "points": [

@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java collections questions (1 of 2)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Adding at the end is amortised O(1). Inserting or removing in the middle is O(n), because every element after that point is shifted. Removing from the end is O(1). Access by index is O(1). When the internal array is full, growing it costs O(n), but this is spread across many adds, so the average stays O(1). If you often insert or remove in the middle, consider a different structure.",
   "points": [

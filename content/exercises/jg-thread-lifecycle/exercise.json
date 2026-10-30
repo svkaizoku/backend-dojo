@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java concurrency questions (1 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "`Thread.State` has six values. NEW is created but not started. RUNNABLE means it is running or ready to run on the JVM; the OS decides when it gets a CPU. BLOCKED waits to enter a synchronized block or method. WAITING waits without a timeout, for example in wait(), join() or LockSupport.park. TIMED_WAITING does the same with a timeout, as in sleep(). TERMINATED means run has finished or an exception ended it. start() moves NEW to RUNNABLE, and a thread can be started only once.",
   "points": [

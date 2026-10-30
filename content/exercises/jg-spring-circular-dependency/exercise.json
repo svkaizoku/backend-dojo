@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Spring knowledge and questions",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/system-design/framework/spring/spring-knowledge-and-questions-summary.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "A circular dependency means bean A needs B and B needs A. With constructor injection Spring cannot create either first, so it fails at startup with BeanCurrentlyInCreationException. With setter or field injection, Spring used three-level caches to expose a half-built bean early and break the cycle. Spring Boot 2.6 and later disallow circular references by default. The right fix is to break the cycle: move the shared logic into a third bean, or use events, rather than re-enabling the setting.",
   "points": [

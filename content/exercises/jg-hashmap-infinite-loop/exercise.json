@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java collections questions (2 of 2)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-02.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "In Java 7 and earlier, resizing used head insertion for the linked list in each bucket. When two threads resized at the same time, the list could form a cycle. A later get on that bucket then looped forever, using CPU. Java 8 changed resize to keep the order of entries, which removes this cycle, but concurrent writes are still unsafe. The fix is the same: use ConcurrentHashMap.",
   "points": [

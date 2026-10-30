@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): MySQL questions",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/mysql/mysql-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "The redo log records page changes so InnoDB can replay committed work after a crash. The undo log stores old row versions, so transactions can roll back and readers can see consistent snapshots. The binary log (binlog) records every committed change at the logical level and is used for replication and point-in-time restore. The slow query log records slow statements, and the error log records server problems. Redo and undo are InnoDB internals. The binlog is what replicas read.",
   "points": [

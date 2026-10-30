@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java basics questions (3 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-03.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Reflection lets code inspect and use classes, fields, methods and constructors at run time through `java.lang.reflect` and `Class`. Frameworks use it for dependency injection, serialization and test runners. Its costs are slower calls than direct code, weaker compile-time checks, and broken encapsulation, because `setAccessible` can reach private members. On modern JDKs, module rules limit that access to open packages.",
   "points": [

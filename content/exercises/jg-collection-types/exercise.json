@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java collections questions (1 of 2)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "A List is an ordered collection that allows duplicates and access by index, such as ArrayList. A Set holds unique elements with no index, such as HashSet, TreeSet or LinkedHashSet. A Queue holds elements for processing in order, usually first in first out, such as ArrayDeque or LinkedList. A Map stores key-value pairs with unique keys, such as HashMap. Map is not a subtype of Collection, though its views are collections.",
   "points": [

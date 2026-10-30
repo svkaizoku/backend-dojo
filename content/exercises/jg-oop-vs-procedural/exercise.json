@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java basics questions (2 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-02.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Procedural programming organises code as functions that operate on shared data. Object-oriented programming groups data and the operations on it into objects, and lets objects hide their state behind methods. OOP suits large systems that change often, because a change stays inside one class. Procedural code can be simpler and faster for small scripts or data transforms. Java is object-oriented, but it also supports functional style with lambdas and streams.",
   "points": [

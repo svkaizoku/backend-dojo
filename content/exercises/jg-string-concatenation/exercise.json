@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java basics questions (2 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-02.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "For a single expression, `+` is fine: the compiler turns it into a StringBuilder for you. Inside a loop, each `+` creates a new String, so building n pieces costs O(n²) copying. Use one StringBuilder outside the loop and append inside it. Since Java 9, the compiler uses invokedynamic for concatenation, but loops still need an explicit builder.",
   "points": [

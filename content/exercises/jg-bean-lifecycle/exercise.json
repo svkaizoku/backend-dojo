@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Spring knowledge and questions",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/system-design/framework/spring/spring-knowledge-and-questions-summary.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "The container instantiates the bean, populates its properties with dependencies, and calls the Aware callbacks such as BeanNameAware and ApplicationContextAware. Each BeanPostProcessor's before method runs. Then init runs: @PostConstruct, then InitializingBean.afterPropertiesSet, then a custom init-method. The after method of each BeanPostProcessor runs, and the bean is ready. On shutdown, @PreDestroy, DisposableBean.destroy and a custom destroy method run. Proxies such as AOP wrappers are usually created by a post-processor.",
   "points": [

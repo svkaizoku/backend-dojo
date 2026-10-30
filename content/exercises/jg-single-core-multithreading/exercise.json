@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java concurrency questions (1 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Yes. The operating system's scheduler switches the core between threads very quickly, so several threads make progress by taking turns. This is concurrency, not parallelism. The program is still correct on one core, and Java threads work the same way. Multithreading gives no speed-up for pure CPU work on one core, but it still helps with waiting on I/O.",
   "points": [

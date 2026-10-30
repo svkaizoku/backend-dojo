@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Redis questions (1 of 2)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/redis/redis-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Redis keeps data in RAM, so `maxmemory` caps how much it may use. Keys with a TTL are removed when they expire: some passively on access and some by periodic sampling. When memory reaches the cap, the eviction policy decides: noeviction returns errors on writes, allkeys-lru and allkeys-lfu evict any key, volatile-* policies evict only keys with a TTL. Choose the policy for the use: a cache wants allkeys-lru, while a store of must-keep data wants noeviction with alerts.",
   "points": [

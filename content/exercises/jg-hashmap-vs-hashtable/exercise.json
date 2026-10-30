@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java collections questions (2 of 2)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-02.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Hashtable is an old synchronised class that locks every method on the whole table, so it is thread-safe but slow. It does not allow null keys or values. HashMap is not synchronised, allows one null key and many null values, and is faster. It is the default for single-threaded or externally synchronised use. For concurrent access, use ConcurrentHashMap, not Hashtable or a synchronised HashMap.",
   "points": [

@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java basics questions (2 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-02.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Every class extends `Object`, directly or indirectly. Its main methods are `equals` (identity by default), `hashCode` (an int consistent with equals), `toString` (a text form, default ClassName@hash), `getClass`, `clone` (protected, a shallow copy only if the class implements Cloneable), `wait`, `notify` and `notifyAll` (for monitors), and `finalize` (deprecated, don't rely on it). Override equals and hashCode together, and toString for useful logs.",
   "points": [

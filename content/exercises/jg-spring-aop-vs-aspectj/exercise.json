@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Spring knowledge and questions",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/system-design/framework/spring/spring-knowledge-and-questions-summary.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Spring AOP is proxy-based. It works only on Spring beans and only for method calls through the proxy, and it needs no special compiler. AspectJ weaves aspects into the bytecode, at compile time, load time or with an agent. It works on any object and any join point, including field access and constructors, and has no self-invocation problem. Spring AOP is enough for most application code. Choose AspectJ for full join point coverage.",
   "points": [

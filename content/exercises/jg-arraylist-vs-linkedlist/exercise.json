@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java collections questions (1 of 2)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "ArrayList is backed by an array. It has O(1) random access and good cache locality, and it is the default choice. LinkedList is a doubly linked list. It has O(1) inserts and removes at the ends and when you already hold the node, but O(n) access by index, and each node uses more memory. Benchmarks usually favour ArrayList, even for many middle inserts. Use LinkedList mainly as a Deque, and prefer ArrayDeque when you only need a queue or stack.",
   "points": [

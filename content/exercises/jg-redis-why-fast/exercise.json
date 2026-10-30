@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Redis questions (1 of 2)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/redis/redis-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Data lives in memory, so reads and writes avoid disk. Its data structures are simple and purpose-built, such as hashes and skip lists, and commands are short. Command execution is single-threaded, so there are no locks and no context switches between commands. It uses I/O multiplexing (epoll or kqueue) to serve many clients from one thread. Network round trips, not command cost, usually limit throughput, so pipelining helps.",
   "points": [

@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Spring knowledge and questions",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/system-design/framework/spring/spring-knowledge-and-questions-summary.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Prefer constructor injection. Required dependencies are passed in once, the fields can be final, the object is never half-built, and tests can create it with plain code. A missing dependency fails at startup. Setter injection suits optional dependencies that have a sensible default. It can leave an object partly configured. Field injection with @Autowired is convenient but hides dependencies and makes tests harder.",
   "points": [

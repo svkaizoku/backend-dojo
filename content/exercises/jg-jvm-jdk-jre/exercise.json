@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java basics questions (1 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "The JVM (Java Virtual Machine) runs compiled bytecode. It loads classes, verifies them, and executes them, and it provides garbage collection and a platform-independent runtime. The JRE (Java Runtime Environment) is the JVM plus the standard class libraries, enough to run Java programs. The JDK (Java Development Kit) is the JRE plus development tools such as the compiler `javac`, `jar` and `javadoc`. To build and run code, install the JDK. To only run an app, the JRE is enough.",
   "points": [

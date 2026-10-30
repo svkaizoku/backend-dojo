@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Spring knowledge and questions",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/system-design/framework/spring/spring-knowledge-and-questions-summary.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "`@Autowired` is Spring's annotation. It matches by type first, and if several beans match, it uses `@Qualifier` or the parameter name. It can be required or optional. `@Resource` comes from JSR-250. It matches by name first, falling back to type when no name matches. Use @Autowired in Spring code, with constructor injection. Use @Resource when you need name-based lookup or code that must stay portable to other containers.",
   "points": [

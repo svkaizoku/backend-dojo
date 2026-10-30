@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java concurrency questions (3 of 3)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-03.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "AbstractQueuedSynchronizer is a framework for building locks and synchronizers. It keeps an integer `state` updated with CAS, and a FIFO queue of waiting threads. To acquire, a thread tries to change state; if that fails it enqueues itself and parks. Release changes state and unparks the next queued thread. A subclass defines what the state means: ReentrantLock uses it as a hold count, Semaphore as permits, CountDownLatch as the remaining count. Shared and exclusive modes are both supported.",
   "points": [

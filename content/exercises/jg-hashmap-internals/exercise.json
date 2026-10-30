@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java collections questions (2 of 2)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-02.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "HashMap is an array of buckets. A key's hash code, spread with the high bits mixed in, selects the bucket. Each bucket holds a linked list of entries. When the number of entries exceeds capacity times load factor (0.75 by default), the table doubles and entries are redistributed. Since Java 8, a bucket with many collisions (eight or more, with a large enough table) turns into a red-black tree, so lookup worst case is O(log n) instead of O(n). Keys need consistent equals and hashCode.",
   "points": [

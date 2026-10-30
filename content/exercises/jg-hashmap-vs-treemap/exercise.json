@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java collections questions (2 of 2)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-02.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "HashMap stores entries in hash buckets. Get, put and remove are O(1) on average, with no order guarantee. TreeMap is a red-black tree sorted by key or by a comparator. Operations are O(log n), and it provides navigation methods such as firstKey, floorKey and subMap. Keys in a TreeMap must be comparable or the comparator must handle them, and a key whose compare result is inconsistent with equals causes subtle bugs. Use TreeMap when you need order or range queries.",
   "points": [

@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Spring knowledge and questions",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/system-design/framework/spring/spring-knowledge-and-questions-summary.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "Without IoC, each class builds its own dependencies with new, so it is tied to concrete classes. Changing one implementation means editing every caller, and tests can't swap in fakes. Object creation and lifetime rules, such as singletons or cleanup, get scattered through the code. IoC moves those decisions into one configuration point, so classes depend on interfaces and the wiring can change without touching them.",
   "points": [

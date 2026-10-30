@@ -7,7 +7,7 @@
   "source": {
     "title": "JavaGuide (Snailclimb): Java collections questions (1 of 2)",
     "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-01.md",
-    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+    "note": "Question and topic from this JavaGuide article. The answer is an original English write-up; see content/sources/javaguide/NOTICE.md."
   },
   "answer": "An array has a fixed length, can hold primitives directly, and is fast and simple. An ArrayList is a resizable list backed by an internal array. It holds only objects, so primitives are boxed. It offers add, remove and generic type safety. ArrayList grows by copying into a larger array, so a known size is best given up front. Use an array when the size is fixed or for performance-critical primitives.",
   "points": [

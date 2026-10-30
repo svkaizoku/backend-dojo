@@ -1,0 +1,15 @@
+{
+  "mode": "concepts",
+  "title": "Memory leaks in a JVM service",
+  "topic": "concurrency",
+  "level": "Standard",
+  "context": "A Java service's heap keeps growing until it hits OutOfMemoryError after a few days. What are common causes of memory leaks in Java, and how would you find this one?",
+  "answer": "A Java leak is memory that is still reachable but no longer needed. Common causes: static or singleton collections and caches that only grow, listeners or callbacks registered and never removed, ThreadLocals that aren't cleared on pooled threads, unbounded queues in front of slow consumers, and class loader leaks on redeploys. To find it, confirm the heap after full GCs keeps rising (GC logs or JVM metrics), capture heap dumps (jcmd GC.heap_dump, or -XX:+HeapDumpOnOutOfMemoryError), ideally two at different times, and open them in Eclipse MAT or a similar tool to look at the dominator tree, retained sizes and the paths to GC roots of the biggest objects.",
+  "points": [
+    { "sev": "major", "title": "Leak means still reachable", "why": "The GC can't free objects that something still references, even if the app no longer needs them.", "kw": ["reachable", "reference", "gc root", "still referenced"] },
+    { "sev": "major", "title": "Growing collections and caches", "why": "Static maps, caches without eviction and unbounded queues are the most common cause.", "kw": ["static", "cache", "collection", "map", "eviction", "unbounded"] },
+    { "sev": "major", "title": "Listeners and ThreadLocals", "why": "Unremoved listeners and ThreadLocals on pooled threads keep objects alive.", "kw": ["listener", "callback", "threadlocal", "unsubscribe"] },
+    { "sev": "major", "title": "Heap dump analysis", "why": "Take a heap dump (jcmd, jmap or HeapDumpOnOutOfMemoryError) and look at retained sizes and paths to GC roots.", "kw": ["heap dump", "jcmd", "jmap", "heapdumponoutofmemoryerror", "mat", "dominator", "retained"] },
+    { "sev": "minor", "title": "Confirm with post-GC heap trend", "why": "Heap that keeps rising after full GCs, not just a high peak, points to a leak.", "kw": ["gc log", "after gc", "old gen", "trend", "metrics"] }
+  ]
+}

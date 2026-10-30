@@ -1,0 +1,53 @@
+{
+  "mode": "debug",
+  "title": "Retry with backoff",
+  "topic": "resilience",
+  "level": "Standard",
+  "context": "The payment client wraps calls in this Retrier. On-call noticed one call too few, waits that grow too slowly, bad requests retried for no reason, and error logs that never show the real cause. The doc comment has the intended behaviour. Make every test pass.",
+  "files": { "kotlin": "Retrier.kt", "java": "Retrier.java" },
+  "tests": { "kotlin": "RetrierTests.kt", "java": "RetrierTests.java" },
+  "solution": { "kotlin": "RetrierSolution.kt", "java": "RetrierSolution.java" },
+  "refs": [{ "title": "Exponential backoff and jitter (AWS Architecture Blog)", "url": "https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/" }],
+  "points": [
+    {
+      "sev": "major",
+      "title": "One attempt too few",
+      "at": { "kotlin": "while (attempt < maxAttempts)", "java": "while (attempt < maxAttempts)" },
+      "why": "attempt starts at 1 and the loop stops at maxAttempts - 1, so maxAttempts = 3 makes only 2 calls.",
+      "fix": "Loop until the final attempt has been made (attempt <= maxAttempts), or rethrow when attempt reaches maxAttempts.",
+      "kw": ["<=", "one fewer", "off-by-one", "off by one", "too few", "only 2"]
+    },
+    {
+      "sev": "major",
+      "title": "Backoff is linear, not exponential",
+      "at": { "kotlin": "delay += initialDelayMs", "java": "delay += initialDelayMs;" },
+      "why": "Adding the initial delay gives 100, 200, 300 instead of 100, 200, 400, so a struggling service gets hit too often.",
+      "fix": "delay *= 2 (and in production add jitter and a maximum delay).",
+      "kw": ["*= 2", "* 2", "double", "exponential", "linear", "jitter"]
+    },
+    {
+      "sev": "major",
+      "title": "Sleeps after the final failure",
+      "at": { "kotlin": "sleep(delay)", "java": "sleep.accept(delay);" },
+      "why": "The wait runs even after the last attempt, adding latency before the error is reported.",
+      "fix": "Only sleep when another attempt will follow.",
+      "kw": ["last attempt", "after the last", "final attempt", "unnecessary wait", "extra sleep"]
+    },
+    {
+      "sev": "major",
+      "title": "Retries errors that can't succeed",
+      "at": { "kotlin": "} catch (e: Exception) {", "java": "} catch (Exception e) {" },
+      "why": "A bad request fails the same way every time. Retrying it wastes time and load.",
+      "fix": "Catch IllegalArgumentException first and rethrow it at once.",
+      "kw": ["illegalargumentexception", "non-retryable", "not retry", "bad request", "4xx"]
+    },
+    {
+      "sev": "major",
+      "title": "Real cause is thrown away",
+      "at": { "kotlin": "throw IllegalStateException(\"Retries exhausted\")", "java": "throw new IllegalStateException(\"Retries exhausted\");" },
+      "why": "Callers and logs only see \"Retries exhausted\", never the error that actually happened.",
+      "fix": "Rethrow the last exception (or wrap it as the cause).",
+      "kw": ["last exception", "cause", "rethrow", "swallow", "lost"]
+    }
+  ]
+}

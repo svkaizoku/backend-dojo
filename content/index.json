@@ -26,6 +26,11 @@
       "description": "Cache keys and TTLs, Redis commands to avoid, and distributed locks."
     },
     {
+      "id": "resilience",
+      "name": "Resilience",
+      "description": "Rate limits, retries, backoff and timeouts."
+    },
+    {
       "id": "money",
       "name": "Money & trading",
       "description": "BigDecimal, rounding, currencies, fees and market hours."
@@ -48,6 +53,18 @@
     "withdrawal-lock",
     "fx-conversion",
     "position-entities",
-    "portfolio-coroutines"
+    "portfolio-coroutines",
+    "rate-limiter",
+    "lru-cache",
+    "average-fill-price",
+    "retry-backoff",
+    "transactional-self-call",
+    "volatile-synchronized-atomic",
+    "optimistic-pessimistic-locking",
+    "kafka-duplicates",
+    "jvm-memory-leaks",
+    "structured-concurrency",
+    "design-price-alerts",
+    "design-order-api"
   ]
 }

@@ -1,0 +1,15 @@
+{
+  "mode": "concepts",
+  "title": "Optimistic vs pessimistic locking",
+  "topic": "data",
+  "level": "Standard",
+  "context": "How do optimistic and pessimistic locking work with JPA and a relational database? When would you choose each one?",
+  "answer": "Optimistic locking adds a @Version column. Updates include WHERE version = ? and bump it; if another transaction changed the row first, zero rows match and JPA throws OptimisticLockException, which you handle by retrying or telling the user. No locks are held while the user thinks, so it suits low contention and long workflows. Pessimistic locking takes a database row lock up front (SELECT … FOR UPDATE, LockModeType.PESSIMISTIC_WRITE), so other writers wait. It suits high contention on the same rows, like debiting a popular account, but holds locks, needs short transactions, consistent lock order to avoid deadlocks, and lock timeouts.",
+  "points": [
+    { "sev": "major", "title": "Optimistic: version check on update", "why": "A @Version column is compared and incremented on every update; a mismatch means someone else won.", "kw": ["@version", "version column", "where version", "optimisticlockexception"] },
+    { "sev": "major", "title": "Optimistic conflicts are handled by retrying", "why": "The losing transaction fails and must retry or report a conflict.", "kw": ["retry", "conflict", "409"] },
+    { "sev": "major", "title": "Pessimistic: row lock up front", "why": "SELECT … FOR UPDATE (PESSIMISTIC_WRITE) blocks other writers until commit.", "kw": ["for update", "pessimistic_write", "row lock", "lockmodetype", "blocks"] },
+    { "sev": "major", "title": "Choose by contention", "why": "Low contention or long user think time: optimistic. Frequent conflicts on the same rows: pessimistic.", "kw": ["contention", "conflicts are rare", "hot row", "frequent"] },
+    { "sev": "minor", "title": "Pessimistic risks: deadlocks and waits", "why": "Locks must be short-lived, taken in a consistent order, and bounded by a timeout.", "kw": ["deadlock", "lock order", "timeout", "short transaction"] }
+  ]
+}

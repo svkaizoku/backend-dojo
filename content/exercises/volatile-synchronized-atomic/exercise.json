@@ -1,0 +1,15 @@
+{
+  "mode": "concepts",
+  "title": "volatile, synchronized or atomic?",
+  "topic": "concurrency",
+  "level": "Warm-up",
+  "context": "What is the difference between a volatile field, a synchronized block and an AtomicInteger? Give an example of when you would use each.",
+  "answer": "volatile only guarantees visibility and ordering: every thread sees the latest write. It does not make compound actions like count++ atomic, so it suits single-writer flags such as a shutdown signal. synchronized gives mutual exclusion plus visibility (a happens-before edge on unlock/lock), so it fits updates that touch several fields or need check-then-act. AtomicInteger and friends use lock-free compare-and-set for a single variable, which is ideal for counters and sequence numbers under contention; for very hot counters LongAdder scales better.",
+  "points": [
+    { "sev": "major", "title": "volatile gives visibility, not atomicity", "why": "Reads always see the latest write, but count++ is still read-modify-write and can lose updates.", "kw": ["visibility", "not atomic", "count++", "read-modify-write", "latest value"] },
+    { "sev": "major", "title": "synchronized gives mutual exclusion and visibility", "why": "Only one thread runs the block at a time, and the unlock/lock pair publishes changes (happens-before).", "kw": ["mutual exclusion", "one thread", "lock", "monitor", "happens-before"] },
+    { "sev": "major", "title": "Atomics use lock-free compare-and-set", "why": "AtomicInteger updates one variable atomically without blocking, using CAS.", "kw": ["cas", "compare-and-set", "compare and swap", "lock-free", "incrementandget"] },
+    { "sev": "minor", "title": "Concrete use for each", "why": "volatile: a stop flag; synchronized: updating related fields together; atomic: a counter.", "kw": ["flag", "counter", "multiple fields", "invariant"] },
+    { "sev": "minor", "title": "LongAdder for hot counters", "why": "Under heavy contention LongAdder spreads updates over cells and scales better than AtomicLong.", "kw": ["longadder", "contention"] }
+  ]
+}

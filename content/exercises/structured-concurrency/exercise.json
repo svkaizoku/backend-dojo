@@ -1,0 +1,16 @@
+{
+  "mode": "concepts",
+  "title": "Structured concurrency in Kotlin",
+  "topic": "kotlin",
+  "level": "Standard",
+  "context": "What is structured concurrency in Kotlin coroutines, and why is GlobalScope.launch discouraged in a backend service?",
+  "answer": "Structured concurrency means every coroutine runs inside a scope that owns it: the parent doesn't complete until its children do, cancelling the parent cancels the children, and a child's failure propagates to the parent. That ties coroutines to a lifecycle such as a request or the application, so nothing leaks and errors aren't lost. GlobalScope has no parent and no lifecycle: its coroutines outlive the request, aren't cancelled on shutdown, and their exceptions only reach the default handler. Use coroutineScope { } for work inside a request, and a CoroutineScope owned by a component (with a SupervisorJob and cancelled on shutdown) for background work.",
+  "points": [
+    { "sev": "major", "title": "Coroutines belong to a scope", "why": "Each coroutine has a parent Job, so scopes form a tree tied to a lifecycle.", "kw": ["scope", "parent", "job", "lifecycle", "hierarchy"] },
+    { "sev": "major", "title": "Parent waits for children", "why": "A scope doesn't complete until its children finish, so no work is left running unnoticed.", "kw": ["waits", "children", "complete", "coroutinescope"] },
+    { "sev": "major", "title": "Cancellation and errors propagate", "why": "Cancelling the parent cancels children; a failing child cancels its parent and siblings.", "kw": ["cancel", "propagat", "exception", "failure"] },
+    { "sev": "major", "title": "GlobalScope escapes all of this", "why": "Its coroutines outlive requests, aren't cancelled on shutdown, and their errors are easily lost.", "kw": ["globalscope", "leak", "outlive", "not cancelled", "lost"] },
+    { "sev": "minor", "title": "What to use instead", "why": "coroutineScope inside a request; an application-owned CoroutineScope with SupervisorJob for background work.", "kw": ["supervisorjob", "coroutinescope", "application scope", "supervisorscope"] }
+  ],
+  "refs": [{ "title": "Coroutines basics: structured concurrency (kotlinlang.org)", "url": "https://kotlinlang.org/docs/coroutines-basics.html" }]
+}

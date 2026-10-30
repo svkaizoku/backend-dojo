@@ -1,0 +1,15 @@
+{
+  "mode": "concepts",
+  "title": "Duplicates in a Kafka consumer",
+  "topic": "messaging",
+  "level": "Standard",
+  "context": "Kafka gives at-least-once delivery by default, so a consumer can see the same message twice. How do you make a consumer that credits cash to accounts safe against duplicates?",
+  "answer": "Assume redelivery happens (after crashes, rebalances or a failed offset commit) and make processing idempotent. Give every event a unique id and record processed ids in the same database transaction as the side effect, with a unique constraint; a duplicate then hits the constraint and is skipped. Commit offsets only after processing. Where possible make the operation naturally idempotent, such as setting a state instead of incrementing. If the consumer also publishes events, use a transactional outbox. Kafka's exactly-once transactions only cover Kafka-to-Kafka flows, not writes to your own database.",
+  "points": [
+    { "sev": "major", "title": "Redelivery is normal", "why": "Crashes, rebalances and failed offset commits all cause the same message to be processed again.", "kw": ["rebalance", "crash", "redeliver", "offset commit", "at-least-once", "at least once"] },
+    { "sev": "major", "title": "Deduplicate by event id in the same transaction", "why": "Store processed event ids with a unique constraint alongside the credit, so both commit or neither does.", "kw": ["event id", "unique constraint", "dedup", "processed", "same transaction", "idempoten"] },
+    { "sev": "major", "title": "Commit offsets after processing", "why": "Committing first can lose messages; committing after means duplicates instead, which dedup handles.", "kw": ["commit after", "after processing", "manual commit", "ack"] },
+    { "sev": "minor", "title": "Prefer naturally idempotent operations", "why": "Setting a status or upserting by key is safe to repeat; incrementing a balance is not.", "kw": ["upsert", "set instead", "naturally idempotent", "increment"] },
+    { "sev": "minor", "title": "Exactly-once is Kafka-to-Kafka only", "why": "Kafka transactions don't cover your database writes, and publishing needs an outbox.", "kw": ["exactly-once", "exactly once", "transactional producer", "outbox"] }
+  ]
+}

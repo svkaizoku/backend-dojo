@@ -1,5 +1,5 @@
-// Home page: builds the topic cards and stats from the exercise data, so they never drift from the content.
-import { LANGS } from "./content.js";
+// Home page: fills mode counts and topic cards from the exercise data, so they never drift from the content.
+import { MODES } from "./content.js";
 
 const $ = id => document.getElementById(id);
 
@@ -10,6 +10,8 @@ function el(tag, attrs, ...kids) {
   return node;
 }
 
+const plural = (n, word) => `${n} ${word}${n === 1 ? "" : "s"}`;
+
 async function main() {
   const index = await (await fetch("content/index.json")).json();
   const exercises = (await Promise.all(index.exercises.map(async id => {
@@ -17,20 +19,24 @@ async function main() {
     catch { return null; }
   }))).filter(Boolean);
 
+  // Practice mode cells link straight to that mode's first exercise.
+  for (const cell of document.querySelectorAll("[data-mode]")) {
+    const list = exercises.filter(ex => ex.mode === cell.dataset.mode);
+    if (!list.length) continue;
+    cell.href = `practice.html#${list[0].id}`;
+    cell.querySelector("[data-count]").textContent = `${plural(list.length, "exercise")} →`;
+  }
+
   const cards = index.topics.map(topic => {
     const list = exercises.filter(ex => ex.topic === topic.id);
     if (!list.length) return null;
-    const langs = Object.keys(LANGS).filter(l => list.some(ex => ex.files?.[l])).map(l => LANGS[l].name);
-    const levels = [...new Set(list.map(ex => ex.level))].join(", ");
+    const modes = [...new Set(list.map(ex => MODES[ex.mode]?.short).filter(Boolean))].join(" · ");
     return el("a", { class: "card topic-card", href: `practice.html#${list[0].id}` },
       el("h3", null, topic.name),
       el("p", null, topic.description || ""),
-      el("p", { class: "meta" }, `${list.length} exercise${list.length > 1 ? "s" : ""} · ${langs.join(" & ")} · ${levels}`));
+      el("p", { class: "meta" }, `${plural(list.length, "exercise")} · ${modes}`));
   }).filter(Boolean);
   $("topicCards").replaceChildren(...cards);
-
-  const variants = exercises.reduce((n, ex) => n + Object.keys(ex.files || {}).length, 0);
-  $("stats").textContent = `${exercises.length} exercises · ${cards.length} topics · ${variants} Java & Kotlin versions`;
 }
 
 main().catch(() => {

@@ -6,21 +6,21 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>Backend Dojo</title>
-<meta name="description" content="Practise the code review interview round. Realistic Java and Kotlin pull requests with planted bugs, graded by your own AI account.">
+<meta name="description" content="Free, open-source practice for backend engineering interviews: code review, coding, debugging, concepts and system design in Java and Kotlin.">
 <link rel="stylesheet" href="css/app.css">
 <script type="module" src="js/home.js"></script>
 </head>
 <body class="home">
 <nav class="site-nav" aria-label="Site">
   <div class="nav-inner">
-    <a class="logo" href="./" aria-label="Backend Dojo home"><span>backend</span>dojo</a>
+    <a class="logo" href="./" aria-label="Backend Dojo home">backend<span>dojo</span></a>
     <div class="nav-links">
-      <a href="#how">How it works</a>
+      <a href="#modes">Practice modes</a>
       <a href="#topics">Topics</a>
       <a href="#ai">Your AI</a>
       <a href="contribute.html">Contribute</a>
       <a href="https://github.com/svkaizoku/backend-dojo" rel="noopener noreferrer">GitHub</a>
-      <a class="nav-cta" href="practice.html">Practice</a>
+      <a class="nav-cta" href="practice.html">Start practising</a>
     </div>
   </div>
 </nav>
@@ -28,54 +28,109 @@
 <main>
   <section class="hero">
     <div class="wrap hero-grid">
-      <div class="hero-copy">
+      <div>
         <p class="eyebrow">Free and open source</p>
-        <h1>Practise the code review interview round.</h1>
-        <p class="lede">Realistic Java and Kotlin pull requests with planted bugs: races, transaction traps, Kafka redelivery, money rounding. Write your review like you would for a teammate, then see what you missed.</p>
+        <h1>Practise every round of the <span class="grad">backend interview.</span></h1>
+        <p class="lede">Review pull requests, write and debug code that <b>really compiles and runs</b>, explain core concepts, and sketch system designs, in Java and Kotlin. Grade yourself with the answer keys, or with the AI account you already have.</p>
         <div class="actions">
           <a class="btn primary big-btn" href="practice.html">Start practising</a>
           <a class="btn big-btn" href="https://github.com/svkaizoku/backend-dojo" rel="noopener noreferrer">View on GitHub</a>
         </div>
-        <p class="stats" id="stats">Java &amp; Kotlin · Spring · Kafka · Redis · SQL</p>
+        <div class="badges">
+          <span class="badge">Java 17+</span>
+          <span class="badge">Kotlin</span>
+          <span class="badge">Spring · Kafka · Redis · SQL</span>
+          <span class="badge">MIT License</span>
+        </div>
       </div>
 
-      <figure class="demo" aria-label="Example: a review comment on a pull request">
-        <div class="code">
-          <div class="bar"><span>QuoteCache.kt</span><span>PR #42</span></div>
-          <pre><div class="ln"><span class="no">1</span><span class="src"><span class="a">@Service</span></span></div><div class="ln"><span class="no">2</span><span class="src"><span class="k">class</span> <span class="ty">QuoteCache</span>(<span class="k">private</span> <span class="k">val</span> priceClient: <span class="ty">PriceClient</span>) {</span></div><div class="ln mark"><span class="no">3</span><span class="src">    <span class="k">private</span> <span class="k">val</span> cache = <span class="ty">HashMap</span>&lt;<span class="ty">String</span>, <span class="ty">Quote</span>&gt;()<span class="pin">#1</span></span></div><div class="ln"><span class="no">4</span><span class="src"></span></div><div class="ln"><span class="no">5</span><span class="src">    <span class="k">fun</span> get(ticker: <span class="ty">String</span>): <span class="ty">Quote</span> {</span></div><div class="ln mark"><span class="no">6</span><span class="src">        <span class="k">if</span> (!cache.containsKey(ticker)) {<span class="pin">#2</span></span></div><div class="ln"><span class="no">7</span><span class="src">            cache[ticker] = priceClient.fetch(ticker)</span></div><div class="ln"><span class="no">8</span><span class="src">        }</span></div></pre>
-        </div>
-        <div class="comment">
-          <p class="who">Your review</p>
-          <p><b>L3, must fix:</b> this bean is a singleton, so every request thread shares one HashMap. Use ConcurrentHashMap with computeIfAbsent.</p>
-        </div>
-        <div class="grade">
-          <span class="big hi">80%</span>
-          <span>4 of 5 found · clarity 4/5</span>
-        </div>
+      <figure class="terminal" aria-label="Example: running tests for the rate limiter exercise">
+        <div class="term-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>practice — RateLimiter.kt</div>
+<pre class="term-body"><span class="c"># Coding round: implement a token-bucket rate limiter</span>
+<span class="p">$</span> run tests <span class="v">RateLimiter.kt</span>
+<span class="ok">PASS</span> allows a burst up to capacity
+<span class="ok">PASS</span> refills over time
+<span class="ok">PASS</span> never refills above capacity
+<span class="ok">PASS</span> keys are independent
+<span class="no">FAIL</span> exact under concurrent calls: expected 1000, got 1013
+
+<span class="c"># Ask AI, using your own account</span>
+<span class="p">&gt;</span> why does the concurrent test fail?
+check-then-take isn't atomic: two threads can read
+the same token count. Synchronize on the bucket.<span class="cursor" aria-hidden="true"></span></pre>
       </figure>
     </div>
   </section>
 
-  <section class="band" id="why">
+  <section id="why">
     <div class="wrap">
-      <h2>Why review practice?</h2>
-      <p class="section-lede">Many backend interviews include a round where you review a teammate's pull request. Algorithm drills don't train that.</p>
+      <p class="eyebrow">The problem</p>
+      <h2>Interview prep shouldn't be only puzzles.</h2>
+      <p class="section-lede">Backend interviews test how you review code, build components, fix bugs, explain trade-offs and design services. Most prep only covers algorithms.</p>
       <div class="compare">
         <div class="col without">
-          <h3>Usual prep</h3>
+          <h3><span class="ic" aria-hidden="true">✕</span>Usual prep</h3>
           <ul>
             <li>Algorithm puzzles that look nothing like production code</li>
             <li>Bug lists in blog posts, with no way to test yourself</li>
+            <li>System design videos you only watch</li>
             <li>Another paid subscription for AI feedback</li>
           </ul>
         </div>
+        <span class="arrow" aria-hidden="true">→</span>
         <div class="col with">
-          <h3>Backend Dojo</h3>
+          <h3><span class="ic" aria-hidden="true">✓</span>Backend Dojo</h3>
           <ul>
-            <li>Small, realistic Spring, Kafka, Redis and SQL pull requests</li>
-            <li>An answer key with the line, why it matters, and the fix</li>
-            <li>Grading on the AI account you already have, or no AI at all</li>
+            <li>Realistic Spring, Kafka, Redis and SQL code for every round</li>
+            <li>Code that compiles and runs against tests from your browser</li>
+            <li>An answer key for everything: what matters, why, and the fix</li>
+            <li>AI grading and Ask AI on the account you already have</li>
           </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="modes">
+    <div class="wrap">
+      <p class="eyebrow">Practice modes</p>
+      <h2>Every round, one place.</h2>
+      <p class="section-lede">Five ways to practise, each with answer keys and AI feedback.</p>
+      <div class="grid-cells">
+        <a class="cell" href="practice.html" data-mode="review">
+          <span class="icon" aria-hidden="true">±</span>
+          <h3>Code review</h3>
+          <p>Review a teammate's pull request and find the planted race conditions, transaction traps and money bugs.</p>
+          <span class="more" data-count></span>
+        </a>
+        <a class="cell" href="practice.html" data-mode="coding">
+          <span class="icon alt" aria-hidden="true">&lt;/&gt;</span>
+          <h3>Coding</h3>
+          <p>Build a rate limiter or an LRU cache in the editor, then run it against real tests.</p>
+          <span class="more" data-count></span>
+        </a>
+        <a class="cell" href="practice.html" data-mode="debug">
+          <span class="icon" aria-hidden="true">!?</span>
+          <h3>Debugging</h3>
+          <p>Get code with failing tests. Find the bugs and fix them until every test passes.</p>
+          <span class="more" data-count></span>
+        </a>
+        <a class="cell" href="practice.html" data-mode="concepts">
+          <span class="icon alt" aria-hidden="true">?</span>
+          <h3>Concepts</h3>
+          <p>Explain @Transactional proxies, locking, Kafka delivery or coroutines in your own words.</p>
+          <span class="more" data-count></span>
+        </a>
+        <a class="cell" href="practice.html" data-mode="design">
+          <span class="icon" aria-hidden="true">[ ]</span>
+          <h3>System design</h3>
+          <p>Design a price alert service or an idempotent order API, then compare with a reference design.</p>
+          <span class="more" data-count></span>
+        </a>
+        <div class="cell">
+          <span class="icon alt" aria-hidden="true">AI</span>
+          <h3>Ask AI, everywhere</h3>
+          <p>A chat that sees the page you're on: the exercise, your code or answer, and your test results.</p>
         </div>
       </div>
     </div>
@@ -83,75 +138,62 @@
 
   <section id="how">
     <div class="wrap">
-      <h2>How it works</h2>
+      <p class="eyebrow">How it works</p>
+      <h2>Practise, check, learn.</h2>
+      <p class="section-lede">No account, no install. Your progress stays in your browser.</p>
       <ol class="steps">
-        <li><span class="num">1</span><h3>Pick a pull request</h3><p>Choose a topic and a level, in Java or Kotlin. Each PR has a short description, like a real one.</p></li>
-        <li><span class="num">2</span><h3>Write your review</h3><p>Cite lines, explain the impact, propose a fix, and put must-fix items before nits.</p></li>
-        <li><span class="num">3</span><h3>Grade it</h3><p>Your AI compares your review with the answer key and rates how clearly you wrote it. Or run the free keyword check.</p></li>
-        <li><span class="num">4</span><h3>Study the key</h3><p>Every planted issue is pinned to its line with why it matters, the fix, and further reading.</p></li>
+        <li><span class="num">01</span><h3>Pick an exercise</h3><p>Choose a mode, a topic and a level, in Java or Kotlin.</p></li>
+        <li><span class="num">02</span><h3>Do the work</h3><p>Write your review or answer, or code in the editor and run the tests.</p></li>
+        <li><span class="num">03</span><h3>Grade it</h3><p>Your AI compares your work with the answer key. A free keyword check works without AI.</p></li>
+        <li><span class="num">04</span><h3>Study the key</h3><p>See every point with why it matters, the fix, a reference solution and further reading.</p></li>
       </ol>
     </div>
   </section>
 
-  <section class="band" id="topics">
+  <section id="topics">
     <div class="wrap">
-      <h2>Topics</h2>
-      <p class="section-lede">Built around a typical fintech backend: Java or Kotlin on Spring, PostgreSQL, Kafka and Redis.</p>
-      <div class="cards" id="topicCards">
-        <p class="hint">Loading topics…</p>
-      </div>
+      <p class="eyebrow">Topics</p>
+      <h2>Built around a real backend stack.</h2>
+      <p class="section-lede">Java or Kotlin on Spring, with PostgreSQL, Kafka and Redis: the stack behind many fintech and product backends.</p>
+      <div class="cards" id="topicCards"><p class="hint">Loading topics…</p></div>
     </div>
   </section>
 
   <section id="ai">
     <div class="wrap">
-      <h2>Bring your own AI</h2>
-      <p class="section-lede">Grading runs on your own AI account, so you pay your provider directly and the site needs no server. Connect once from the practice page.</p>
-      <div class="cards">
-        <div class="card"><h3>OpenRouter</h3><p>Sign in with one click. One account reaches Claude, GPT, Gemini and more, with pay-as-you-go credits.</p></div>
-        <div class="card"><h3>Anthropic</h3><p>Paste an API key from the Anthropic Console to grade with Claude. Claude.ai subscriptions can't be used by other apps.</p></div>
-        <div class="card"><h3>OpenAI</h3><p>Paste an API key from the OpenAI platform.</p></div>
-        <div class="card"><h3>Google Gemini</h3><p>Paste an API key from Google AI Studio.</p></div>
+      <p class="eyebrow">Bring your own AI</p>
+      <h2>Your AI account, your data.</h2>
+      <p class="section-lede">Grading and Ask AI run on an AI account you connect, so you pay your provider directly and the site needs no server.</p>
+      <div class="grid-cells">
+        <div class="cell"><span class="icon" aria-hidden="true">OR</span><h3>OpenRouter</h3><p>Sign in with one click. One account reaches Claude, GPT, Gemini and more.</p></div>
+        <div class="cell"><span class="icon alt" aria-hidden="true">A</span><h3>Anthropic</h3><p>Paste an API key to use Claude. Claude.ai subscriptions can't be used by other apps.</p></div>
+        <div class="cell"><span class="icon" aria-hidden="true">O</span><h3>OpenAI and Gemini</h3><p>Paste an API key from the OpenAI platform or Google AI Studio.</p></div>
       </div>
       <div class="trust">
-        <div><h3>Your key stays in your browser</h3><p>By default it's kept for the current tab only. Disconnect deletes it.</p></div>
+        <div><h3>Key stays in your browser</h3><p>Kept for the current tab by default. Disconnect deletes it.</p></div>
         <div><h3>No server in between</h3><p>Requests go straight from your browser to the provider you chose.</p></div>
-        <div><h3>Locked-down page</h3><p>The page can only call those four providers and loads no third-party scripts.</p></div>
-        <div><h3>Use a capped key</h3><p>Create a separate key with a spending limit, and delete it when you're done.</p></div>
+        <div><h3>Locked-down pages</h3><p>The site can only call the AI providers and code runners, and loads no third-party scripts.</p></div>
+        <div><h3>Where code runs</h3><p>Kotlin runs on JetBrains' compiler service; Java on Judge0, free or with your own key.</p></div>
       </div>
     </div>
   </section>
 
-  <section class="band" id="contribute">
+  <section id="contribute">
     <div class="wrap contribute-grid">
       <div>
-        <h2>Add an exercise</h2>
-        <p class="section-lede">Each exercise is a folder with the code and a small JSON answer key. A validator checks that every issue points at a real line, and CI runs it on every pull request.</p>
-        <ol class="plain">
-          <li>Write a short, realistic pull request with a few planted problems.</li>
-          <li>Describe each problem: the line, why it matters, the fix, and keywords.</li>
-          <li>Run <code>node scripts/validate.mjs</code> and open a pull request.</li>
-        </ol>
-        <p>Write exercises yourself. Bug ideas are free to reuse, but other people's code and text usually aren't; link good sources instead.</p>
-        <a class="btn" href="contribute.html">Read the contributor guide</a>
+        <p class="eyebrow">Contribute</p>
+        <h2>Add the exercise you wish you'd had.</h2>
+        <p class="section-lede">Each exercise is a folder with code and a small JSON answer key. A validator checks every answer key, and a second check runs every solution against its tests.</p>
+        <a class="btn" href="contribute.html">Read the contributor guide →</a>
       </div>
-      <div class="code">
-        <div class="bar"><span>exercise.json</span></div>
-        <pre class="json">{
-  "title": "Quote cache",
-  "topic": "concurrency",
-  "level": "Warm-up",
-  "files": { "java": "QuoteCache.java",
-             "kotlin": "QuoteCache.kt" },
-  "issues": [{
-    "sev": "major",
-    "title": "HashMap shared across threads",
-    "at": { "kotlin": "HashMap&lt;String, Quote&gt;()" },
-    "why": "Every request thread shares it…",
-    "fix": "Use ConcurrentHashMap.",
-    "kw": ["concurrenthashmap", "thread-safe"]
-  }]
-}</pre>
+      <div class="terminal">
+        <div class="term-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>backend-dojo</div>
+<pre class="term-body"><span class="p">$</span> node scripts/validate.mjs
+<span class="ok">✓</span> all exercises valid
+
+<span class="p">$</span> node scripts/check-solutions.mjs
+<span class="ok">✓</span> rate-limiter [kotlin]: solution passes
+<span class="ok">✓</span> retry-backoff [java]: solution passes</pre>
       </div>
     </div>
   </section>
@@ -159,7 +201,7 @@
 
 <footer class="site-foot">
   <div class="wrap foot-inner">
-    <span class="logo"><span>backend</span>dojo</span>
+    <span class="logo">backend<span>dojo</span></span>
     <nav aria-label="Footer">
       <a href="practice.html">Practice</a>
       <a href="contribute.html">Contribute</a>

@@ -1,4 +1,5 @@
 {
+  "mode": "review",
   "title": "Accounts API",
   "topic": "spring",
   "level": "Hard",
@@ -8,7 +9,7 @@
     { "title": "Spring MVC guide (Marco Behler)", "url": "https://www.marcobehler.com/guides/spring-mvc" },
     { "title": "Spring Security guide (Marco Behler)", "url": "https://www.marcobehler.com/guides/spring-security" }
   ],
-  "issues": [
+  "points": [
     {
       "sev": "major",
       "title": "No authorisation",

@@ -1,10 +1,11 @@
 {
+  "mode": "review",
   "title": "Trade event listener",
   "topic": "messaging",
   "level": "Hard",
   "context": "Consumes executed trades from Kafka, updates the user's position, and publishes a position-updated event that the portfolio screen listens to.",
   "files": { "java": "TradeEventListener.java", "kotlin": "TradeEventListener.kt" },
-  "issues": [
+  "points": [
     {
       "sev": "major",
       "title": "Not idempotent",

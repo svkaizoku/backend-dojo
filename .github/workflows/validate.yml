@@ -13,4 +13,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: node scripts/validate.mjs
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: Check format and answer keys
+        run: node scripts/validate.mjs
+      - name: Run solutions against tests
+        run: node scripts/check-solutions.mjs

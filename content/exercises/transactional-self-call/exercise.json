@@ -1,0 +1,16 @@
+{
+  "mode": "concepts",
+  "title": "@Transactional and self-calls",
+  "topic": "spring",
+  "level": "Standard",
+  "context": "A @Service has a method a() that calls this.b(). b() is annotated @Transactional(propagation = Propagation.REQUIRES_NEW). Does b() run in its own new transaction? Explain why, and how you would fix it.",
+  "answer": "No. Spring implements @Transactional with a proxy around the bean. Only calls that come in through the proxy get transaction handling; a() calling b() on `this` goes straight to the target object, so the annotation on b() is ignored and b() simply joins whatever transaction a() is in (or none). To fix it, move b() to a separate bean and inject it, use TransactionTemplate to start the new transaction programmatically, or (rarely) switch to AspectJ weaving, which works on self-calls.",
+  "points": [
+    { "sev": "major", "title": "No, it doesn't get a new transaction", "why": "The REQUIRES_NEW setting on b() never takes effect for a self-call.", "kw": ["no", "doesn't", "does not", "ignored", "not applied"] },
+    { "sev": "major", "title": "Transactions are applied by a proxy", "why": "Spring wraps the bean in a proxy (JDK dynamic proxy or CGLIB) that starts and commits transactions around calls.", "kw": ["proxy", "aop", "cglib", "dynamic proxy"] },
+    { "sev": "major", "title": "Self-invocation bypasses the proxy", "why": "this.b() calls the target object directly, so the proxy never sees the call.", "kw": ["self-invocation", "self invocation", "this.", "bypass", "same class", "internal call"] },
+    { "sev": "major", "title": "Fix: separate bean or programmatic transaction", "why": "Calling through another bean goes through its proxy; TransactionTemplate makes the boundary explicit.", "kw": ["separate bean", "another bean", "different bean", "transactiontemplate", "inject"] },
+    { "sev": "minor", "title": "AspectJ weaving works on self-calls", "why": "Compile- or load-time weaving changes the class itself, so there is no proxy to bypass.", "kw": ["aspectj", "weaving", "mode = aspectj"] }
+  ],
+  "refs": [{ "title": "Spring transaction management: @Transactional in depth (Marco Behler)", "url": "https://www.marcobehler.com/guides/spring-transaction-management-transactional-in-depth" }]
+}

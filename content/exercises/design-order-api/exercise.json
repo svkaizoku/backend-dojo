@@ -1,0 +1,17 @@
+{
+  "mode": "design",
+  "title": "Idempotent order placement",
+  "topic": "resilience",
+  "level": "Hard",
+  "context": "Design the API and backend flow for placing a stock order from the mobile app. Mobile networks drop responses, so the app retries, and users double-tap. Each order must reach the exchange at most once, the user's cash must be reserved before sending, and the app must be able to show the order's status. Describe the API, data model, order states, and how you handle retries and failures.",
+  "answer": "The client generates an idempotency key per order attempt and sends it with POST /orders. The server stores the key with a unique constraint and a hash of the request; a retry with the same key returns the stored result (or 409 while the first request is still in flight, or 422 if the body differs). In one database transaction it validates the order, reserves cash with a row lock or version check, inserts the order as PENDING, and writes an outbox event. A sender delivers outbox events to the exchange with the order id as client order id, so the exchange can reject duplicates. Exchange responses move the order through SUBMITTED, then FILLED, PARTIALLY_FILLED, REJECTED or CANCELLED, releasing or settling the reservation. A reconciliation job compares local state with the exchange to fix orders stuck after timeouts, and every state change is audited. The app polls GET /orders/{id} or receives updates over a push or websocket channel.",
+  "points": [
+    { "sev": "major", "title": "Client-generated idempotency key", "why": "Retries and double taps carry the same key, so the server can recognise them.", "kw": ["idempotency key", "idempotency-key", "client-generated", "request id", "uuid"] },
+    { "sev": "major", "title": "Key stored with a unique constraint and the response", "why": "Duplicates hit the constraint and get the original response; a different body with the same key is rejected.", "kw": ["unique constraint", "stored response", "same response", "request hash", "409", "422"] },
+    { "sev": "major", "title": "Reserve cash and create the order atomically", "why": "Validation, the cash reservation and the PENDING order commit together, with locking to stop concurrent orders overspending.", "kw": ["reserve", "reservation", "same transaction", "atomic", "for update", "@version", "lock"] },
+    { "sev": "major", "title": "Outbox for sending to the exchange", "why": "Writing the send request in the same transaction avoids losing or duplicating it between the database and the exchange call.", "kw": ["outbox", "dual write", "event", "relay"] },
+    { "sev": "major", "title": "Explicit order state machine", "why": "PENDING, SUBMITTED, FILLED, PARTIALLY_FILLED, REJECTED and CANCELLED with allowed transitions make status and recovery clear.", "kw": ["state machine", "pending", "submitted", "filled", "rejected", "status"] },
+    { "sev": "minor", "title": "Exchange-side dedup and reconciliation", "why": "Send the order id as the client order id, and reconcile timed-out orders against the exchange.", "kw": ["client order id", "clordid", "reconcil", "timeout", "stuck"] },
+    { "sev": "minor", "title": "Status updates to the app", "why": "GET /orders/{id} for polling, plus push or websocket updates.", "kw": ["get /orders", "poll", "websocket", "push", "sse"] }
+  ]
+}

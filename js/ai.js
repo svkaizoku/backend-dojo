@@ -128,29 +128,32 @@ function preferFirst(models, isPreferred) {
 }
 
 /* ---------- completion ---------- */
-// Sends one prompt and returns the reply text.
-export async function complete(conn, prompt, signal) {
+// Sends a conversation and returns the reply text.
+// messages: [{ role: "user" | "assistant", content }]. json: ask for a JSON-only reply.
+export async function complete(conn, { system = "", messages, json = false }, signal) {
   const { provider, key, model } = conn;
   if (!model) throw new AiError("model", "Pick a model in Connect AI first.");
   const h = headers(provider, key);
 
   if (provider === "anthropic") {
+    const payload = { model, max_tokens: 16000, messages };
+    if (system) payload.system = system;
     const body = await request(provider, "https://api.anthropic.com/v1/messages", {
-      method: "POST", headers: h, signal,
-      body: JSON.stringify({ model, max_tokens: 16000, messages: [{ role: "user", content: prompt }] }),
+      method: "POST", headers: h, signal, body: JSON.stringify(payload),
     });
-    if (body.stop_reason === "refusal") throw new AiError("refused", "The model declined to grade this review.");
+    if (body.stop_reason === "refusal") throw new AiError("refused", "The model declined to answer this.");
     return (body.content || []).filter(b => b.type === "text").map(b => b.text).join("");
   }
 
   if (provider === "gemini") {
     const path = model.startsWith("models/") ? model : `models/${model}`;
+    const payload = {
+      contents: messages.map(m => ({ role: m.role === "assistant" ? "model" : "user", parts: [{ text: m.content }] })),
+    };
+    if (system) payload.systemInstruction = { parts: [{ text: system }] };
+    if (json) payload.generationConfig = { responseMimeType: "application/json" };
     const body = await request(provider, `https://generativelanguage.googleapis.com/v1beta/${path}:generateContent`, {
-      method: "POST", headers: h, signal,
-      body: JSON.stringify({
-        contents: [{ role: "user", parts: [{ text: prompt }] }],
-        generationConfig: { responseMimeType: "application/json" },
-      }),
+      method: "POST", headers: h, signal, body: JSON.stringify(payload),
     });
     return (body.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join("");
   }
@@ -159,8 +162,8 @@ export async function complete(conn, prompt, signal) {
   const url = provider === "openai"
     ? "https://api.openai.com/v1/chat/completions"
     : "https://openrouter.ai/api/v1/chat/completions";
-  const payload = { model, messages: [{ role: "user", content: prompt }] };
-  if (provider === "openai") payload.response_format = { type: "json_object" };
+  const payload = { model, messages: system ? [{ role: "system", content: system }, ...messages] : messages };
+  if (json && provider === "openai") payload.response_format = { type: "json_object" };
   const body = await request(provider, url, { method: "POST", headers: h, signal, body: JSON.stringify(payload) });
   return body.choices?.[0]?.message?.content || "";
 }

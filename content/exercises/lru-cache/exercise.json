@@ -1,0 +1,46 @@
+{
+  "mode": "coding",
+  "title": "LRU cache",
+  "topic": "caching",
+  "level": "Warm-up",
+  "context": "Implement a fixed-size least-recently-used cache for instrument metadata. The doc comment lists the rules; get and put should both be O(1).",
+  "files": { "kotlin": "LruCache.kt", "java": "LruCache.java" },
+  "tests": { "kotlin": "LruCacheTests.kt", "java": "LruCacheTests.java" },
+  "solution": { "kotlin": "LruCacheSolution.kt", "java": "LruCacheSolution.java" },
+  "points": [
+    {
+      "sev": "major",
+      "title": "O(1) get and put",
+      "why": "A hash map gives O(1) lookup and a doubly linked list gives O(1) reordering. LinkedHashMap combines both.",
+      "fix": "LinkedHashMap with accessOrder = true, or your own hash map plus doubly linked list.",
+      "kw": ["linkedhashmap", "linked list", "doubly", "o(1)"]
+    },
+    {
+      "sev": "major",
+      "title": "Reads count as use",
+      "why": "An LRU cache orders by access, not insertion, so get must move the entry to most recently used.",
+      "fix": "accessOrder = true, or move the node to the head on get.",
+      "kw": ["accessorder", "access order", "move to", "most recently"]
+    },
+    {
+      "sev": "major",
+      "title": "Evict only when over capacity",
+      "why": "Evicting on every put, or before an update, removes entries that should stay.",
+      "fix": "removeEldestEntry returning size > capacity, or evict the tail after inserting a new key.",
+      "kw": ["removeeldestentry", "eldest", "tail", "size > capacity"]
+    },
+    {
+      "sev": "minor",
+      "title": "Validate capacity",
+      "why": "A capacity of 0 or less makes the cache useless and hides a configuration bug.",
+      "kw": ["require", "illegalargumentexception", "capacity"]
+    },
+    {
+      "sev": "minor",
+      "title": "Thread safety stated",
+      "why": "LinkedHashMap isn't thread-safe, and with accessOrder even get changes it. Say whether callers must synchronize.",
+      "fix": "Synchronize the methods, or document that the cache is single-threaded (or use Caffeine in production).",
+      "kw": ["thread-safe", "thread safe", "synchronized", "caffeine"]
+    }
+  ]
+}

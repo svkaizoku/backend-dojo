@@ -13,14 +13,14 @@
 <body class="home">
 <nav class="site-nav" aria-label="Site">
   <div class="nav-inner">
-    <a class="logo" href="./" aria-label="Backend Dojo home"><span>backend</span>dojo</a>
+    <a class="logo" href="./" aria-label="Backend Dojo home">backend<span>dojo</span></a>
     <div class="nav-links">
-      <a href="./#how">How it works</a>
+      <a href="./#modes">Practice modes</a>
       <a href="./#topics">Topics</a>
       <a href="./#ai">Your AI</a>
       <a href="contribute.html" aria-current="page">Contribute</a>
       <a href="https://github.com/svkaizoku/backend-dojo" rel="noopener noreferrer">GitHub</a>
-      <a class="nav-cta" href="practice.html">Practice</a>
+      <a class="nav-cta" href="practice.html">Start practising</a>
     </div>
   </div>
 </nav>
@@ -57,7 +57,7 @@
   <section id="add">
     <div class="wrap">
       <h2>Add an exercise</h2>
-      <p class="section-lede">An exercise is one folder: the code under review in Java, Kotlin or both, plus an <code>exercise.json</code> answer key.</p>
+      <p class="section-lede">An exercise is one folder with an <code>exercise.json</code> answer key. Its <code>mode</code> decides what else goes in it: code to review (<code>review</code>), starter code plus tests and a solution (<code>coding</code>, <code>debug</code>), or nothing else (<code>concepts</code>, <code>design</code>).</p>
       <ol class="guide">
         <li>
           <h3>Fork and run it locally</h3>
@@ -75,12 +75,13 @@ python3 -m http.server 8000</pre>
   SettlementJob.kt</pre>
         </li>
         <li>
-          <h3>Write the code under review</h3>
-          <p>About 20–40 lines that look like a real pull request: realistic names, no imports, no comments pointing at the bugs. Write the Kotlin version idiomatically, not as a line-by-line translation.</p>
+          <h3>Write the code</h3>
+          <p><b>Review:</b> about 20–40 lines that look like a real pull request, with realistic names, no imports and no comments pointing at the bugs. <b>Coding and debug:</b> a starter file the user edits (imports at the top), a test file, and a reference solution. Write the Kotlin version idiomatically, not as a line-by-line translation.</p>
+          <p>Test files print one line per test, <code>PASS name</code> or <code>FAIL name: message</code>, and must not contain imports or colons in test names. In Java the test file holds <code>public class Main</code>; in Kotlin a top-level <code>fun main()</code>. Copy the <code>test</code> helper from an existing exercise.</p>
         </li>
         <li>
           <h3>Write the answer key</h3>
-          <p>Describe each planted issue in <code>exercise.json</code> (format below). Point each one at its line with a piece of text from that line.</p>
+          <p>List the <code>points</code> a strong answer covers in <code>exercise.json</code> (format below). In review and debug mode, point each one at its line with a piece of text from that line. Concepts and design exercises can add a model <code>answer</code>.</p>
         </li>
         <li>
           <h3>Register it</h3>
@@ -88,13 +89,14 @@ python3 -m http.server 8000</pre>
         </li>
         <li>
           <h3>Validate and preview</h3>
-          <p>The validator checks the format and that every issue points at exactly one line. Then open the exercise and try both Quick check and the answer key.</p>
+          <p>The validator checks the format and that every anchor points at exactly one line. For coding and debug exercises, the solution check compiles and runs everything: the solution must pass every test, and the starter code must fail at least one. It needs a JDK 17+ and network access for Kotlin.</p>
           <pre class="cmd">node scripts/validate.mjs
+node scripts/check-solutions.mjs settlement-batch
 open http://localhost:8000/practice.html#settlement-batch</pre>
         </li>
         <li>
           <h3>Open a pull request</h3>
-          <p>CI runs the same validator. Say in the description what the exercise teaches and where the pattern comes from.</p>
+          <p>CI runs both checks. Say in the description what the exercise teaches and where the pattern comes from.</p>
         </li>
       </ol>
     </div>
@@ -107,24 +109,26 @@ open http://localhost:8000/practice.html#settlement-batch</pre>
         <div class="code">
           <div class="bar"><span>exercise.json</span></div>
           <pre class="json">{
+  "mode": "debug",
   "title": "Settlement batch",
   "topic": "data",
   "level": "Standard",
-  "context": "Nightly job that settles trades. Runs on
-              two instances behind a scheduler.",
-  "files": { "java": "SettlementJob.java",
-             "kotlin": "SettlementJob.kt" },
-  "refs": [
-    { "title": "Further reading", "url": "https://…" }
-  ],
-  "issues": [{
+  "context": "Nightly job that settles trades.
+              Make every test pass.",
+  "files":    { "java": "Settlement.java",
+                "kotlin": "Settlement.kt" },
+  "tests":    { "java": "SettlementTests.java",
+                "kotlin": "SettlementTests.kt" },
+  "solution": { "java": "SettlementSolution.java",
+                "kotlin": "SettlementSolution.kt" },
+  "points": [{
     "sev": "major",
-    "title": "Job runs twice in parallel",
-    "at": { "java": "@Scheduled(cron",
-            "kotlin": "@Scheduled(cron" },
-    "why": "Both instances run it, so trades settle twice.",
-    "fix": "Use a scheduler lock such as ShedLock.",
-    "kw": ["shedlock", "both instances", "twice"]
+    "title": "Settles the same trade twice",
+    "at": { "java": "for (Trade t : pending)",
+            "kotlin": "for (t in pending)" },
+    "why": "Retries re-read trades already settled.",
+    "fix": "Mark each trade settled in the same transaction.",
+    "kw": ["twice", "idempoten", "mark settled"]
   }]
 }</pre>
         </div>
@@ -132,16 +136,19 @@ open http://localhost:8000/practice.html#settlement-batch</pre>
           <table class="ref-table">
             <thead><tr><th>Field</th><th>What it is</th></tr></thead>
             <tbody>
+              <tr><td><code>mode</code></td><td><code>review</code>, <code>coding</code>, <code>debug</code>, <code>concepts</code> or <code>design</code>.</td></tr>
               <tr><td><code>title</code></td><td>Short name shown in the exercise list.</td></tr>
               <tr><td><code>topic</code></td><td>One of the topic ids below.</td></tr>
               <tr><td><code>level</code></td><td><code>Warm-up</code>, <code>Standard</code> or <code>Hard</code>.</td></tr>
-              <tr><td><code>context</code></td><td>The PR description. Include every fact a reviewer needs, such as "singleton" or "runs on several instances".</td></tr>
-              <tr><td><code>files</code></td><td>Code file per language: <code>java</code>, <code>kotlin</code> or both.</td></tr>
-              <tr><td><code>refs</code></td><td>Optional further reading, shown under the answer key. https links only.</td></tr>
-              <tr><td><code>sev</code></td><td><code>major</code> (must fix) or <code>minor</code> (should fix). Major counts double in the score.</td></tr>
-              <tr><td><code>at</code></td><td>Text from the issue's line, per language. It must match exactly one line. Leave a language out if the issue only exists in the other.</td></tr>
-              <tr><td><code>title</code>, <code>why</code>, <code>fix</code></td><td>One string, or <code>{ "java": …, "kotlin": … }</code> when the wording differs.</td></tr>
-              <tr><td><code>kw</code></td><td>Lowercase phrases for Quick check. A review containing any of them counts as found.</td></tr>
+              <tr><td><code>context</code></td><td>The PR description, task or question. Include every fact needed, such as "singleton" or "runs on several instances".</td></tr>
+              <tr><td><code>files</code></td><td>Code per language (<code>java</code>, <code>kotlin</code> or both): the code to review, or the starter code. Not used in concepts and design.</td></tr>
+              <tr><td><code>tests</code>, <code>solution</code></td><td>Coding and debug only: test file and reference solution per language. Debug may leave out the solution.</td></tr>
+              <tr><td><code>answer</code></td><td>Optional model answer, shown after the key in concepts and design.</td></tr>
+              <tr><td><code>refs</code></td><td>Optional further reading. https links only.</td></tr>
+              <tr><td><code>sev</code></td><td><code>major</code> (important) or <code>minor</code> (nice to have). Major counts double in the score.</td></tr>
+              <tr><td><code>at</code></td><td>Review (required) and debug (optional): text from the point's line, per language. It must match exactly one line.</td></tr>
+              <tr><td><code>title</code>, <code>why</code>, <code>fix</code></td><td>One string, or <code>{ "java": …, "kotlin": … }</code>. <code>fix</code> is required in review and debug.</td></tr>
+              <tr><td><code>kw</code></td><td>Lowercase phrases for Quick check. An answer containing any of them counts as covered.</td></tr>
             </tbody>
           </table>
         </div>
@@ -162,7 +169,7 @@ open http://localhost:8000/practice.html#settlement-batch</pre>
       <div class="cards">
         <div class="card"><h3>Realistic</h3><p>Code a teammate could plausibly open a PR with. The bugs should come from real reviews, not puzzles.</p></div>
         <div class="card"><h3>Findable</h3><p>Every issue can be spotted from the code and the PR description alone. State the facts that matter, such as threads, instances or data sizes.</p></div>
-        <div class="card"><h3>Focused</h3><p>4–8 issues, mostly must-fix, with a few should-fix. Skip pure style nits that a linter would catch.</p></div>
+        <div class="card"><h3>Focused</h3><p>4–8 points, mostly important ones. Skip pure style nits that a linter would catch.</p></div>
         <div class="card"><h3>Explained</h3><p><code>why</code> describes the impact in production, and <code>fix</code> is concrete enough to act on.</p></div>
         <div class="card"><h3>Fair to Quick check</h3><p>Keywords are specific phrases a good review would use, like "computeifabsent", not words like "bug" that match anything.</p></div>
         <div class="card"><h3>Correct</h3><p>Check claims about library behaviour by running code when you can. A wrong answer key teaches the wrong thing.</p></div>
@@ -187,6 +194,7 @@ open http://localhost:8000/practice.html#settlement-batch</pre>
       <h2>Pull request checklist</h2>
       <ul class="checklist">
         <li><code>node scripts/validate.mjs</code> passes.</li>
+        <li>For coding and debug: <code>node scripts/check-solutions.mjs &lt;id&gt;</code> passes.</li>
         <li>The exercise opens on the practice page, in every language it has.</li>
         <li>Show answer key pins each issue on the right line.</li>
         <li>A good review gets a high score with Quick check.</li>
@@ -203,7 +211,7 @@ open http://localhost:8000/practice.html#settlement-batch</pre>
 
 <footer class="site-foot">
   <div class="wrap foot-inner">
-    <span class="logo"><span>backend</span>dojo</span>
+    <span class="logo">backend<span>dojo</span></span>
     <nav aria-label="Footer">
       <a href="practice.html">Practice</a>
       <a href="contribute.html">Contribute</a>

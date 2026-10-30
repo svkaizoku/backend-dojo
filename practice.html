@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://openrouter.ai https://api.anthropic.com https://api.openai.com https://generativelanguage.googleapis.com; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://openrouter.ai https://api.anthropic.com https://api.openai.com https://generativelanguage.googleapis.com https://api.kotlinlang.org https://ce.judge0.com https://judge0-ce.p.rapidapi.com; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>Practice · Backend Dojo</title>
-<meta name="description" content="Practise backend code reviews in Java and Kotlin. Grade your review with your own AI account.">
+<meta name="description" content="Practise backend interviews: code review, coding, debugging, concepts and system design in Java and Kotlin.">
 <link rel="stylesheet" href="css/app.css">
 <script type="module" src="js/app.js"></script>
 </head>
-<body>
+<body class="practice">
 <nav class="site-nav" aria-label="Site">
   <div class="nav-inner">
-    <a class="logo" href="./" aria-label="Backend Dojo home"><span>backend</span>dojo</a>
+    <a class="logo" href="./" aria-label="Backend Dojo home">backend<span>dojo</span></a>
     <div class="nav-links">
-      <a href="./#how">How it works</a>
+      <a href="./#modes">Practice modes</a>
       <a href="./#topics">Topics</a>
       <a href="./#ai">Your AI</a>
       <a href="contribute.html">Contribute</a>
@@ -28,7 +28,7 @@
   <header class="top">
     <div class="brand">
       <h1>Practice</h1>
-      <p>Read the pull request, write your review the way you would comment on a teammate's PR, then grade it.</p>
+      <p id="modeBlurb">Pick a mode, work through an exercise, then check it against the answer key.</p>
     </div>
     <div class="top-actions">
       <div class="seg" role="group" aria-label="Language" id="langToggle"></div>
@@ -40,16 +40,15 @@
 
   <p class="banner" id="banner" hidden></p>
 
+  <nav class="modes" id="modeTabs" aria-label="Practice mode"></nav>
+
   <div class="layout">
     <aside class="rail" aria-label="Exercises">
       <div class="eyebrow">Topic</div>
       <div class="topics" id="topics" role="group" aria-label="Topic"></div>
       <div class="eyebrow">Exercises</div>
       <ul class="exlist" id="exlist"></ul>
-      <div class="how">
-        <p><b>Grade with AI</b> compares your review with the answer key and rates how clearly you explain each problem. It uses the AI account you connect, so you pay your provider directly and nothing goes through this site.</p>
-        <p><b>Quick check</b> matches keywords and needs no AI. Correct its marks yourself afterwards.</p>
-      </div>
+      <div class="how" id="howText"></div>
     </aside>
 
     <main id="main">
@@ -59,42 +58,75 @@
         <p class="pr" id="exContext" hidden></p>
       </section>
 
-      <div class="work">
-        <section class="code" aria-label="Code under review">
+      <div class="work" id="work">
+        <section class="code" id="codePanel" aria-label="Code under review" hidden>
           <div class="bar"><span id="fileName"></span><span id="lineCount"></span></div>
           <pre id="code"></pre>
         </section>
 
-        <section class="pad">
-          <label for="review">Your review</label>
-          <p class="hint">Cite line numbers, say why each problem matters, and propose a fix. Put must-fix items before nits.</p>
-          <textarea id="review" spellcheck="false" placeholder="L12 (must fix): cache is a plain HashMap but the bean is a singleton shared by all request threads. Concurrent puts can corrupt it. Use ConcurrentHashMap and computeIfAbsent.
+        <section class="code editor-panel" id="editorPanel" aria-label="Code editor" hidden>
+          <div class="bar"><span id="editorFile"></span><span class="bar-actions"><button class="link-btn" id="resetBtn" type="button">Reset code</button><button class="link-btn" id="runSettingsBtn" type="button">Run settings</button></span></div>
+          <div id="editor"></div>
+        </section>
 
-L18 (nit): …"></textarea>
-          <div class="actions">
-            <button class="btn primary" id="gradeBtn" type="button">Grade with AI</button>
-            <button class="btn" id="stopBtn" type="button" hidden>Stop</button>
-            <button class="btn" id="quickBtn" type="button">Quick check</button>
-            <button class="btn" id="revealBtn" type="button">Show answer key</button>
-            <button class="btn" id="clearBtn" type="button" hidden>Clear grade</button>
-          </div>
-          <p class="msg" id="msg" aria-live="polite"></p>
+        <section class="pad" id="padPanel" hidden>
+          <label for="review" id="padLabel">Your review</label>
+          <p class="hint" id="padHint"></p>
+          <textarea id="review" spellcheck="true"></textarea>
+        </section>
+
+        <section class="output" id="outputPanel" aria-label="Test results" hidden>
+          <div class="out-head"><h3>Tests</h3><span class="hint" id="runnerName"></span></div>
+          <div id="output" class="out-body" aria-live="polite"><p class="hint">Run the tests to see results here.</p></div>
+          <details class="tests-src">
+            <summary>Show the test file</summary>
+            <pre id="testsCode"></pre>
+          </details>
         </section>
       </div>
 
-      <section class="results" id="results" hidden aria-label="Grade"></section>
+      <div class="actions main-actions">
+        <button class="btn primary" id="runBtn" type="button" hidden>Run tests</button>
+        <button class="btn" id="gradeBtn" type="button">Grade with AI</button>
+        <button class="btn" id="stopBtn" type="button" hidden>Stop</button>
+        <button class="btn" id="quickBtn" type="button">Quick check</button>
+        <button class="btn" id="revealBtn" type="button">Show answer key</button>
+        <button class="btn" id="clearBtn" type="button" hidden>Clear grade</button>
+      </div>
+      <p class="msg" id="msg" aria-live="polite"></p>
+
+      <section class="results" id="results" hidden aria-label="Answer key"></section>
     </main>
   </div>
 
   <footer class="foot">
-    <p>Open source. Code under MIT, exercises under CC BY 4.0. Your API key never leaves your browser except to call the provider you chose.</p>
+    <p>Open source. Code under MIT, exercises under CC BY 4.0. Your keys never leave your browser except to call the services you chose.</p>
   </footer>
 </div>
+
+<button class="ask-btn" id="askBtn" type="button" aria-controls="askPanel" aria-expanded="false">Ask AI</button>
+<aside class="ask-panel" id="askPanel" aria-label="Ask AI" hidden>
+  <div class="ask-head">
+    <div><h2>Ask AI</h2><p class="hint" id="askModel">Not connected</p></div>
+    <div class="ask-head-actions">
+      <button class="link-btn" id="askClear" type="button">Clear</button>
+      <button class="link-btn" id="askClose" type="button" aria-label="Close Ask AI">Close</button>
+    </div>
+  </div>
+  <div class="ask-log" id="askLog" aria-live="polite"></div>
+  <form class="ask-form" id="askForm">
+    <textarea id="askInput" rows="3" placeholder="Ask about this exercise, your code or your answer…" aria-label="Your question"></textarea>
+    <div class="ask-row">
+      <span class="hint">Sees this page. Uses your connected AI.</span>
+      <button class="btn primary" id="askSend" type="submit">Send</button>
+    </div>
+  </form>
+</aside>
 
 <dialog id="aiDialog" aria-labelledby="aiTitle">
   <div class="dlg">
     <h2 id="aiTitle">Connect your AI</h2>
-    <p class="hint">Grading runs on your own AI account. Your key is stored only in this browser and is sent only to the provider you pick.</p>
+    <p class="hint">Grading and Ask AI run on your own AI account. Your key is stored only in this browser and is sent only to the provider you pick.</p>
     <p class="note-box"><b>Use a capped key.</b> Create a separate key just for this site with a spending limit (an OpenRouter credit limit, an OpenAI project budget, or an Anthropic workspace limit). Browser extensions can read keys stored in a page, so delete the key in your provider's dashboard when you're done.</p>
 
     <label for="aiProvider">Provider</label>
@@ -127,6 +159,28 @@ L18 (nit): …"></textarea>
       <button class="btn" id="aiCloseBtn" type="button">Close</button>
     </div>
     <p class="msg" id="aiMsg" aria-live="polite"></p>
+  </div>
+</dialog>
+
+<dialog id="runDialog" aria-labelledby="runTitle">
+  <div class="dlg">
+    <h2 id="runTitle">Run settings</h2>
+    <p class="hint">Kotlin runs on JetBrains' free Kotlin compiler service. Choose how Java runs:</p>
+
+    <label class="check"><input type="radio" name="javaRunner" value="public" id="runPublic"> Judge0 public runner</label>
+    <p class="hint">Free and needs no setup. It's shared by everyone, so it can be slow or hit its rate limit.</p>
+
+    <label class="check"><input type="radio" name="javaRunner" value="rapidapi" id="runRapid"> Judge0 with your own RapidAPI key</label>
+    <p class="hint">More reliable, with its own quota. Subscribe to the free Basic plan of <a href="https://rapidapi.com/judge0-official/api/judge0-ce" target="_blank" rel="noopener noreferrer">Judge0 CE on RapidAPI</a> and paste the key.</p>
+
+    <label for="rapidKey">RapidAPI key</label>
+    <input id="rapidKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your RapidAPI key">
+    <p class="hint">Stored only in this browser. Your code is sent to the runner you choose.</p>
+
+    <div class="actions">
+      <button class="btn primary" id="runSaveBtn" type="button">Save</button>
+      <button class="btn" id="runCloseBtn" type="button">Cancel</button>
+    </div>
   </div>
 </dialog>
 </body>

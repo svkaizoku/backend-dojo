@@ -1,0 +1,16 @@
+{
+  "mode": "design",
+  "title": "Price alerts service",
+  "topic": "messaging",
+  "level": "Hard",
+  "context": "Design a service that lets users set price alerts (\"notify me when TSLA goes above 300\"). Scale: 5 million users, 20 million active alerts across 15,000 instruments. The market data feed sends about 50,000 price ticks per second. A push notification should arrive within 2 seconds of the price crossing, and each alert fires once. Describe the components, data model, how alerts are matched against ticks, and how you keep it reliable.",
+  "answer": "Store alerts durably in a database, and keep an in-memory index per instrument: two sorted structures (above and below thresholds) so each tick is a range query for crossed alerts instead of a scan. Consume ticks from Kafka partitioned by instrument, so each matcher instance owns a set of instruments and rebuilds its index from the database on startup. When an alert crosses, mark it triggered with a conditional update (only if still active) so it fires exactly once even after a restart or rebalance, then publish a notification event. A separate notification service sends pushes with retries, a dead-letter queue and per-user rate limits. Handle hot instruments by splitting their alerts across more partitions, and watch end-to-end latency from tick to push.",
+  "points": [
+    { "sev": "major", "title": "Index alerts by instrument and threshold", "why": "Scanning 20M alerts per tick is impossible; sorted thresholds per instrument make each tick a range lookup.", "kw": ["sorted", "index", "treemap", "sorted set", "range", "per instrument", "per ticker"] },
+    { "sev": "major", "title": "Partition the work by instrument", "why": "Kafka partitions (or consistent hashing) by instrument let matcher instances scale out and keep ordering per instrument.", "kw": ["partition", "kafka", "shard", "consistent hashing", "by instrument", "by ticker"] },
+    { "sev": "major", "title": "Fire each alert exactly once", "why": "Restarts and redelivery can re-match the same alert; an atomic state change prevents duplicate pushes.", "kw": ["once", "idempoten", "conditional update", "triggered", "status", "dedup"] },
+    { "sev": "major", "title": "Durable store plus rebuildable index", "why": "Alerts live in a database; in-memory or Redis indexes are rebuilt from it after a crash.", "kw": ["database", "postgres", "durable", "rebuild", "recover", "redis"] },
+    { "sev": "major", "title": "Separate, reliable notification path", "why": "Pushes go through a queue with retries, a dead-letter queue and per-user limits, so slow push providers don't slow matching.", "kw": ["queue", "retry", "dead letter", "dlq", "notification service", "rate limit"] },
+    { "sev": "minor", "title": "Hot instruments and latency monitoring", "why": "A few instruments get most ticks and alerts; split them further and track tick-to-push latency against the 2 s target.", "kw": ["hot", "skew", "latency", "slo", "metrics", "monitor"] }
+  ]
+}

@@ -1,10 +1,11 @@
 {
+  "mode": "review",
   "title": "Price alerts",
   "topic": "concurrency",
   "level": "Standard",
   "context": "Lets users set price alerts (\"tell me when AAPL reaches 250\"). AlertService is a singleton; each alert listens to the live price feed, which ticks many times per second. Users can delete alerts in the app, and alerts expire after a set time.",
   "files": { "java": "AlertService.java", "kotlin": "AlertService.kt" },
-  "issues": [
+  "points": [
     {
       "sev": "major",
       "title": "Feed listeners are never removed",

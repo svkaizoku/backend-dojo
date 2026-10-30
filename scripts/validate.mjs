@@ -1,4 +1,4 @@
-// Checks every exercise: format, topic, and that each issue's anchor matches exactly one code line.
+// Checks every exercise: format, topic, files, and that each answer-key anchor matches exactly one code line.
 // Usage: node scripts/validate.mjs
 import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
@@ -24,9 +24,18 @@ for (const id of index.exercises) {
   const found = checkExercise(id, ex, topicIds);
   errors.push(...found);
   if (found.length) continue;
+  if (!ex.files) {
+    errors.push(...buildVariant(id, ex, null, null).errors);
+    variants++;
+    continue;
+  }
   for (const [lang, name] of Object.entries(ex.files)) {
     const codePath = join(dir, name);
     if (!existsSync(codePath)) { errors.push(`${id}: missing code file ${name}`); continue; }
+    for (const extra of ["tests", "solution"]) {
+      const file = ex[extra]?.[lang];
+      if (file && !existsSync(join(dir, file))) errors.push(`${id}: missing ${extra} file ${file}`);
+    }
     errors.push(...buildVariant(id, ex, lang, readFileSync(codePath, "utf8")).errors);
     variants++;
   }
@@ -37,4 +46,4 @@ if (errors.length) {
   console.error(`\n${errors.length} problem(s) found.`);
   process.exit(1);
 }
-console.log(`✓ ${index.exercises.length} exercises, ${variants} language versions, all valid.`);
+console.log(`✓ ${index.exercises.length} exercises, ${variants} versions, all valid.`);

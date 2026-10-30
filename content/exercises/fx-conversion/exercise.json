@@ -1,10 +1,11 @@
 {
+  "mode": "review",
   "title": "FX conversion",
   "topic": "money",
   "level": "Standard",
   "context": "Converts cash between currencies for an instant FX trade, charges our 0.15% FX fee, and returns the inverse rate shown on the receipt (source currency paid per unit received). Conversions are only allowed during London market hours.",
   "files": { "java": "FxService.java", "kotlin": "FxService.kt" },
-  "issues": [
+  "points": [
     {
       "sev": "major",
       "title": "BigDecimal built from a double",

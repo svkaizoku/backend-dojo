@@ -1,0 +1,55 @@
+{
+  "mode": "debug",
+  "title": "Average fill price",
+  "topic": "money",
+  "level": "Warm-up",
+  "context": "Support reports wrong average prices on order receipts, and some receipts fail to load at all. The function should return the volume-weighted average price of an order's fills, rounded to 4 decimals. Make every test pass.",
+  "files": { "kotlin": "Pricing.kt", "java": "Pricing.java" },
+  "tests": { "kotlin": "PricingTests.kt", "java": "PricingTests.java" },
+  "solution": { "kotlin": "PricingSolution.kt", "java": "PricingSolution.java" },
+  "points": [
+    {
+      "sev": "major",
+      "title": "Loop skips the first fill",
+      "at": { "kotlin": "for (i in 1 until fills.size)", "java": "for (int i = 1;" },
+      "why": "The loop starts at index 1, so the first fill is ignored.",
+      "fix": "Iterate over every fill: for (fill in fills).",
+      "kw": ["first fill", "index 0", "starts at 1", "off-by-one", "off by one", "skips"]
+    },
+    {
+      "sev": "major",
+      "title": "Price isn't weighted by quantity",
+      "at": { "kotlin": "total += fills[i].price", "java": "total = total.add(fills.get(i).price())" },
+      "why": "Adding raw prices gives a plain average, so a 300-share fill counts the same as a 1-share fill.",
+      "fix": "Add price × quantity to the total.",
+      "kw": ["multiply", "price * ", "weighted", "times quantity", "× quantity"]
+    },
+    {
+      "sev": "major",
+      "title": "Division without the required scale",
+      "at": { "kotlin": "return total / BigDecimal(quantity)", "java": "return total.divide(BigDecimal.valueOf(quantity));" },
+      "why": {
+        "kotlin": "Kotlin's / on BigDecimal keeps the dividend's scale and rounds HALF_EVEN, so results get 2 decimals instead of 4.",
+        "java": "divide() without a scale throws ArithmeticException when the result doesn't terminate, such as 5 / 3."
+      },
+      "fix": "total.divide(quantity, 4, RoundingMode.HALF_EVEN).",
+      "kw": ["roundingmode", "half_even", "scale", "arithmeticexception", "setscale", "4 decimal"]
+    },
+    {
+      "sev": "major",
+      "title": "Empty order divides by zero",
+      "at": { "kotlin": "var quantity = 0", "java": "int quantity = 0;" },
+      "why": "With no fills the quantity is 0, so the division throws instead of returning 0.",
+      "fix": "Return BigDecimal.ZERO early when fills is empty.",
+      "kw": ["empty", "divide by zero", "division by zero", "isempty", "zero quantity"]
+    },
+    {
+      "sev": "minor",
+      "title": "Quantity sum can overflow",
+      "at": { "kotlin": "var quantity = 0", "java": "int quantity = 0;" },
+      "why": "Summing many large fills into an Int can overflow silently.",
+      "fix": "Sum into a Long, or into a BigDecimal.",
+      "kw": ["overflow", "long", "int max"]
+    }
+  ]
+}

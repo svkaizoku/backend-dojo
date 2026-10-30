@@ -1,10 +1,11 @@
 {
+  "mode": "review",
   "title": "Quote cache",
   "topic": "concurrency",
   "level": "Warm-up",
   "context": "Adds an in-memory cache in front of the price service, so the quote endpoint stops calling it on every request. QuoteCache is a Spring singleton used by all request threads.",
   "files": { "java": "QuoteCache.java", "kotlin": "QuoteCache.kt" },
-  "issues": [
+  "points": [
     {
       "sev": "major",
       "title": "HashMap shared across threads",

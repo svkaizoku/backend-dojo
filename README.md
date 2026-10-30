@@ -1,83 +1,80 @@
 # Backend Dojo
 
-Learn backend engineering by reviewing code. Backend Dojo drills the "review a teammate's pull request" interview round for Java and Kotlin roles.
+Free, open-source practice for backend engineering interviews, in Java and Kotlin.
 
-Each exercise is a small, realistic pull request with planted problems. You write a review the way you would
-on GitHub, then grade it:
+**Live site:** https://svkaizoku.github.io/backend-dojo/
 
-- **Grade with AI**: an AI model compares your review with the answer key and scores how clearly you explain
-  each problem. It runs on **your own AI account**, so you pay your provider directly and this project never
-  pays for or sees your usage.
-- **Quick check**: keyword matching, with no AI and no account needed.
-- **Show answer key**: mark yourself.
+| Mode | What you do |
+|---|---|
+| Code review | Review a teammate's pull request and find the planted problems. |
+| Coding | Implement a component in the editor and run it against tests. |
+| Debugging | Fix failing code until every test passes. |
+| Concepts | Answer a common interview question in your own words. |
+| System design | Sketch a design for a backend service. |
+
+Every exercise has an answer key: what matters, why, and the fix, plus a reference solution or model answer.
+You can grade yourself, use the free keyword check, or have an AI grade your work. **Ask AI** is a chat panel
+that sees the page you're on: the exercise, your code or answer, and your test results.
 
 Topics: concurrency and the JVM, Spring and transactions, databases and SQL, Kafka, Redis and caching,
-money handling, and Kotlin-specific traps. Most exercises come in both Java and Kotlin, switchable at the top.
+resilience, money handling, and Kotlin-specific traps.
 
-## Run it
+## Run it locally
 
 It's a static site with no build step and no backend.
 
 ```sh
-git clone <this repo>
-cd <repo folder>
+git clone https://github.com/svkaizoku/backend-dojo.git
+cd backend-dojo
 python3 -m http.server 8000
 ```
 
 Open http://localhost:8000. Opening `index.html` straight from disk doesn't work, because browsers block
 loading the exercise files from `file://`.
 
-Any static host works. On GitHub Pages: **Settings → Pages → Build and deployment → Deploy from a branch →
-`main` / root**.
+Any static host works. On GitHub Pages: **Settings → Pages → Deploy from a branch → `main` / root**.
 
-## Connect your AI
+## Where things run
 
-Click **Connect AI** at the top right and pick a provider:
+**AI (grading and Ask AI)** runs on your own account. Click **Connect AI** on the practice page:
 
-| Provider | How you connect | Notes |
-|---|---|---|
-| OpenRouter | **Sign in with OpenRouter**, or paste a key | One account reaches Claude, GPT, Gemini and others. Pay-as-you-go credits. |
-| Anthropic | Paste an API key from console.anthropic.com | Claude.ai subscriptions can't be used by third-party apps, so use an API key or OpenRouter. |
-| OpenAI | Paste an API key from platform.openai.com | |
-| Google Gemini | Paste an API key from aistudio.google.com | |
+| Provider | How you connect |
+|---|---|
+| OpenRouter | **Sign in with OpenRouter**, or paste a key. One account reaches Claude, GPT, Gemini and others. |
+| Anthropic | Paste an API key. Claude.ai subscriptions can't be used by third-party apps. |
+| OpenAI | Paste an API key. |
+| Google Gemini | Paste an API key from Google AI Studio. |
 
-After connecting, pick a model from the list. One grade sends the exercise, the answer key and your review
-in a single request.
+**Code** runs on public compiler services, chosen under **Run settings**:
 
-### Where your key goes
+- **Kotlin:** JetBrains' Kotlin compiler service (the one behind play.kotlinlang.org). Free, no setup.
+- **Java:** [Judge0 CE](https://judge0.com). Use the free public instance, which is shared and can hit its rate
+  limit, or your own key from the free Basic plan of [Judge0 CE on RapidAPI](https://rapidapi.com/judge0-official/api/judge0-ce).
 
-- The key is stored only in your browser: for this tab only by default, or on this device if you tick
-  **Remember on this device**. **Disconnect** deletes it.
-- Requests go straight from your browser to the provider you chose. There is no server in between.
-- The page's Content Security Policy only allows network calls to those four providers and loads no
-  third-party scripts.
-- Anyone with access to your browser profile can read a remembered key. Use a key with a spending limit,
-  and don't tick **Remember** on a shared computer.
+### Privacy and keys
+
+- Keys are stored only in your browser. AI keys are kept for the current tab unless you tick **Remember on
+  this device**; **Disconnect** deletes them.
+- Requests go straight from your browser to the service you chose. There is no server in between.
+- Your code is sent to the code runner when you press **Run tests**.
+- The pages' Content Security Policy only allows calls to those services and loads no third-party scripts.
+- Anyone with access to your browser profile, including browser extensions, can read a stored key. Use keys
+  with a spending limit, and don't tick **Remember** on a shared computer.
 
 ## Add an exercise
 
-The full contributor guide is at [svkaizoku.github.io/backend-dojo/contribute.html](https://svkaizoku.github.io/backend-dojo/contribute.html). In short:
-
-Each exercise is a folder in `content/exercises/<id>/`:
-
-```
-content/exercises/quote-cache/
-  exercise.json      # title, PR description, answer key
-  QuoteCache.java    # code under review (optional)
-  QuoteCache.kt      # code under review (optional)
-```
-
-`exercise.json`:
+The full guide is at [svkaizoku.github.io/backend-dojo/contribute.html](https://svkaizoku.github.io/backend-dojo/contribute.html).
+In short, each exercise is a folder in `content/exercises/<id>/` with an `exercise.json`:
 
 ```json
 {
+  "mode": "review",
   "title": "Quote cache",
   "topic": "concurrency",
   "level": "Warm-up",
-  "context": "What the PR says it does, and any facts the reviewer needs.",
+  "context": "What the PR, task or question says, plus any facts the reader needs.",
   "files": { "java": "QuoteCache.java", "kotlin": "QuoteCache.kt" },
-  "refs": [{ "title": "Optional further reading", "url": "https://…" }],
-  "issues": [
+  "points": [
     {
       "sev": "major",
       "title": "HashMap shared across threads",
@@ -90,28 +87,26 @@ content/exercises/quote-cache/
 }
 ```
 
-- `topic` is one of the ids in `content/index.json`. `level` is `Warm-up`, `Standard` or `Hard`.
-- `sev` is `major` (must fix) or `minor` (should fix).
-- `at` is a piece of text from the line the issue is on. It must match exactly one line in that language's
-  file; the app works out the line number from it. Leave a language out of `at` if the issue only applies
-  to the other one.
-- `title`, `why` and `fix` can be one string, or `{ "java": "…", "kotlin": "…" }` when the wording differs.
-- `kw` are lowercase phrases for Quick check. A review that contains any of them counts as found.
+- `mode` is `review`, `coding`, `debug`, `concepts` or `design`.
+- Coding and debug exercises also have `tests` and `solution` files per language. Test files print
+  `PASS <name>` or `FAIL <name>: <message>` per test and have no imports.
+- `at` (review and debug) is text from the point's line; it must match exactly one line.
+- Concepts and design exercises have no code files and can add a model `answer`.
 
-Then add the folder name to `exercises` in `content/index.json` and run:
+Add the folder name to `exercises` in `content/index.json`, then run:
 
 ```sh
-node scripts/validate.mjs
+node scripts/validate.mjs           # format and answer-key anchors
+node scripts/check-solutions.mjs    # runs coding/debug solutions and starters (needs JDK 17+ and network)
 ```
 
-CI runs the same check on every pull request.
+CI runs both on every pull request.
 
 **Write exercises yourself.** Don't paste code or text from books, courses or blogs unless their license
-allows it. Ideas and bug patterns are fine to reuse; someone else's wording and code usually aren't. Link to
-good sources in `refs` instead.
+allows it. Ideas and bug patterns are fine to reuse; link good sources in `refs`.
 
 ## License
 
 - App code: [MIT](LICENSE).
 - Exercises in `content/`: [CC BY 4.0](content/LICENSE.md).
-- IBM Plex Mono font in `fonts/`: [SIL Open Font License 1.1](fonts/OFL.txt).
+- Fonts in `fonts/` (IBM Plex Sans, IBM Plex Mono, Space Grotesk): SIL Open Font License 1.1, see the `OFL-*.txt` files.

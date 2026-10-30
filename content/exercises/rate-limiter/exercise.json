@@ -1,0 +1,47 @@
+{
+  "mode": "coding",
+  "title": "Rate limiter",
+  "topic": "resilience",
+  "level": "Standard",
+  "context": "Implement a token-bucket rate limiter for the public API: one bucket per API key, a burst up to capacity, then a steady refill rate. It is called from many request threads at once. The doc comment has the exact rules.",
+  "files": { "kotlin": "RateLimiter.kt", "java": "RateLimiter.java" },
+  "tests": { "kotlin": "RateLimiterTests.kt", "java": "RateLimiterTests.java" },
+  "solution": { "kotlin": "RateLimiterSolution.kt", "java": "RateLimiterSolution.java" },
+  "refs": [{ "title": "Token bucket algorithm (Wikipedia)", "url": "https://en.wikipedia.org/wiki/Token_bucket" }],
+  "points": [
+    {
+      "sev": "major",
+      "title": "One bucket per key in a concurrent map",
+      "why": "Buckets are created on first use from many threads, so the map must be safe to update concurrently.",
+      "fix": "ConcurrentHashMap with computeIfAbsent.",
+      "kw": ["concurrenthashmap", "computeifabsent"]
+    },
+    {
+      "sev": "major",
+      "title": "Refill lazily from elapsed time",
+      "why": "No background timer is needed: on each call, add elapsed seconds × rate, then cap at capacity.",
+      "fix": "Store tokens and the last update time per bucket; refill on every tryAcquire.",
+      "kw": ["elapsed", "lazily", "last update", "updatedat", "lastrefill"]
+    },
+    {
+      "sev": "major",
+      "title": "Atomic check-and-take per bucket",
+      "why": "Refilling, checking and taking a token must happen as one step, or two threads can both take the last token.",
+      "fix": "Synchronize on the bucket (not the whole limiter), or use a lock or CAS loop per bucket.",
+      "kw": ["synchronized", "lock", "atomic", "compareandset", "cas"]
+    },
+    {
+      "sev": "minor",
+      "title": "Tokens capped at capacity",
+      "why": "Without the cap, a key that was idle for an hour could send an unlimited burst.",
+      "kw": ["capacity", "min(", "minof", "cap"]
+    },
+    {
+      "sev": "minor",
+      "title": "Buckets for old keys are never removed",
+      "why": "With millions of keys the map grows forever. Fine for an interview, but worth mentioning.",
+      "fix": "Evict idle buckets (a Caffeine cache with expireAfterAccess), or keep buckets in Redis with a TTL.",
+      "kw": ["evict", "expire", "memory", "grows", "caffeine", "redis"]
+    }
+  ]
+}

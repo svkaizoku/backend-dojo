@@ -1,4 +1,5 @@
 {
+  "mode": "review",
   "title": "Portfolio report",
   "topic": "data",
   "level": "Warm-up",
@@ -7,7 +8,7 @@
   "refs": [
     { "title": "Java and databases: an overview (Marco Behler)", "url": "https://www.marcobehler.com/guides/java-databases" }
   ],
-  "issues": [
+  "points": [
     {
       "sev": "major",
       "title": "N+1 queries",

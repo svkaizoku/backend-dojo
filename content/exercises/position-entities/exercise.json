@@ -1,4 +1,5 @@
 {
+  "mode": "review",
   "title": "Position entities",
   "topic": "kotlin",
   "level": "Standard",
@@ -9,7 +10,7 @@
     { "title": "Kotlin all-open compiler plugin", "url": "https://kotlinlang.org/docs/all-open-plugin.html" },
     { "title": "Building web applications with Spring Boot and Kotlin (spring.io)", "url": "https://spring.io/guides/tutorials/spring-boot-kotlin" }
   ],
-  "issues": [
+  "points": [
     {
       "sev": "major",
       "title": "data class equals and hashCode on entities",

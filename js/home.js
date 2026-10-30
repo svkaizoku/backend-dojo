@@ -65,7 +65,7 @@ function renderProgress(exercises, topics) {
   $("solvedNum").textContent = `${solved} / ${exercises.length}`;
   $("attemptedNum").textContent = String(attempted);
   $("starsNum").textContent = `${totalStars} ★`;
-  $("modeProgress").replaceChildren(...Object.entries(MODES).map(([id, m]) => {
+  $("modeProgress").replaceChildren(...Object.entries(MODES).filter(([, m]) => !m.hidden).map(([id, m]) => {
     const list = exercises.filter(ex => ex.mode === id);
     if (!list.length) return null;
     const done = list.filter(ex => statusOf(ex) === "solved").length;
@@ -124,7 +124,7 @@ function renderSkills(exercises, topics) {
 
 /* ---------- challenge explorer ---------- */
 function renderFilters(topics) {
-  $("modeFilter").append(...Object.entries(MODES).map(([id, m]) =>
+  $("modeFilter").append(...Object.entries(MODES).filter(([, m]) => !m.hidden).map(([id, m]) =>
     el("label", null, el("input", { type: "checkbox", name: "mode", value: id, checked: true }), ` ${m.name}`)));
   $("levelFilter").append(...LEVELS.map(level =>
     el("label", null, el("input", { type: "checkbox", name: "level", value: level, checked: true }), ` ${level}`)));
@@ -164,7 +164,7 @@ async function main() {
   const exercises = (await Promise.all(index.exercises.map(async id => {
     try { return { id, ...(await (await fetch(`content/exercises/${id}/exercise.json`)).json()) }; }
     catch { return null; }
-  }))).filter(ex => ex && MODES[ex.mode] && LEVEL_POINTS[ex.level]);
+  }))).filter(ex => ex && MODES[ex.mode] && !MODES[ex.mode].hidden && LEVEL_POINTS[ex.level]);
   const byId = Object.fromEntries(exercises.map(ex => [ex.id, ex]));
   const topics = index.topics;
 

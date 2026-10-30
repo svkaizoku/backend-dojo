@@ -227,13 +227,6 @@
             "average-fill-price",
             "fx-conversion"
           ]
-        },
-        {
-          "name": "System design",
-          "exercises": [
-            "design-order-api",
-            "design-price-alerts"
-          ]
         }
       ]
     }

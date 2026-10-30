@@ -318,7 +318,7 @@ function renderOutput() {
 
 /* ---------- rendering ---------- */
 function renderModeTabs() {
-  $("modeTabs").replaceChildren(...Object.entries(MODES).map(([id, m]) => {
+  $("modeTabs").replaceChildren(...Object.entries(MODES).filter(([, m]) => !m.hidden).map(([id, m]) => {
     const count = exercises.filter(ex => ex.mode === id).length;
     return h("button", { type: "button", class: "mode-tab", "aria-pressed": String(id === store.mode), onclick: () => switchMode(id) },
       m.name, h("span", { class: "count" }, String(count)));
@@ -577,7 +577,7 @@ async function loadContent() {
       return null;
     }
   }));
-  exercises = loaded.filter(Boolean);
+  exercises = loaded.filter(ex => ex && !MODES[ex.mode]?.hidden);
 }
 
 /* ---------- Ask AI ---------- */

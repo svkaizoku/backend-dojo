@@ -10,7 +10,6 @@ Free, open-source practice for backend engineering interviews, in Java and Kotli
 | Coding | Implement a component in the editor and run it against tests. |
 | Debugging | Fix failing code until every test passes. |
 | Concepts | Answer a common interview question in your own words. |
-| System design | Sketch a design for a backend service. |
 
 Every exercise has an answer key: what matters, why, and the fix, plus a reference solution or model answer.
 You can grade yourself, use the free keyword check, or have an AI grade your work. **Ask AI** is a chat panel

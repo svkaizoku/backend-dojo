@@ -16,7 +16,8 @@ export const MODES = {
     blurb: "Find and fix the bugs until every test passes." },
   concepts: { name: "Concepts", short: "Concepts", code: false, run: false, anchors: "none",
     blurb: "Answer a common interview question in your own words." },
-  design: { name: "System design", short: "Design", code: false, run: false, anchors: "none",
+  // hidden: kept in the content folder but not shown in the app (no tabs, dashboard, kit or challenge list).
+  design: { name: "System design", short: "Design", code: false, run: false, anchors: "none", hidden: true,
     blurb: "Sketch a design for a backend service and get it reviewed." },
 };
 export const LEVELS = ["Warm-up", "Standard", "Hard"];

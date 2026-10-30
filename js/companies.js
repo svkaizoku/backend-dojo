@@ -59,6 +59,16 @@ function renderCompany(c) {
       c.questions.map(qa => el("details", { class: "qa" },
         el("summary", null, el("span", { class: "pill" }, qa.topic), " ", qa.q),
         el("p", null, qa.a)))),
+    c.news?.length ? section("Latest news",
+      el("p", { class: "hint" }, "Newest first. Status shows whether we opened the page or only saw a search summary."),
+      el("ul", { class: "news-list" }, c.news.filter(n => isHttps(n.url)).map(n =>
+        el("li", null,
+          el("span", { class: "hint" }, n.date), " ",
+          el("a", { href: n.url, target: "_blank", rel: "noopener noreferrer" }, n.title),
+          el("span", { class: "hint" }, ` · ${n.source} · ${n.status}`)))),
+      el("p", { class: "hint" }, "More:"),
+      el("ul", { class: "news-list" }, (c.news_sources || []).filter(n => isHttps(n.url)).map(n =>
+        el("li", null, el("a", { href: n.url, target: "_blank", rel: "noopener noreferrer" }, n.title))))) : null,
     section("Links",
       el("ul", { class: "company-links" }, c.links.filter(l => isHttps(l.url)).map(l =>
         el("li", null,

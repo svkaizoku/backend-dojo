@@ -473,3 +473,5 @@ dialog::backdrop { background: rgb(0 0 0 / 0.5); }
 .qa p { color: var(--muted); margin: 10px 0 0; font-size: 14.5px; }
 .company-links { display: grid; gap: 8px; padding-left: 20px; }
 .confidence { max-width: 80ch; }
+
+.news-list { display: grid; gap: 10px; padding-left: 20px; }

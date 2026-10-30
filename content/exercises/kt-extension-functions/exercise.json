@@ -1,0 +1,46 @@
+{
+  "mode": "concepts",
+  "title": "Extension functions",
+  "topic": "kotlin",
+  "level": "Standard",
+  "context": "How do extension functions work, and what do they not do?",
+  "refs": [
+    {
+      "title": "Atomic Kotlin (book) by Bruce Eckel & Svetlana Isakova",
+      "url": "https://www.atomickotlin.com/"
+    }
+  ],
+  "answer": "An extension function adds a function to an existing type without changing its source. You declare it with a receiver type, such as `fun String.shout()`, and call it like a member. Extensions are resolved by the static type of the receiver, not by the runtime type, so an overridden member can't be replaced by an extension of the same name. They can't access private or protected members, and they don't add state. Member functions always win over extensions with the same signature.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Static resolution",
+      "why": "The function is chosen by the declared receiver type, not the object's runtime type.",
+      "kw": [
+        "static",
+        "receiver",
+        "runtime type"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Member wins",
+      "why": "A member with the same signature takes priority over an extension.",
+      "kw": [
+        "member",
+        "priority",
+        "shadow"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "No private access",
+      "why": "Extensions see only public API, and they can't store state.",
+      "kw": [
+        "private",
+        "state",
+        "public"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "mode": "concepts",
+  "title": "Property delegation",
+  "topic": "kotlin",
+  "level": "Hard",
+  "context": "What is property delegation, and what do `lazy` and `Delegates.observable` show?",
+  "refs": [
+    {
+      "title": "Atomic Kotlin (book) by Bruce Eckel & Svetlana Isakova",
+      "url": "https://www.atomickotlin.com/"
+    }
+  ],
+  "answer": "A delegated property hands its get and set calls to an object with getValue and setValue operator functions. `by lazy` is one such delegate that caches the first result. `Delegates.observable` runs a callback with the old and new values each time the property changes. Delegation lets you reuse property logic, such as validation, caching or change tracking, in many classes without repeating it. Remember that the delegate object is shared per property instance, so keep its state consistent.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "getValue and setValue",
+      "why": "The delegate's getValue and setValue operators handle every access.",
+      "kw": [
+        "getvalue",
+        "setvalue",
+        "delegate"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Observable changes",
+      "why": "Delegates.observable runs a callback with the old and new values.",
+      "kw": [
+        "observable",
+        "old value",
+        "new value"
+      ]
+    }
+  ]
+}

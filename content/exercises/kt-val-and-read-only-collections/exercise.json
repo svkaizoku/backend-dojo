@@ -1,0 +1,36 @@
+{
+  "mode": "concepts",
+  "title": "val and read-only collections",
+  "topic": "kotlin",
+  "level": "Warm-up",
+  "context": "Does `val` make a collection immutable in Kotlin?",
+  "refs": [
+    {
+      "title": "Atomic Kotlin (book) by Bruce Eckel & Svetlana Isakova",
+      "url": "https://www.atomickotlin.com/"
+    }
+  ],
+  "answer": "No. `val` makes the reference unchangeable, not the object. `listOf` and `setOf` return read-only interfaces, so you can't call add on that type, but the object underneath may be mutable and may be changed through another reference. Use `listOf` for values you pass around, and copy into a new list before exposing internal state. If you need true immutability, use a copy, or a library with immutable collections.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Reference versus object",
+      "why": "val stops reassignment of the variable, not changes to the object.",
+      "kw": [
+        "val",
+        "reference",
+        "reassign"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Read-only is not immutable",
+      "why": "A read-only List type can still refer to a mutable list underneath.",
+      "kw": [
+        "read-only",
+        "immutable",
+        "mutablelist"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "mode": "concepts",
+  "title": "Sequences and eager collection operations",
+  "topic": "kotlin",
+  "level": "Standard",
+  "context": "How do sequences differ from list operations like map and filter?",
+  "refs": [
+    {
+      "title": "Atomic Kotlin (book) by Bruce Eckel & Svetlana Isakova",
+      "url": "https://www.atomickotlin.com/"
+    }
+  ],
+  "answer": "List operations such as map and filter are eager: each step builds a full new list. Sequences process one element at a time through the whole chain, so intermediate lists are never built. Sequence operations are lazy and run only when a terminal operation such as toList, first or sum is called. Sequences help with large data or with a short-circuit like first. For small collections, lists are simpler and often just as fast.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Eager lists",
+      "why": "Each list step creates a new full collection.",
+      "kw": [
+        "eager",
+        "intermediate",
+        "list"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Lazy sequences",
+      "why": "Elements flow through the chain one at a time, and nothing runs until a terminal operation.",
+      "kw": [
+        "lazy",
+        "terminal",
+        "sequence"
+      ]
+    }
+  ]
+}

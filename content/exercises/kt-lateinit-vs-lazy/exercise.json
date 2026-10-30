@@ -1,0 +1,36 @@
+{
+  "mode": "concepts",
+  "title": "lateinit and lazy",
+  "topic": "kotlin",
+  "level": "Standard",
+  "context": "When would you use lateinit and when would you use lazy?",
+  "refs": [
+    {
+      "title": "Atomic Kotlin (book) by Bruce Eckel & Svetlana Isakova",
+      "url": "https://www.atomickotlin.com/"
+    }
+  ],
+  "answer": "lateinit lets a non-null var be assigned after construction, typically by a framework or a setup method. It works only for non-primitive types, and reading it before assignment throws UninitializedPropertyAccessException. lazy computes a val once, on first access, and then caches it. By default it is thread-safe, with a lock. Use lazy for expensive values that may never be needed, and lateinit when a dependency is injected later. Check with `::prop.isInitialized` before reading a lateinit property if the value may be missing.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Read before write",
+      "why": "Reading an uninitialized lateinit property throws at run time.",
+      "kw": [
+        "lateinit",
+        "uninitialized",
+        "isinitialized"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Lazy caches once",
+      "why": "lazy runs its initializer on first use and then reuses the value.",
+      "kw": [
+        "lazy",
+        "cache",
+        "first access"
+      ]
+    }
+  ]
+}

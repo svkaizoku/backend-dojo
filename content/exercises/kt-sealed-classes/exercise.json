@@ -1,0 +1,36 @@
+{
+  "mode": "concepts",
+  "title": "Sealed classes and exhaustive when",
+  "topic": "kotlin",
+  "level": "Standard",
+  "context": "What is a sealed class, and why does it help with `when` expressions?",
+  "refs": [
+    {
+      "title": "Atomic Kotlin (book) by Bruce Eckel & Svetlana Isakova",
+      "url": "https://www.atomickotlin.com/"
+    }
+  ],
+  "answer": "A sealed class restricts which classes may extend it. Its direct subclasses must be declared in the same package and module (since Kotlin 1.5). Because the set of subclasses is known, a `when` expression over a sealed type can be exhaustive without an else branch. If you later add a subclass, the compiler reports every `when` that is no longer complete. Use sealed types to model a closed set of results, such as success or failure outcomes.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Closed hierarchy",
+      "why": "The compiler knows every subclass, so it can check completeness.",
+      "kw": [
+        "sealed",
+        "subclass",
+        "closed"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Exhaustive when",
+      "why": "A complete when over a sealed type needs no else, and adding a subclass breaks the build where it is missing.",
+      "kw": [
+        "when",
+        "exhaustive",
+        "else"
+      ]
+    }
+  ]
+}

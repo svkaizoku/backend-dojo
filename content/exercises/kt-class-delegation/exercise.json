@@ -1,0 +1,36 @@
+{
+  "mode": "concepts",
+  "title": "Class delegation with by",
+  "topic": "kotlin",
+  "level": "Standard",
+  "context": "What does class delegation with `by` do, and how does it differ from inheritance?",
+  "refs": [
+    {
+      "title": "Atomic Kotlin (book) by Bruce Eckel & Svetlana Isakova",
+      "url": "https://www.atomickotlin.com/"
+    }
+  ],
+  "answer": "`class Repo(store: Store) : Store by store` implements every Store method by forwarding to the store object. You can then override only the methods you want to change. Delegation favours composition: the wrapper has a Store rather than being one, so you avoid fragile base-class problems. It needs an interface to delegate. Use it to add behaviour, such as logging or caching, around an existing implementation.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Forwarding",
+      "why": "Methods of the interface are forwarded to the delegate object automatically.",
+      "kw": [
+        "delegation",
+        "forward",
+        "by"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Composition over inheritance",
+      "why": "The wrapper depends on an interface, not on a base class's internals.",
+      "kw": [
+        "composition",
+        "inheritance",
+        "interface"
+      ]
+    }
+  ]
+}

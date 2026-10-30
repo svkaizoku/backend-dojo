@@ -1,0 +1,36 @@
+{
+  "mode": "concepts",
+  "title": "object and companion object",
+  "topic": "kotlin",
+  "level": "Standard",
+  "context": "What is the difference between an object declaration, a companion object and a top-level function?",
+  "refs": [
+    {
+      "title": "Atomic Kotlin (book) by Bruce Eckel & Svetlana Isakova",
+      "url": "https://www.atomickotlin.com/"
+    }
+  ],
+  "answer": "An `object` declaration is a singleton: one instance, created lazily on first use. A companion object lives inside a class, and its members are accessed as `ClassName.member`. Each class has at most one companion, and it can implement interfaces. A top-level function has no owner and no state. Use a companion for factory functions and constants tied to a class, and a top-level function for stateless helpers.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Singleton object",
+      "why": "An object declaration gives one shared instance.",
+      "kw": [
+        "singleton",
+        "object",
+        "instance"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Companion access",
+      "why": "Companion members look like static members through the class name.",
+      "kw": [
+        "companion",
+        "static",
+        "class name"
+      ]
+    }
+  ]
+}

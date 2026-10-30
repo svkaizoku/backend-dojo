@@ -1,0 +1,46 @@
+{
+  "mode": "concepts",
+  "title": "Nullable types and safe calls",
+  "topic": "kotlin",
+  "level": "Standard",
+  "context": "How do nullable types, safe calls, the Elvis operator and the not-null assertion work in Kotlin, and when should you avoid `!!`?",
+  "refs": [
+    {
+      "title": "Atomic Kotlin (book) by Bruce Eckel & Svetlana Isakova",
+      "url": "https://www.atomickotlin.com/"
+    }
+  ],
+  "answer": "A type ending in `?` can hold null. The compiler stops you from calling members on it directly. `?.` calls a member only when the value is not null, and otherwise the whole chain returns null. `?:` gives a fallback when the left side is null. `!!` asserts non-null and throws NullPointerException if it is wrong. Avoid `!!` in production code: prefer a smart cast after a check, `?.let`, or an Elvis with a meaningful default or an error.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Null-safety in the type",
+      "why": "Nullability is part of the type, so the compiler forces a check before member access.",
+      "kw": [
+        "nullable",
+        "?",
+        "compiler"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Avoid !!",
+      "why": "`!!` moves the null check to run time and throws NullPointerException.",
+      "kw": [
+        "!!",
+        "nullpointerexception",
+        "assertion"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Elvis for defaults",
+      "why": "`?:` gives a fallback or an early exit when the value is missing.",
+      "kw": [
+        "elvis",
+        "?:",
+        "fallback"
+      ]
+    }
+  ]
+}

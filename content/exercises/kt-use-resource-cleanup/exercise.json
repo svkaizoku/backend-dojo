@@ -1,0 +1,36 @@
+{
+  "mode": "concepts",
+  "title": "Closing resources with use",
+  "topic": "kotlin",
+  "level": "Warm-up",
+  "context": "How does `use` help with resource cleanup?",
+  "refs": [
+    {
+      "title": "Atomic Kotlin (book) by Bruce Eckel & Svetlana Isakova",
+      "url": "https://www.atomickotlin.com/"
+    }
+  ],
+  "answer": "`use` is an extension for AutoCloseable and Closeable. It runs the block and closes the resource afterwards, even when the block throws. If both the block and close throw, the close exception is added as suppressed to the first one. It does the same job as Java's try-with-resources. Use it for files, streams and database connections so cleanup doesn't depend on remembering a finally block.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Closes on every path",
+      "why": "The resource is closed whether the block returns or throws.",
+      "kw": [
+        "use",
+        "close",
+        "finally"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Suppressed exceptions",
+      "why": "A close failure after a block failure is kept as a suppressed exception, not lost.",
+      "kw": [
+        "suppressed",
+        "closeable",
+        "exception"
+      ]
+    }
+  ]
+}

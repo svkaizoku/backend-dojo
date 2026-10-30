@@ -179,7 +179,20 @@
     "jg-redis-threading-model",
     "jg-redis-memory-management",
     "jg-redis-performance",
-    "jg-redis-production-issues"
+    "jg-redis-production-issues",
+    "kt-nullable-safe-calls",
+    "kt-data-classes",
+    "kt-sealed-classes",
+    "kt-extension-functions",
+    "kt-scope-functions",
+    "kt-lateinit-vs-lazy",
+    "kt-sequences-vs-lists",
+    "kt-use-resource-cleanup",
+    "kt-class-delegation",
+    "kt-object-companion",
+    "kt-operator-overloading",
+    "kt-property-delegation",
+    "kt-val-and-read-only-collections"
   ],
   "kits": [
     {

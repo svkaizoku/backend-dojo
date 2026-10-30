@@ -1,0 +1,46 @@
+{
+  "mode": "concepts",
+  "title": "Data classes",
+  "topic": "kotlin",
+  "level": "Warm-up",
+  "context": "What does the `data` modifier generate for a class, and what must its primary constructor contain?",
+  "refs": [
+    {
+      "title": "Atomic Kotlin (book) by Bruce Eckel & Svetlana Isakova",
+      "url": "https://www.atomickotlin.com/"
+    }
+  ],
+  "answer": "A data class generates equals, hashCode, toString, copy and componentN functions based on the properties in the primary constructor. Equality is structural, so two instances with the same property values are equal. copy lets you make a changed copy without mutating the original. The primary constructor needs at least one val or var parameter. Only properties declared in the primary constructor take part in equals and hashCode. Data classes are final and can't be abstract, open, sealed or inner.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Generated functions",
+      "why": "equals, hashCode, toString, copy and componentN are generated from the constructor properties.",
+      "kw": [
+        "equals",
+        "copy",
+        "componentn"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Constructor rules",
+      "why": "The primary constructor must have at least one val or var parameter.",
+      "kw": [
+        "primary constructor",
+        "val",
+        "var"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Properties outside the constructor",
+      "why": "Body properties are not part of equality or copy, which surprises people.",
+      "kw": [
+        "body property",
+        "equality",
+        "structural"
+      ]
+    }
+  ]
+}

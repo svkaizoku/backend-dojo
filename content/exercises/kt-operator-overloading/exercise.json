@@ -1,0 +1,36 @@
+{
+  "mode": "concepts",
+  "title": "Operator overloading",
+  "topic": "kotlin",
+  "level": "Standard",
+  "context": "How do operator functions work in Kotlin, and what rules apply?",
+  "refs": [
+    {
+      "title": "Atomic Kotlin (book) by Bruce Eckel & Svetlana Isakova",
+      "url": "https://www.atomickotlin.com/"
+    }
+  ],
+  "answer": "Kotlin maps operators to named functions. `a + b` calls plus, `a[i]` calls get, `a()` calls invoke, and `a < b` uses compareTo. You declare a function with the `operator` modifier, and the name must match the convention exactly. The compiler does not check that the operator makes sense, so keep meanings intuitive, such as plus for combining money values. Use operators for value types like Money or Vector, not for side effects.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Modifier required",
+      "why": "Without the operator modifier, the function can't be used with the operator syntax.",
+      "kw": [
+        "operator",
+        "modifier",
+        "plus"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Name conventions",
+      "why": "Each operator maps to a fixed function name, such as get, invoke and compareTo.",
+      "kw": [
+        "get",
+        "invoke",
+        "compareto"
+      ]
+    }
+  ]
+}

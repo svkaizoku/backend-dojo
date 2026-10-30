@@ -1,0 +1,36 @@
+{
+  "mode": "concepts",
+  "title": "Scope functions",
+  "topic": "kotlin",
+  "level": "Standard",
+  "context": "What are the differences between let, run, with, apply and also?",
+  "refs": [
+    {
+      "title": "Atomic Kotlin (book) by Bruce Eckel & Svetlana Isakova",
+      "url": "https://www.atomickotlin.com/"
+    }
+  ],
+  "answer": "All five run a block on an object. let and also pass the object as `it`, while run, with and apply use it as `this`. let, run and with return the lambda's result. apply and also return the object itself, which suits configuration and logging. Use let for null-safe work, `apply` to configure a new object, and `also` for side effects like logging. with takes the object as an argument rather than as an extension receiver.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "it versus this",
+      "why": "let and also use it, while run, with and apply use this.",
+      "kw": [
+        "it",
+        "this",
+        "receiver"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Return value",
+      "why": "apply and also return the object. let, run and with return the lambda result.",
+      "kw": [
+        "return",
+        "apply",
+        "also"
+      ]
+    }
+  ]
+}

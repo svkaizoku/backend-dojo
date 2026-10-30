@@ -1,0 +1,155 @@
+{
+  "name": "Trading 212",
+  "roles": [
+    "Software Engineer",
+    "Senior Backend Engineer",
+    "Principal Backend Engineer"
+  ],
+  "summary": "Limited data. Candidate reports describe a short screen and a one-on-one technical round, with longer loops for senior roles. Job postings describe a Java 17/21 and Spring, Kafka and PostgreSQL stack. Glassdoor and the company careers page could not be opened from here, so the detail below comes from search summaries of those pages.",
+  "updated": "2026-10-30",
+  "confidence": "Reported = candidate reports seen in search summaries (Glassdoor, not opened directly). Likely = inferred from job postings or generic prep guides. Nothing here is confirmed by the company.",
+  "process": [
+    {
+      "stage": "Screening call",
+      "format": "Phone screen. One report: about 6 basic computer science questions in about 15 minutes.",
+      "confidence": "Reported"
+    },
+    {
+      "stage": "One-on-one or skills test",
+      "format": "One Glassdoor summary puts the split of Software Engineer candidates at about 40% phone interview, 40% one-on-one interview and 20% skills test.",
+      "confidence": "Reported"
+    },
+    {
+      "stage": "HR screen and technical screen",
+      "format": "Senior Backend candidate: HR screen, technical screen, then a second HR interview. The technical part was described as structured but shallow for a senior role.",
+      "confidence": "Reported"
+    },
+    {
+      "stage": "Longer onsite-style loop",
+      "format": "Another Software Engineer report: screening, HR, a three-hour technical round onsite, then an interview with the Head of Engineering. A separate account mentions a behavioural interview and a final interview with a founder.",
+      "confidence": "Reported"
+    },
+    {
+      "stage": "Timing",
+      "format": "Reports put the whole process at about 1 to 2 weeks. Glassdoor's overall average is 17.5 days.",
+      "confidence": "Reported"
+    },
+    {
+      "stage": "Generic loop (not Trading 212 specific)",
+      "format": "A prep guide describes a 30-minute recruiter screen, a 45 to 60 minute technical round (coding or system design) and a 45-minute behavioural round. It says nothing specific about Trading 212.",
+      "confidence": "Likely (generic guide)"
+    }
+  ],
+  "topics": [
+    {
+      "name": "Databases",
+      "what": "Sharding, indexes and how they change query speed. Reported in candidate accounts."
+    },
+    {
+      "name": "Java runtime",
+      "what": "Memory leaks in Java applications. Reported in candidate accounts."
+    },
+    {
+      "name": "Distributed systems",
+      "what": "Preventing double booking across services. Repeatable read vs serializable isolation. Generic backend topics, not confirmed as Trading 212 questions."
+    },
+    {
+      "name": "Infrastructure",
+      "what": "CDNs and backward compatibility. Reported in candidate accounts."
+    },
+    {
+      "name": "Language choice",
+      "what": "When Go fits better than Java in a microservices setup, and the reverse. One aggregator lists this for a Principal role. Single unverified source."
+    },
+    {
+      "name": "Stack",
+      "what": "Java 17 or 21 with Spring, Kafka, PostgreSQL, Redis, ClickHouse, Elasticsearch, Docker and Kubernetes, AWS, Grafana. From job postings, which disagree on the Java version."
+    }
+  ],
+  "questions": [
+    {
+      "topic": "Databases",
+      "q": "What is database sharding, and what problem does it solve?",
+      "a": "Sharding splits one dataset across several database instances by a key, such as user id. It spreads storage and write load when one machine can't handle them. The cost is cross-shard queries, rebalancing and harder transactions."
+    },
+    {
+      "topic": "Databases",
+      "q": "How does a database index speed up a query, and what does it cost?",
+      "a": "An index is a sorted structure, usually a B-tree, on one or more columns. Lookups go from scanning every row to a few tree steps. It costs extra storage, slower writes, and an index can't help a query that doesn't filter or sort on its columns."
+    },
+    {
+      "topic": "Java runtime",
+      "q": "How do Java memory leaks happen, even with a garbage collector?",
+      "a": "The collector frees objects that can't be reached. A leak happens when objects stay reachable by mistake, such as a static map that grows, a listener that is never removed, or a ThreadLocal that is never cleared in a pool."
+    },
+    {
+      "topic": "Distributed systems",
+      "q": "How would you prevent double booking when two services can accept the same request?",
+      "a": "Make the booking a single atomic step on one owner, such as a unique constraint or a conditional update (for example UPDATE ... WHERE status = 'free'). Use idempotency keys for retries. Don't rely on a read-then-write across services."
+    },
+    {
+      "topic": "Distributed systems",
+      "q": "What is the difference between repeatable read and serializable isolation?",
+      "a": "Repeatable read keeps the rows a transaction has read stable, but can still allow phantom rows in a range query, depending on the database. Serializable makes concurrent transactions behave as if they ran one at a time, at the cost of more blocking or retries."
+    },
+    {
+      "topic": "Infrastructure",
+      "q": "What does backward compatibility mean for an API or a stored message format?",
+      "a": "Old clients and old stored data keep working after a change. Add optional fields rather than renaming or removing them, version breaking changes, and deploy readers before writers when the format changes."
+    },
+    {
+      "topic": "Language choice",
+      "q": "When would Go be a better fit than Java for a microservice?",
+      "a": "Go suits small services with fast start-up, low memory use and simple concurrency. Java suits teams with large existing Spring code, rich libraries and strong tooling. Pick by team skills, operations and the services' workload, not by language alone."
+    }
+  ],
+  "links": [
+    {
+      "title": "Glassdoor: Trading 212 Senior Software Engineer interview questions",
+      "url": "https://www.glassdoor.com/Interview/Trading-212-Senior-Software-Engineer-Interview-Questions-EI_IE2365696.0,11_KO12,36.htm",
+      "kind": "Interview report",
+      "checked": "search result only (page itself returned 403)"
+    },
+    {
+      "title": "Glassdoor: Trading 212 interview questions (all roles)",
+      "url": "https://www.glassdoor.com/Interview/Trading-212-Interview-Questions-E2365696.htm",
+      "kind": "Interview report",
+      "checked": "403 to automated checks"
+    },
+    {
+      "title": "Glassdoor: Trading 212 Software Engineer interview questions",
+      "url": "https://www.glassdoor.com/Interview/Trading-212-Software-Engineer-Interview-Questions-EI_IE2365696.0,11_KO12,29.htm",
+      "kind": "Interview report",
+      "checked": "search result only"
+    },
+    {
+      "title": "Scoutify: Trading 212 interview prep (generic loop, not confirmed)",
+      "url": "https://scoutify.com/companies/trading212/interview/",
+      "kind": "Prep guide",
+      "checked": "200, reviewed 2026-10-19"
+    },
+    {
+      "title": "Arc.dev: Trading 212 Senior Backend Engineer job posting (stack)",
+      "url": "https://arc.dev/remote-jobs/j/trading-212-senior-backend-engineer-pmvyts4nt5",
+      "kind": "Job posting",
+      "checked": "search result only"
+    },
+    {
+      "title": "Aggregator: Principal Backend Engineer posting (Go vs Java question)",
+      "url": "https://quick-offer.ru/job/principal-backend-engineer-45638",
+      "kind": "Job posting",
+      "checked": "search result only"
+    },
+    {
+      "title": "Generic backend interview question list (not Trading 212 specific)",
+      "url": "https://medium.com/@emilyhustlenyc/i-will-never-walk-into-a-backend-interview-without-solving-these-20-questions-a62587708893",
+      "kind": "Prep guide",
+      "checked": "search result only"
+    }
+  ],
+  "notes": [
+    "The careers page at trading212.com returned 403, so the company's own process and stack are unverified.",
+    "Job postings disagree on the Java version (17 vs 21). Check a current posting before you prepare.",
+    "Add a candidate's own account when you have one; they're the most useful source here."
+  ]
+}

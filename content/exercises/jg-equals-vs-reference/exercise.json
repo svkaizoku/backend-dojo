@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Object equality versus reference equality",
+  "topic": "java-core",
+  "level": "Warm-up",
+  "context": "What is the difference between == and equals()?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java basics questions (2 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-02.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "`==` compares references for objects: it is true only when both variables point to the same object. For primitives it compares values. `equals()` is a method that a class can override to compare content. `Object.equals` defaults to `==`. Strings, boxed numbers and collections override `equals`. If you override `equals`, also override `hashCode`, so equal objects land in the same hash bucket.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "== compares identity",
+      "why": "Two equal strings created separately are different objects, so == returns false.",
+      "kw": [
+        "==",
+        "identity",
+        "reference"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Override hashCode with equals",
+      "why": "Hash-based collections break when equal objects have different hash codes.",
+      "kw": [
+        "hashcode",
+        "equals",
+        "hash"
+      ]
+    }
+  ]
+}

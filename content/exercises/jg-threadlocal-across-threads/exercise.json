@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Passing ThreadLocal values to other threads",
+  "topic": "concurrency",
+  "level": "Hard",
+  "context": "How do you pass a ThreadLocal value to a child thread or a pool task?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java concurrency questions (2 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-02.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "A plain ThreadLocal is not inherited by a new thread. InheritableThreadLocal copies the value at thread creation, but it doesn't help with a pool, because pool threads are created earlier. For pools, wrap the task so it captures the value when submitted and sets it on the worker thread before running, then clears it afterwards. Libraries such as Spring's TaskDecorator or Alibaba's TransmittableThreadLocal do this. Be careful: the copy is taken once, so later changes don't reach the child.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Not inherited by default",
+      "why": "New threads start with empty ThreadLocals unless you copy the value.",
+      "kw": [
+        "inheritablethreadlocal",
+        "inherit",
+        "copy"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Pools need wrapping",
+      "why": "Pool threads already exist, so the value must be captured at submit time and restored in the worker.",
+      "kw": [
+        "wrap",
+        "submit",
+        "pool"
+      ]
+    }
+  ]
+}

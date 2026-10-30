@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "JDK dynamic proxies and CGLIB",
+  "topic": "java-core",
+  "level": "Warm-up",
+  "context": "What is the difference between JDK dynamic proxies and CGLIB proxies?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java basics questions (3 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-03.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "A JDK dynamic proxy implements the interfaces of a target object at run time through `java.lang.reflect.Proxy`. It works only when the target implements an interface. CGLIB creates a subclass of the target class at run time, so it works for classes without interfaces, but it can't proxy final classes or final methods. Spring Boot uses CGLIB by default. Both are used by Spring AOP for transactions and aspects.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Interface versus subclass",
+      "why": "JDK proxies need an interface. CGLIB needs a class that isn't final.",
+      "kw": [
+        "interface",
+        "subclass",
+        "cglib"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Final members",
+      "why": "Final classes and methods can't be overridden, so they can't be intercepted.",
+      "kw": [
+        "final",
+        "intercept",
+        "override"
+      ]
+    }
+  ]
+}

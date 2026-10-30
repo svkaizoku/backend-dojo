@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Compiled and interpreted",
+  "topic": "java-core",
+  "level": "Warm-up",
+  "context": "Why is Java described as both compiled and interpreted?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java basics questions (1 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Java is compiled first. `javac` turns source into bytecode, which is not machine code. At run time the JVM interprets that bytecode, and the JIT compiler translates frequently run methods into native machine code. So the code is compiled once to bytecode and then run partly interpreted and partly compiled.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Two steps",
+      "why": "Source becomes bytecode at build time. Bytecode is then executed by the JVM.",
+      "kw": [
+        "bytecode",
+        "javac",
+        "two steps"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "JIT compilation",
+      "why": "Hot methods are compiled to native code at run time, which removes most interpretation cost.",
+      "kw": [
+        "jit",
+        "native",
+        "hot"
+      ]
+    }
+  ]
+}

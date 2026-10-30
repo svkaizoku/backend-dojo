@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Inversion of control",
+  "topic": "spring",
+  "level": "Warm-up",
+  "context": "What is IoC?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Spring knowledge and questions",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/system-design/framework/spring/spring-knowledge-and-questions-summary.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Inversion of control means the framework creates and wires objects, instead of your code creating its own dependencies. A class declares what it needs, usually through a constructor, and the container supplies it. Dependency injection is the most common way to do IoC in Spring. The container also manages object lifetimes and scopes. The result is looser coupling and classes that are easy to test with fakes.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Who creates objects",
+      "why": "The container creates and connects dependencies, so classes don't call new on their collaborators.",
+      "kw": [
+        "inversion of control",
+        "container",
+        "dependency injection"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Testability",
+      "why": "Injected dependencies can be replaced by test doubles.",
+      "kw": [
+        "test",
+        "fake",
+        "mock"
+      ]
+    }
+  ]
+}

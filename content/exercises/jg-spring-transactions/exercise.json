@@ -1,0 +1,45 @@
+{
+  "mode": "concepts",
+  "title": "Spring transactions",
+  "topic": "spring",
+  "level": "Hard",
+  "context": "How do Spring transactions work, and what are the common pitfalls?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Spring knowledge and questions",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/system-design/framework/spring/spring-knowledge-and-questions-summary.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "`@Transactional` makes Spring open a transaction around a public method through a proxy. Propagation says how it joins an existing transaction: REQUIRED, the default, joins it or starts one, while REQUIRES_NEW always starts a new one. By default, rollback happens for unchecked exceptions and errors, not for checked exceptions, unless `rollbackFor` says otherwise. Pitfalls: calling a @Transactional method from the same class skips the proxy, private methods are not proxied, and catching the exception inside the method hides the rollback.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Proxy and self-calls",
+      "why": "A transactional method called from inside its own class runs with no transaction.",
+      "kw": [
+        "self-invocation",
+        "proxy",
+        "transactional"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Rollback rules",
+      "why": "Only RuntimeException and Error roll back by default. Checked exceptions commit unless rollbackFor is set.",
+      "kw": [
+        "rollbackfor",
+        "runtimeexception",
+        "checked"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Swallowed exceptions",
+      "why": "If the exception is caught and not rethrown, Spring sees no failure and commits.",
+      "kw": [
+        "catch",
+        "rethrow",
+        "commit"
+      ]
+    }
+  ]
+}

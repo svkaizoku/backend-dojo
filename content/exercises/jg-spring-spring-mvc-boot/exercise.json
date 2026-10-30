@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Spring, Spring MVC and Spring Boot",
+  "topic": "spring",
+  "level": "Warm-up",
+  "context": "How are Spring, Spring MVC and Spring Boot related?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Spring knowledge and questions",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/system-design/framework/spring/spring-knowledge-and-questions-summary.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Spring Framework is the core: dependency injection, AOP, transactions and the application context. Spring MVC is a module in that framework for building web apps and REST APIs on the Servlet API. Spring Boot is a layer on top of Spring. It adds auto-configuration from classpath contents, starter dependencies, an embedded server and production features such as Actuator. Boot does not replace Spring. It sets Spring up for you with sensible defaults that you can override.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Layers",
+      "why": "Framework is the core, MVC is a module, and Boot configures the framework automatically.",
+      "kw": [
+        "framework",
+        "mvc",
+        "auto-configuration"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Starters and embedded server",
+      "why": "Starters bundle dependencies and Boot runs an embedded server, so an app starts with one command.",
+      "kw": [
+        "starter",
+        "embedded",
+        "boot"
+      ]
+    }
+  ]
+}

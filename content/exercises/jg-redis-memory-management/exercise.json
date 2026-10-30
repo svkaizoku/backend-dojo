@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Redis memory management",
+  "topic": "caching",
+  "level": "Hard",
+  "context": "How does Redis manage memory, and what happens when it is full?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Redis questions (1 of 2)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/redis/redis-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Redis keeps data in RAM, so `maxmemory` caps how much it may use. Keys with a TTL are removed when they expire: some passively on access and some by periodic sampling. When memory reaches the cap, the eviction policy decides: noeviction returns errors on writes, allkeys-lru and allkeys-lfu evict any key, volatile-* policies evict only keys with a TTL. Choose the policy for the use: a cache wants allkeys-lru, while a store of must-keep data wants noeviction with alerts.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "maxmemory and policies",
+      "why": "Without a cap, Redis grows until the host runs out of memory.",
+      "kw": [
+        "maxmemory",
+        "eviction",
+        "policy"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Expiry is not instant",
+      "why": "Expired keys are removed lazily and by sampling, so memory use lags the TTL.",
+      "kw": [
+        "expire",
+        "lazy",
+        "sampling"
+      ]
+    }
+  ]
+}

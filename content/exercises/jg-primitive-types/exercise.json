@@ -1,0 +1,45 @@
+{
+  "mode": "concepts",
+  "title": "Primitive types",
+  "topic": "java-core",
+  "level": "Standard",
+  "context": "What are Java's primitive types, and how do they behave in arithmetic and as values?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java basics questions (1 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Java has eight primitives: `byte` (8 bits), `short` (16), `int` (32), `long` (64), `float` (32, IEEE 754), `double` (64), `char` (16-bit unsigned UTF-16 unit) and `boolean`. They are stored by value and are not objects. Integer overflow wraps silently, so `Integer.MAX_VALUE + 1` is negative. Floating-point types cannot store most decimal fractions exactly, so use `BigDecimal` for money. Integer division truncates toward zero.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Overflow wraps",
+      "why": "int arithmetic overflows without an exception. Use Math.addExact or long when a bound matters.",
+      "kw": [
+        "overflow",
+        "wrap",
+        "math.addexact"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Floating point is inexact",
+      "why": "0.1 + 0.2 is not 0.3 in double. Money needs BigDecimal.",
+      "kw": [
+        "floating",
+        "bigdecimal",
+        "precision"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Primitives are not objects",
+      "why": "Primitives have no methods and are not null. Wrapper types like Integer are needed for generics and null.",
+      "kw": [
+        "wrapper",
+        "not null",
+        "boxing"
+      ]
+    }
+  ]
+}

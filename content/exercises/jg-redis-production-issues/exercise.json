@@ -1,0 +1,45 @@
+{
+  "mode": "concepts",
+  "title": "Cache penetration, breakdown and avalanche",
+  "topic": "caching",
+  "level": "Hard",
+  "context": "What are cache penetration, cache breakdown and cache avalanche, and how do you handle them?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Redis questions (2 of 2)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/redis/redis-questions-02.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Penetration is repeated requests for keys that don't exist, which always reach the database. Cache empty results for a short time, and use a Bloom filter to reject impossible keys. Breakdown is a single hot key expiring, so many requests hit the database at once. Use a mutex or single-flight lock so one request reloads it, or never expire hot keys. Avalanche is many keys expiring together. Add random jitter to TTLs and keep the cache layer highly available.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Penetration",
+      "why": "Missing keys are never cached, so each request goes to the database.",
+      "kw": [
+        "penetration",
+        "bloom filter",
+        "empty"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Breakdown",
+      "why": "A hot key expiring triggers a stampede. One reload with a lock prevents it.",
+      "kw": [
+        "breakdown",
+        "hot key",
+        "mutex"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Avalanche",
+      "why": "Keys with the same TTL expire together. Random jitter spreads the load.",
+      "kw": [
+        "avalanche",
+        "jitter",
+        "ttl"
+      ]
+    }
+  ]
+}

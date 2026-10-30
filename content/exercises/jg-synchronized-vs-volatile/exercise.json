@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "synchronized versus volatile",
+  "topic": "concurrency",
+  "level": "Standard",
+  "context": "What is the difference between synchronized and volatile?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java concurrency questions (2 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-02.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "`volatile` makes single reads and writes of one variable visible across threads. It does not lock, so a compound update is still a race. `synchronized` makes a block of code mutually exclusive and also guarantees visibility of everything inside it. It blocks other threads and costs more. Use volatile for a flag or a value written by one thread and read by many. Use synchronized, or a lock, when several variables must change together.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Atomicity",
+      "why": "synchronized makes a block atomic. volatile does not.",
+      "kw": [
+        "atomic",
+        "block",
+        "compound"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Cost",
+      "why": "volatile reads are cheap. synchronized blocks other threads while it is held.",
+      "kw": [
+        "cost",
+        "block",
+        "cheap"
+      ]
+    }
+  ]
+}

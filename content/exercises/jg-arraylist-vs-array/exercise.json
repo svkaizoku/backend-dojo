@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "ArrayList versus array",
+  "topic": "java-core",
+  "level": "Warm-up",
+  "context": "What is the difference between an ArrayList and an array?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java collections questions (1 of 2)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "An array has a fixed length, can hold primitives directly, and is fast and simple. An ArrayList is a resizable list backed by an internal array. It holds only objects, so primitives are boxed. It offers add, remove and generic type safety. ArrayList grows by copying into a larger array, so a known size is best given up front. Use an array when the size is fixed or for performance-critical primitives.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Fixed versus resizable",
+      "why": "Array length can't change. ArrayList grows as needed.",
+      "kw": [
+        "fixed",
+        "resizable",
+        "length"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Primitives and boxing",
+      "why": "Arrays store primitives directly. Lists store boxed objects, which costs memory.",
+      "kw": [
+        "boxing",
+        "primitive",
+        "memory"
+      ]
+    }
+  ]
+}

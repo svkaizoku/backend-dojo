@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Shift operators",
+  "topic": "java-core",
+  "level": "Standard",
+  "context": "What do the shift operators <<, >> and >>> do in Java?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java basics questions (1 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "`<<` shifts bits left and fills with zeros. It multiplies by 2 for each shift, as long as no sign bit changes. `>>` is an arithmetic right shift and keeps the sign by copying the top bit. `>>>` is an unsigned right shift and fills with zeros, even for negative numbers. Shift counts are masked: for `int` only the low 5 bits count, so `1 << 32` equals `1`. For `long` the mask is 6 bits.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Sign handling",
+      "why": "`>>` keeps the sign and `>>>` always fills with zeros. Mixing them up gives wrong results for negative numbers.",
+      "kw": [
+        ">>>",
+        "unsigned",
+        "sign"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Shift distance is masked",
+      "why": "The count is taken modulo 32 for int and 64 for long, which surprises people who expect `1 << 32` to be 0.",
+      "kw": [
+        "mask",
+        "modulo",
+        "32"
+      ]
+    }
+  ]
+}

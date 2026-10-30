@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Dynamic proxies in frameworks",
+  "topic": "java-core",
+  "level": "Standard",
+  "context": "Where are dynamic proxies used in real frameworks?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java basics questions (3 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-03.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Frameworks use proxies to add behaviour around a call without changing the class. Spring uses them for `@Transactional`, `@Async`, security checks and caching. Its AOP advice runs before or after the proxied method. ORMs like Hibernate use lazy-loading proxies. Remote-call libraries generate a proxy from an interface, so a call on the interface becomes an HTTP or RPC request. The cost is that calls made from inside the same class skip the proxy.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Cross-cutting behaviour",
+      "why": "Transactions, caching and security are added without editing business code.",
+      "kw": [
+        "transactional",
+        "aop",
+        "advice"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Self-invocation bypasses proxies",
+      "why": "A method calling another method on this skips the proxy, so its annotations don't apply.",
+      "kw": [
+        "self-invocation",
+        "this",
+        "bypass"
+      ]
+    }
+  ]
+}

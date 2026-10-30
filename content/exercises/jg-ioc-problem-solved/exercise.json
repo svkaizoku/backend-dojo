@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "What IoC solves",
+  "topic": "spring",
+  "level": "Warm-up",
+  "context": "What problem does IoC solve?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Spring knowledge and questions",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/system-design/framework/spring/spring-knowledge-and-questions-summary.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Without IoC, each class builds its own dependencies with new, so it is tied to concrete classes. Changing one implementation means editing every caller, and tests can't swap in fakes. Object creation and lifetime rules, such as singletons or cleanup, get scattered through the code. IoC moves those decisions into one configuration point, so classes depend on interfaces and the wiring can change without touching them.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Tight coupling",
+      "why": "Code that calls new on its dependencies is hard to change and hard to test.",
+      "kw": [
+        "coupling",
+        "new",
+        "tight"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Central configuration",
+      "why": "The wiring lives in one place, so behaviour changes don't need edits across many classes.",
+      "kw": [
+        "configuration",
+        "central",
+        "wiring"
+      ]
+    }
+  ]
+}

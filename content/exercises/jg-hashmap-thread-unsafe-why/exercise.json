@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "HashMap thread safety in practice",
+  "topic": "java-core",
+  "level": "Standard",
+  "context": "What goes wrong when HashMap is shared between request threads?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java collections questions (2 of 2)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-02.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Requests share the map and write to it without a lock, so entries can vanish, counts can be wrong, and reads can return stale or partly written values. The bug shows up only under load, so it is hard to reproduce. A shared static HashMap used as a cache is a common cause. Fix it with ConcurrentHashMap, with compute and merge for atomic updates, or by keeping the map local to one thread.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Shared static maps",
+      "why": "A static HashMap used as a cache is written by every request thread without protection.",
+      "kw": [
+        "static",
+        "shared",
+        "cache"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Atomic updates",
+      "why": "compute and merge on ConcurrentHashMap update a key atomically.",
+      "kw": [
+        "compute",
+        "merge",
+        "atomic"
+      ]
+    }
+  ]
+}

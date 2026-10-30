@@ -1,0 +1,45 @@
+{
+  "mode": "concepts",
+  "title": "Bean lifecycle",
+  "topic": "spring",
+  "level": "Hard",
+  "context": "What are the steps in the lifecycle of a Spring bean?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Spring knowledge and questions",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/system-design/framework/spring/spring-knowledge-and-questions-summary.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "The container instantiates the bean, populates its properties with dependencies, and calls the Aware callbacks such as BeanNameAware and ApplicationContextAware. Each BeanPostProcessor's before method runs. Then init runs: @PostConstruct, then InitializingBean.afterPropertiesSet, then a custom init-method. The after method of each BeanPostProcessor runs, and the bean is ready. On shutdown, @PreDestroy, DisposableBean.destroy and a custom destroy method run. Proxies such as AOP wrappers are usually created by a post-processor.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Order of init",
+      "why": "@PostConstruct runs before afterPropertiesSet, which runs before a custom init-method.",
+      "kw": [
+        "postconstruct",
+        "afterpropertiesset",
+        "init-method"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Post-processors",
+      "why": "BeanPostProcessors run around init and can replace the bean with a proxy.",
+      "kw": [
+        "beanpostprocessor",
+        "proxy",
+        "before"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Destruction",
+      "why": "@PreDestroy and destroy run only for singletons on context close.",
+      "kw": [
+        "predestroy",
+        "destroy",
+        "close"
+      ]
+    }
+  ]
+}

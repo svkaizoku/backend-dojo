@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Changing pool parameters at run time",
+  "topic": "concurrency",
+  "level": "Hard",
+  "context": "How can you change a ThreadPoolExecutor's size or queue at run time?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java concurrency questions (3 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-03.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "ThreadPoolExecutor has setCorePoolSize and setMaximumPoolSize, which apply on the next task. The queue can't be resized in place, so you replace the executor, or use a custom queue whose capacity you can change, such as a wrapper around LinkedBlockingDeque. Expose the values through configuration or JMX, and log each change. Growing the core size starts threads lazily, so a change does not take effect for running work immediately.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Setters exist for sizes",
+      "why": "setCorePoolSize and setMaximumPoolSize change limits without a restart.",
+      "kw": [
+        "setcorepoolsize",
+        "setmaximumpoolsize",
+        "runtime"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Queue capacity is fixed",
+      "why": "The queue's capacity is set when it is built, so changing it needs a new pool or a custom queue.",
+      "kw": [
+        "queue",
+        "capacity",
+        "replace"
+      ]
+    }
+  ]
+}

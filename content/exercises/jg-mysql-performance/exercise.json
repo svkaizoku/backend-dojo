@@ -1,0 +1,45 @@
+{
+  "mode": "concepts",
+  "title": "MySQL performance optimisation",
+  "topic": "data",
+  "level": "Hard",
+  "context": "How would you optimise slow MySQL queries?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): MySQL questions",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/mysql/mysql-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Start with measurement: the slow query log and EXPLAIN show which queries scan too many rows. Add or fix indexes for the WHERE, JOIN and ORDER BY columns, and remove functions on indexed columns. Select only the columns you need, avoid SELECT *, and paginate with keyset pagination instead of large OFFSET values. Batch writes, keep transactions short, and avoid N+1 query patterns. For scale, consider read replicas, caching, and partitioning for very large tables.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Measure first",
+      "why": "EXPLAIN and the slow query log show the real cost before you guess.",
+      "kw": [
+        "explain",
+        "slow query",
+        "measure"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Indexes for filters and sorts",
+      "why": "Indexes on WHERE, JOIN and ORDER BY columns usually give the biggest win.",
+      "kw": [
+        "index",
+        "where",
+        "order by"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Deep pagination",
+      "why": "Large OFFSET values scan and discard rows. Keyset pagination skips them.",
+      "kw": [
+        "offset",
+        "keyset",
+        "pagination"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Java Memory Model",
+  "topic": "concurrency",
+  "level": "Standard",
+  "context": "What is the Java Memory Model (JMM), and why does it matter?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java concurrency questions (2 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-02.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "The JMM defines when a write by one thread is guaranteed to be visible to another thread, and what ordering the compiler and CPU may change. Without it, a thread may see stale values held in registers or caches. The JMM defines happens-before rules: an unlock of a monitor happens-before every later lock of that monitor, a write to a volatile field happens-before a read of it, and thread start and join create ordering. Code that uses these rules is correct on every platform.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Visibility",
+      "why": "Without synchronisation a thread may never see another thread's update.",
+      "kw": [
+        "visibility",
+        "stale",
+        "happens-before"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Happens-before rules",
+      "why": "Monitor unlock and lock, volatile write and read, and start and join create ordering.",
+      "kw": [
+        "happens-before",
+        "volatile",
+        "monitor"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Why String is immutable",
+  "topic": "java-core",
+  "level": "Standard",
+  "context": "Why is String immutable in Java?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java basics questions (2 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-02.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "The String pool shares one object between many references, so changing it would change every holder. Immutability makes Strings safe as HashMap keys, because the hash code cannot change after insertion. It makes them safe to pass across threads without locks, and it allows the JVM to cache the hash code. Security also depends on it: class names, file paths and connection URLs can't be altered after a check.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Shared String pool",
+      "why": "Sharing is safe only if no holder can change the value.",
+      "kw": [
+        "string pool",
+        "shared",
+        "immutable"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Safe hash keys",
+      "why": "A key whose hash changes after insertion can never be found again in a HashMap.",
+      "kw": [
+        "hashmap",
+        "hash",
+        "key"
+      ]
+    }
+  ]
+}

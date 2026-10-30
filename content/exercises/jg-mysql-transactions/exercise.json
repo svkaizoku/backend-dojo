@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "MySQL transactions and isolation",
+  "topic": "data",
+  "level": "Standard",
+  "context": "What are ACID and the isolation levels in MySQL?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): MySQL questions",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/mysql/mysql-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "ACID means atomicity, consistency, isolation and durability. InnoDB has four isolation levels: READ UNCOMMITTED allows dirty reads, READ COMMITTED avoids them, REPEATABLE READ, the default, gives a stable snapshot for the whole transaction, and SERIALIZABLE locks reads. Plain reads at REPEATABLE READ use one snapshot, while locking reads and writes use gap or next-key locks to stop phantoms. Choose the lowest level that your invariants allow, and keep transactions short.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Four levels",
+      "why": "Each level trades anomalies against locking and throughput.",
+      "kw": [
+        "read committed",
+        "repeatable read",
+        "serializable"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Dirty and phantom reads",
+      "why": "Dirty reads see uncommitted data. Phantoms are new rows appearing in a repeated range query.",
+      "kw": [
+        "dirty read",
+        "phantom",
+        "isolation"
+      ]
+    }
+  ]
+}

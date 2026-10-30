@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Constructor or setter injection",
+  "topic": "spring",
+  "level": "Standard",
+  "context": "Should you use constructor injection or setter injection?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Spring knowledge and questions",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/system-design/framework/spring/spring-knowledge-and-questions-summary.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Prefer constructor injection. Required dependencies are passed in once, the fields can be final, the object is never half-built, and tests can create it with plain code. A missing dependency fails at startup. Setter injection suits optional dependencies that have a sensible default. It can leave an object partly configured. Field injection with @Autowired is convenient but hides dependencies and makes tests harder.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Immutable, complete objects",
+      "why": "Constructor injection allows final fields and guarantees all required dependencies exist.",
+      "kw": [
+        "constructor",
+        "final",
+        "immutable"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Field injection drawbacks",
+      "why": "Field injection hides dependencies and needs a container to test the class.",
+      "kw": [
+        "field injection",
+        "hidden",
+        "test"
+      ]
+    }
+  ]
+}

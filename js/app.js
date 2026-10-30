@@ -2,6 +2,7 @@ import { LANGS, MODES, buildVariant, checkExercise } from "./content.js";
 import * as ai from "./ai.js";
 import * as runner from "./runner.js";
 import { codeHtml } from "./highlight.js";
+import { renderMarkdown } from "./markdown.js";
 import { createEditor } from "./editor.js";
 
 /* ---------- per-browser progress (best scores, drafts, edited code, language, mode) ---------- */
@@ -430,7 +431,7 @@ function renderResults() {
         }, label))));
   })));
 
-  if (v.answer) parts.push(h("h3", null, v.mode === "design" ? "Reference design" : "Model answer"), h("p", { class: "model-answer" }, v.answer));
+  if (v.answer) parts.push(h("h3", null, v.mode === "design" ? "Reference design" : "Model answer"), h("div", { class: "model-answer" }, renderMarkdown(v.answer)));
   if (v.solution) parts.push(h("h3", null, "Reference solution"), codeBlock(v.solution.replace(/\n+$/, "").split("\n"), v.solutionFile));
 
   if (r.extras.length) {
@@ -445,6 +446,7 @@ function renderResults() {
     parts.push(h("ul", { class: "refs" }, v.refs.map(ref =>
       h("li", null, h("a", { href: ref.url, target: "_blank", rel: "noopener noreferrer" }, ref.title)))));
   }
+  if (v.source) parts.push(h("p", { class: "source" }, "Adapted from ", h("a", { href: v.source.url, target: "_blank", rel: "noopener noreferrer" }, v.source.title), `. ${v.source.note}`));
   box.replaceChildren(...parts);
 }
 

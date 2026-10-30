@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "LinkedList insert and delete cost",
+  "topic": "java-core",
+  "level": "Warm-up",
+  "context": "What is the time complexity of inserting and deleting elements in a LinkedList?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java collections questions (1 of 2)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Inserting or removing at either end is O(1). Removing a node you already hold a reference to is O(1) too. But finding a position by index or by value is O(n), because the list must be walked from one end. So the insert and delete cost depends on finding the node first. In practice ArrayList is often faster, because nodes are scattered in memory and each node costs an extra object.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Ends are O(1)",
+      "why": "Linking a node at the head or tail changes only a few pointers.",
+      "kw": [
+        "head",
+        "tail",
+        "o(1)"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Finding is O(n)",
+      "why": "Getting to a middle position means walking the list, which is the expensive part.",
+      "kw": [
+        "walk",
+        "o(n)",
+        "search"
+      ]
+    }
+  ]
+}

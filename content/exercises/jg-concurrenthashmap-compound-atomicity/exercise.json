@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Atomic compound operations on ConcurrentHashMap",
+  "topic": "java-core",
+  "level": "Standard",
+  "context": "Does ConcurrentHashMap make compound operations atomic?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java collections questions (2 of 2)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-02.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Each single method, such as put, get or remove, is atomic. A compound operation made of get then put is not. Two threads can both read the same count and both write count plus one. Use the atomic methods instead: putIfAbsent, computeIfAbsent, compute, merge. For example `map.merge(key, 1, Integer::sum)` updates the count without a race. For a multi-key invariant, a lock is still needed.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Check then act is a race",
+      "why": "Separate get and put calls can interleave, so updates are lost.",
+      "kw": [
+        "check-then-act",
+        "race",
+        "get then put"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Use atomic methods",
+      "why": "merge, compute and putIfAbsent update one key atomically.",
+      "kw": [
+        "merge",
+        "computeifabsent",
+        "putifabsent"
+      ]
+    }
+  ]
+}

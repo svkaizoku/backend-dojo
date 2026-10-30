@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Redis threading model",
+  "topic": "caching",
+  "level": "Standard",
+  "context": "Is Redis single-threaded?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Redis questions (1 of 2)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/redis/redis-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Command execution is single-threaded, so each command runs atomically and no locks are needed inside the data store. Background threads handle some tasks, such as closing old files and freeing big objects. Since Redis 6, optional I/O threads read and write sockets in parallel, but commands still run on the main thread. A slow command blocks every client, so avoid KEYS, large LRANGE calls and huge deletes in production.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Atomic commands",
+      "why": "One thread runs commands, so a single command never interleaves with another.",
+      "kw": [
+        "single-threaded",
+        "atomic",
+        "main thread"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "I/O threads",
+      "why": "From Redis 6, I/O threads help with socket work, not command execution.",
+      "kw": [
+        "io threads",
+        "redis 6",
+        "socket"
+      ]
+    }
+  ]
+}

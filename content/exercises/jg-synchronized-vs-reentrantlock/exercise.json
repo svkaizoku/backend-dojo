@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "synchronized versus ReentrantLock",
+  "topic": "concurrency",
+  "level": "Standard",
+  "context": "How do synchronized and ReentrantLock differ?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java concurrency questions (2 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-02.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Both are reentrant, so the same thread can acquire the lock again. `synchronized` is a language keyword: the lock is released automatically, but you can't try to acquire it with a timeout, it can't be interrupted while waiting, and it has one condition queue. `ReentrantLock` is a class. It offers tryLock with timeout, lockInterruptibly, fairness, and several Condition objects. The cost is that you must unlock in a finally block. Use synchronized for simple cases and ReentrantLock when you need those features.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Extra features",
+      "why": "ReentrantLock supports tryLock with timeout, interruptible waits, fairness and multiple conditions.",
+      "kw": [
+        "trylock",
+        "interruptibly",
+        "fairness"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Always unlock in finally",
+      "why": "A missing unlock on ReentrantLock leaves the lock held forever.",
+      "kw": [
+        "unlock",
+        "finally",
+        "release"
+      ]
+    }
+  ]
+}

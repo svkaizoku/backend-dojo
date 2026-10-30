@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Why HashMap capacity is a power of two",
+  "topic": "java-core",
+  "level": "Standard",
+  "context": "Why does HashMap use a capacity that is a power of two?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java collections questions (2 of 2)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-02.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "With a power-of-two capacity, the bucket index is `hash & (n - 1)`, a fast bit mask, instead of a slower modulo. Doubling keeps the mask valid, and each entry either stays in its bucket or moves to bucket plus old capacity, so resizing is simple. A power of two also spreads bits well when the hash is mixed. If you pass a capacity such as 100, HashMap rounds it up to 128.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Mask instead of modulo",
+      "why": "A bit mask is faster than the modulo operation for each lookup.",
+      "kw": [
+        "mask",
+        "modulo",
+        "power of two"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Simple resize",
+      "why": "Each entry moves to the same index or the same index plus the old size.",
+      "kw": [
+        "resize",
+        "split",
+        "index"
+      ]
+    }
+  ]
+}

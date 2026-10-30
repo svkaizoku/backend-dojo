@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Handling exceptions in CompletableFuture",
+  "topic": "concurrency",
+  "level": "Standard",
+  "context": "How do you handle an exception in a CompletableFuture chain?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java concurrency questions (3 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-03.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "An exception in any stage is passed along the chain and skips the later thenApply steps. Handle it with `exceptionally` for a fallback value, or `handle` to get the result or the exception and transform both. `whenComplete` runs for logging but doesn't change the result. Remember that join and get wrap the failure: join throws CompletionException and get throws ExecutionException, and the cause holds the original error.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Exceptions skip steps",
+      "why": "A failed stage skips later thenApply calls until something handles the error.",
+      "kw": [
+        "exceptionally",
+        "handle",
+        "skip"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Wrapped exceptions",
+      "why": "join throws CompletionException and get throws ExecutionException, both wrapping the cause.",
+      "kw": [
+        "completionexception",
+        "executionexception",
+        "cause"
+      ]
+    }
+  ]
+}

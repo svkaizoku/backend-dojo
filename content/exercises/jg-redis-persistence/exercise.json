@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Redis persistence",
+  "topic": "caching",
+  "level": "Standard",
+  "context": "How does Redis persist data to disk?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Redis questions (1 of 2)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/redis/redis-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "RDB takes periodic point-in-time snapshots with fork. It is compact and fast to load, but you can lose the changes since the last snapshot. AOF logs every write command, and it can fsync every second or every write. It loses less data but is larger, and the file is rewritten to compact it. Many systems use both: AOF for durability and RDB for fast restarts and backups. Persistence does not replace replication or backups.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Snapshot versus log",
+      "why": "RDB snapshots lose recent writes on crash. AOF logs writes and loses less.",
+      "kw": [
+        "rdb",
+        "aof",
+        "snapshot"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "fsync policy",
+      "why": "The fsync setting decides how much data a crash can lose.",
+      "kw": [
+        "fsync",
+        "appendfsync",
+        "durability"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "mode": "concepts",
+  "title": "Deadlock",
+  "topic": "concurrency",
+  "level": "Standard",
+  "context": "What is a deadlock, and how do you prevent it?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java concurrency questions (1 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "A deadlock happens when threads wait for each other in a cycle. Thread A holds lock 1 and waits for lock 2, while thread B holds lock 2 and waits for lock 1. Four conditions are needed: mutual exclusion, hold and wait, no preemption and circular wait. To prevent it, break one: always acquire locks in one global order, use tryLock with a timeout, or avoid nested locks. Detect it with a thread dump (jstack) that shows the blocked threads and their lock owners.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Circular wait",
+      "why": "Two threads take the same locks in opposite order, so each waits forever.",
+      "kw": [
+        "circular wait",
+        "lock order",
+        "deadlock"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Lock ordering",
+      "why": "Acquiring locks in a fixed global order removes the cycle.",
+      "kw": [
+        "lock ordering",
+        "global order",
+        "consistent"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Diagnose with a thread dump",
+      "why": "jstack shows which thread holds and waits for each lock.",
+      "kw": [
+        "jstack",
+        "thread dump",
+        "tryLock"
+      ]
+    }
+  ]
+}

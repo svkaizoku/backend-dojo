@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "A task that waits for two others",
+  "topic": "concurrency",
+  "level": "Standard",
+  "context": "How would you run a task only after two other tasks have finished?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java concurrency questions (3 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-03.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Use CompletableFuture. Start the two tasks with supplyAsync, then combine them with `thenCombine` or `allOf(...).thenRun`. The combined task runs when both futures complete, without blocking a thread while it waits. CountDownLatch also works: the dependent task awaits a latch counted down by the two tasks. Latches block a thread, so CompletableFuture is better in a pool with limited threads.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Non-blocking join",
+      "why": "thenCombine or allOf runs the dependent step when results are ready, without holding a thread.",
+      "kw": [
+        "thencombine",
+        "allof",
+        "completablefuture"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "CountDownLatch alternative",
+      "why": "A latch works, but its await blocks a thread until the count reaches zero.",
+      "kw": [
+        "countdownlatch",
+        "await",
+        "block"
+      ]
+    }
+  ]
+}

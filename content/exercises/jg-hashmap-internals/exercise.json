@@ -1,0 +1,45 @@
+{
+  "mode": "concepts",
+  "title": "How HashMap works internally",
+  "topic": "java-core",
+  "level": "Hard",
+  "context": "How is HashMap implemented internally?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java collections questions (2 of 2)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-02.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "HashMap is an array of buckets. A key's hash code, spread with the high bits mixed in, selects the bucket. Each bucket holds a linked list of entries. When the number of entries exceeds capacity times load factor (0.75 by default), the table doubles and entries are redistributed. Since Java 8, a bucket with many collisions (eight or more, with a large enough table) turns into a red-black tree, so lookup worst case is O(log n) instead of O(n). Keys need consistent equals and hashCode.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Bucket selection",
+      "why": "The hash picks a bucket index, and collisions are chained inside that bucket.",
+      "kw": [
+        "bucket",
+        "hash",
+        "collision"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Resize at load factor",
+      "why": "Growing at 0.75 keeps buckets short, so lookups stay fast.",
+      "kw": [
+        "load factor",
+        "resize",
+        "0.75"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Treeify on collisions",
+      "why": "Long chains become red-black trees, which limits the worst case under attack.",
+      "kw": [
+        "treeify",
+        "red-black",
+        "collisions"
+      ]
+    }
+  ]
+}

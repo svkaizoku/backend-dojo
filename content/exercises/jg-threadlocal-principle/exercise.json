@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "How ThreadLocal works",
+  "topic": "concurrency",
+  "level": "Standard",
+  "context": "How does ThreadLocal work?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java concurrency questions (2 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-02.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "A ThreadLocal gives each thread its own value. Every Thread object has a ThreadLocalMap, and the ThreadLocal instance is the key in that map. A get looks up the current thread's map, so each thread sees only its own value. The map entries use WeakReferences to the ThreadLocal key, but the value is held strongly. That's why a leak can happen in thread pools, as covered in the next question. Typical uses are per-request user context and date formatters.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Map per thread",
+      "why": "Each thread owns a ThreadLocalMap, so reads and writes don't need locks.",
+      "kw": [
+        "threadlocalmap",
+        "per thread",
+        "map"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Weak key, strong value",
+      "why": "The key is weak but the value is strong, so the value can outlive its ThreadLocal.",
+      "kw": [
+        "weak",
+        "strong",
+        "value"
+      ]
+    }
+  ]
+}

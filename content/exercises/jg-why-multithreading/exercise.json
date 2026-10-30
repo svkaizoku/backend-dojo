@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Why use multiple threads",
+  "topic": "concurrency",
+  "level": "Warm-up",
+  "context": "Why do we use multithreading?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java concurrency questions (1 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Threads let a program do several things at once. A server handles many requests in parallel, so a slow database call doesn't block other users. Threads use multiple CPU cores for compute-heavy work. They also keep the interface responsive while background work runs. The cost is complexity: shared state needs care, and too many threads waste memory and cause contention. Use a bounded pool rather than one thread per task.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Parallel work",
+      "why": "Multiple cores run threads at the same time, so the work finishes sooner.",
+      "kw": [
+        "parallel",
+        "cores",
+        "throughput"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Responsiveness",
+      "why": "Blocking I/O in one thread doesn't stop the others.",
+      "kw": [
+        "responsive",
+        "blocking",
+        "i/o"
+      ]
+    }
+  ]
+}

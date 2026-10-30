@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "A priority-based thread pool",
+  "topic": "concurrency",
+  "level": "Hard",
+  "context": "How would you design a thread pool that runs higher-priority tasks first?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java concurrency questions (3 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-03.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Use a PriorityBlockingQueue as the work queue. Wrap each task in a class that implements Comparable or Comparator with a priority field. Submit that wrapper through execute, so the pool's queue orders tasks by priority. Because the queue is unbounded, add a capacity check yourself. Watch out for starvation of low-priority tasks, and consider aging. Note that submit wraps tasks in a FutureTask, which is not Comparable, so use execute or override newTaskFor to return a comparable task.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Priority queue",
+      "why": "PriorityBlockingQueue hands the highest-priority task to the next free worker.",
+      "kw": [
+        "priorityblockingqueue",
+        "priority",
+        "comparable"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Starvation",
+      "why": "Low-priority tasks can wait forever under constant high-priority load, so add aging.",
+      "kw": [
+        "starvation",
+        "aging",
+        "low priority"
+      ]
+    }
+  ]
+}

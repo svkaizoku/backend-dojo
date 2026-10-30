@@ -1,0 +1,45 @@
+{
+  "mode": "concepts",
+  "title": "Bytecode and its benefits",
+  "topic": "java-core",
+  "level": "Warm-up",
+  "context": "What is bytecode, and what are its benefits?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java basics questions (1 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Bytecode is the platform-neutral instruction set that `javac` produces from Java source, stored in .class files. Any machine with a JVM can run it, so the same build runs on Linux, macOS or Windows. The JVM also verifies bytecode before running it, which protects against unsafe code, and the JIT compiler can optimise hot paths at runtime. The trade-off is a small startup cost and the need for a JVM.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Platform independence",
+      "why": "One compiled artifact runs on any JVM, which is the core promise of Java.",
+      "kw": [
+        "platform",
+        "portable",
+        "any os"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Verification and safety",
+      "why": "The JVM checks bytecode before running it, so malformed or unsafe code is rejected.",
+      "kw": [
+        "verif",
+        "safety",
+        "safe"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Runtime optimisation",
+      "why": "The JIT compiler turns hot bytecode into native code while the program runs.",
+      "kw": [
+        "jit",
+        "optimis",
+        "just-in-time"
+      ]
+    }
+  ]
+}

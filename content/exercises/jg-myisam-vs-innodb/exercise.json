@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "MyISAM versus InnoDB",
+  "topic": "data",
+  "level": "Standard",
+  "context": "What is the difference between MyISAM and InnoDB?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): MySQL questions",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/mysql/mysql-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "MyISAM has no transactions, no foreign keys and table-level locking, so writes block readers of the whole table. It crashes more easily and needs repair after failures. InnoDB supports ACID transactions, row-level locking, foreign keys and crash recovery through the redo log. InnoDB has been the default since MySQL 5.5. Use InnoDB for almost all new tables.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Transactions and locks",
+      "why": "InnoDB has transactions and row locks. MyISAM has neither.",
+      "kw": [
+        "transactions",
+        "row-level",
+        "table-level"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Crash safety",
+      "why": "InnoDB recovers from crashes using logs. MyISAM tables can need repair.",
+      "kw": [
+        "crash",
+        "recovery",
+        "redo"
+      ]
+    }
+  ]
+}

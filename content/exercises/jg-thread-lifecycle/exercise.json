@@ -1,0 +1,45 @@
+{
+  "mode": "concepts",
+  "title": "Thread lifecycle and states",
+  "topic": "concurrency",
+  "level": "Standard",
+  "context": "What are the states of a Java thread's lifecycle?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java concurrency questions (1 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "`Thread.State` has six values. NEW is created but not started. RUNNABLE means it is running or ready to run on the JVM; the OS decides when it gets a CPU. BLOCKED waits to enter a synchronized block or method. WAITING waits without a timeout, for example in wait(), join() or LockSupport.park. TIMED_WAITING does the same with a timeout, as in sleep(). TERMINATED means run has finished or an exception ended it. start() moves NEW to RUNNABLE, and a thread can be started only once.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Six states",
+      "why": "Interview answers need NEW, RUNNABLE, BLOCKED, WAITING, TIMED_WAITING and TERMINATED.",
+      "kw": [
+        "new",
+        "runnable",
+        "terminated"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Blocked versus waiting",
+      "why": "BLOCKED is waiting for a monitor lock. WAITING is waiting for another thread's signal.",
+      "kw": [
+        "blocked",
+        "waiting",
+        "monitor"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "start once",
+      "why": "Calling start twice throws IllegalThreadStateException. Call run only to run code in the current thread.",
+      "kw": [
+        "start",
+        "illegalthreadstateexception",
+        "run"
+      ]
+    }
+  ]
+}

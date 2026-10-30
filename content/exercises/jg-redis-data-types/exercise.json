@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Redis data types",
+  "topic": "caching",
+  "level": "Standard",
+  "context": "What are the main Redis data types, and when do you use each?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Redis questions (1 of 2)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/redis/redis-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "String stores text, numbers or binary data and suits counters and cached values. Hash stores field-value pairs for one object. List is an ordered sequence for queues and recent items. Set holds unique members for tags and membership checks. Sorted set holds members with scores for rankings and time-ordered data. Bitmaps, HyperLogLog and Streams cover bit flags, approximate unique counts and append-only logs with consumer groups. Choose the type that makes the common operation one command.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Pick by operation",
+      "why": "Each type makes one common operation a single command.",
+      "kw": [
+        "string",
+        "hash",
+        "sorted set"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Specialised types",
+      "why": "HyperLogLog gives approximate unique counts with fixed memory. Streams support consumer groups.",
+      "kw": [
+        "hyperloglog",
+        "stream",
+        "consumer group"
+      ]
+    }
+  ]
+}

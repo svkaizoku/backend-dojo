@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Why use Redis",
+  "topic": "caching",
+  "level": "Warm-up",
+  "context": "Why would you use Redis in a backend?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Redis questions (1 of 2)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/redis/redis-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Redis is an in-memory data store with rich types, so it serves as a cache, a session store, a rate limiter, a queue, a leaderboard or a lock service. It is shared by all application instances, unlike a process-local cache. It has persistence options and replication, so it can survive restarts. Typical use is to reduce load on a slower database, and to share fast state between servers.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Shared fast state",
+      "why": "Several app servers can read and write the same Redis data quickly.",
+      "kw": [
+        "shared",
+        "cache",
+        "session"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Rich data types",
+      "why": "Lists, sets, sorted sets and hashes solve common problems without custom code.",
+      "kw": [
+        "data types",
+        "sorted set",
+        "hash"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Why HashMap is not thread-safe",
+  "topic": "java-core",
+  "level": "Standard",
+  "context": "Why is HashMap not thread-safe?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java collections questions (2 of 2)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-02.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "HashMap has no locking. Two threads that put at the same time can corrupt its internal structure: one write can overwrite another, the size counter can be wrong, and a resize can lose entries. Reads during a write can see half-updated state, and iteration can throw ConcurrentModificationException. Use ConcurrentHashMap for concurrent use, or wrap access in one lock with Collections.synchronizedMap.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Lost updates",
+      "why": "Two concurrent puts can overwrite each other or corrupt the bucket structure.",
+      "kw": [
+        "lost update",
+        "race",
+        "concurrent put"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Right alternative",
+      "why": "ConcurrentHashMap is built for concurrent access and is the usual answer.",
+      "kw": [
+        "concurrenthashmap",
+        "thread-safe",
+        "synchronized"
+      ]
+    }
+  ]
+}

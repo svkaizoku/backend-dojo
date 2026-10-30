@@ -94,7 +94,8 @@ In short, each exercise is a folder in `content/exercises/<id>/` with an `exerci
 - Coding and debug exercises also have `tests` and `solution` files per language. Test files print
   `PASS <name>` or `FAIL <name>: <message>` per test and have no imports.
 - `at` (review and debug) is text from the point's line; it must match exactly one line.
-- Concepts and design exercises have no code files and can add a model `answer`.
+- Concepts and design exercises have no code files and can add a model `answer`. Adapted material gets a `source` credit
+  (title, https url, and a note on what changed); see `content/sources/javaguide/NOTICE.md` for the Apache-2.0 example.
 
 Add the folder name to `exercises` in `content/index.json`, then run:
 

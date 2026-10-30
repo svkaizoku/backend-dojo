@@ -53,6 +53,11 @@ export function checkExercise(id, ex, topicIds) {
     if (!ok) fail(`"refs" must be a list of { "title", "url" } with https links`);
   }
 
+  if (ex.source !== undefined) {
+    const ok = isText(ex.source?.title) && typeof ex.source?.url === "string" && ex.source.url.startsWith("https://") && isText(ex.source?.note);
+    if (!ok) fail(`"source" must be { "title", "url" (https), "note" }`);
+  }
+
   // Code files: "files" is the code shown (or the starter code to edit); "tests" and "solution" pair with it.
   const langs = Object.keys(ex.files || {});
   if (mode.code) {
@@ -133,7 +138,7 @@ export function buildVariant(id, ex, lang, code) {
   return {
     variant: {
       id, lang, mode: ex.mode, title: ex.title, topic: ex.topic, level: ex.level, context: ex.context,
-      answer: ex.answer || "", file: lang ? ex.files[lang] : "", lines, points, refs: ex.refs || [],
+      answer: ex.answer || "", file: lang ? ex.files[lang] : "", lines, points, refs: ex.refs || [], source: ex.source || null,
       testsFile: lang && ex.tests ? ex.tests[lang] : "", solutionFile: lang && ex.solution ? ex.solution[lang] : "",
     },
     errors,

@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Why use a thread pool",
+  "topic": "concurrency",
+  "level": "Warm-up",
+  "context": "Why should you use a thread pool instead of creating a thread per task?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java concurrency questions (3 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-03.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Creating a thread costs time and memory, and too many threads compete for CPU and memory and can crash the process. A thread pool reuses a fixed set of threads and queues the extra work. It limits concurrency, so the system stays predictable under load. It also gives one place to set the policy for rejected tasks, names, and monitoring.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Reuse",
+      "why": "Thread creation and destruction are expensive. Pools reuse threads.",
+      "kw": [
+        "reuse",
+        "creation cost",
+        "pool"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Bounded concurrency",
+      "why": "A pool caps how many threads run at once, which protects the process.",
+      "kw": [
+        "bounded",
+        "limit",
+        "concurrency"
+      ]
+    }
+  ]
+}

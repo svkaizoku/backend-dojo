@@ -1,0 +1,45 @@
+{
+  "mode": "concepts",
+  "title": "Why Redis is fast",
+  "topic": "caching",
+  "level": "Warm-up",
+  "context": "Why is Redis so fast?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Redis questions (1 of 2)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/redis/redis-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Data lives in memory, so reads and writes avoid disk. Its data structures are simple and purpose-built, such as hashes and skip lists, and commands are short. Command execution is single-threaded, so there are no locks and no context switches between commands. It uses I/O multiplexing (epoll or kqueue) to serve many clients from one thread. Network round trips, not command cost, usually limit throughput, so pipelining helps.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "In-memory data",
+      "why": "Memory access is much faster than disk, which is the biggest factor.",
+      "kw": [
+        "memory",
+        "in-memory",
+        "disk"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "No locks for commands",
+      "why": "Single-threaded command execution avoids locking and context switching.",
+      "kw": [
+        "single-threaded",
+        "lock",
+        "context switch"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "I/O multiplexing",
+      "why": "One thread watches many sockets with epoll or kqueue.",
+      "kw": [
+        "multiplexing",
+        "epoll",
+        "kqueue"
+      ]
+    }
+  ]
+}

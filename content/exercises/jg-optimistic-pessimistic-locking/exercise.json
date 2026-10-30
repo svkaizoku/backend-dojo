@@ -1,0 +1,45 @@
+{
+  "mode": "concepts",
+  "title": "Optimistic and pessimistic locking",
+  "topic": "concurrency",
+  "level": "Hard",
+  "context": "What is the difference between optimistic and pessimistic locking?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java concurrency questions (2 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-02.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Pessimistic locking assumes conflict is likely and locks the data before reading or updating it, for example with `SELECT ... FOR UPDATE`. Others must wait. Optimistic locking assumes conflicts are rare. It reads a version or timestamp, and the update succeeds only if the version is unchanged (`UPDATE ... WHERE version = ?`). If not, it fails and the caller retries. Optimistic locking avoids holding locks and suits read-heavy work. Pessimistic locking suits high contention where retries would be wasteful.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Lock before or check after",
+      "why": "Pessimistic locks the row first. Optimistic checks a version when writing.",
+      "kw": [
+        "for update",
+        "version",
+        "compare"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Retry on conflict",
+      "why": "Optimistic locking must handle a failed update by reloading and retrying.",
+      "kw": [
+        "retry",
+        "conflict",
+        "version"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Choose by contention",
+      "why": "High contention favours pessimistic locks. Low contention favours optimistic ones.",
+      "kw": [
+        "contention",
+        "trade-off",
+        "high"
+      ]
+    }
+  ]
+}

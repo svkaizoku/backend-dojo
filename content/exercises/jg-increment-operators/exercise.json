@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Increment and decrement operators",
+  "topic": "java-core",
+  "level": "Warm-up",
+  "context": "What is the difference between i++ and ++i? What does `i = i++` do?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java basics questions (1 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "`i++` is post-increment. It returns the old value and then adds one. `++i` is pre-increment. It adds one first and returns the new value. In `i = i++`, the old value is read and stored, then the variable is incremented, and the assignment overwrites that increment. So after `int i = 1; i = i++;` the value is still 1. Avoid writing code like this.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Post versus pre",
+      "why": "The position of ++ decides whether the old or new value is used in the expression.",
+      "kw": [
+        "post-increment",
+        "pre-increment",
+        "old value"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "i = i++ does not add",
+      "why": "The assignment overwrites the increment, so the variable keeps its original value.",
+      "kw": [
+        "i = i++",
+        "overwrite",
+        "unchanged"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "ConcurrentHashMap versus Hashtable",
+  "topic": "java-core",
+  "level": "Standard",
+  "context": "How does ConcurrentHashMap differ from Hashtable?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java collections questions (2 of 2)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-02.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Hashtable locks the whole table for every operation, so only one thread works at a time. ConcurrentHashMap allows many threads to read without locks and to write to different parts of the table at the same time. Since Java 8 it locks individual bins with synchronized and uses CAS for empty bins. It doesn't allow null keys or values, which avoids ambiguity between a missing key and a null value.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Fine-grained locking",
+      "why": "Writes lock only one bin, so unrelated keys don't block each other.",
+      "kw": [
+        "fine-grained",
+        "bin",
+        "lock"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "No nulls",
+      "why": "A null value would make get ambiguous, so ConcurrentHashMap rejects nulls.",
+      "kw": [
+        "null",
+        "ambiguous",
+        "rejects"
+      ]
+    }
+  ]
+}

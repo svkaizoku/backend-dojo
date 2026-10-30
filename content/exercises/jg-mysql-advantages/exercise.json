@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Advantages of MySQL",
+  "topic": "data",
+  "level": "Warm-up",
+  "context": "What are the main advantages of MySQL?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): MySQL questions",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/mysql/mysql-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "MySQL is open source and free to use in most cases. It is fast for read-heavy workloads, runs on many platforms, and has a large ecosystem, tools and hosting support. InnoDB, the default engine, gives transactions, row-level locking and crash recovery. Replication is easy to set up for read scaling. Its weak points are fewer advanced SQL features than some rivals and some behaviour that depends on configuration, such as strict mode.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Transactions and locking",
+      "why": "InnoDB provides ACID transactions and row-level locks, which suit most web workloads.",
+      "kw": [
+        "innodb",
+        "transactions",
+        "row-level"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Ecosystem and replication",
+      "why": "Mature tooling and simple replication make read scaling practical.",
+      "kw": [
+        "replication",
+        "ecosystem",
+        "tools"
+      ]
+    }
+  ]
+}

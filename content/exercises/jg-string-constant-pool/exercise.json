@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "The String constant pool",
+  "topic": "java-core",
+  "level": "Warm-up",
+  "context": "What is the String constant pool for?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java basics questions (2 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-02.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "The String constant pool is a special area of the heap where the JVM stores one copy of each distinct string literal. When two literals have the same text, they refer to the same object. `intern()` puts a string into the pool and returns the pooled copy. The pool saves memory and makes `==` work for literals, although you should still use equals to compare content.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "One copy per literal",
+      "why": "Literals with the same text share one object, which saves memory.",
+      "kw": [
+        "pool",
+        "literal",
+        "intern"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Don't rely on == for content",
+      "why": "Strings built at run time are not pooled, so == gives false even when the text matches.",
+      "kw": [
+        "==",
+        "equals",
+        "runtime"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Static and instance methods",
+  "topic": "java-core",
+  "level": "Warm-up",
+  "context": "How do static methods differ from instance methods?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java basics questions (1 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "A static method belongs to the class. You call it as `ClassName.method()` and it has no `this`, so it cannot read instance fields directly. It is resolved at compile time, so it cannot be overridden, only hidden. An instance method belongs to an object, has access to `this`, and is dispatched at run time, so subclasses can override it. Use static for helpers that need no object state.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "No this in static methods",
+      "why": "A static method has no object, so it cannot touch instance state.",
+      "kw": [
+        "this",
+        "instance state",
+        "no object"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Overriding does not apply",
+      "why": "Static methods are hidden, not overridden, so the method called depends on the declared type.",
+      "kw": [
+        "hiding",
+        "override",
+        "dispatch"
+      ]
+    }
+  ]
+}

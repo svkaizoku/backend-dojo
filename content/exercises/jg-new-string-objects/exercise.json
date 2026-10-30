@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "How many objects does new String(\"abc\") create?",
+  "topic": "java-core",
+  "level": "Standard",
+  "context": "How many String objects are created by `String s1 = new String(\"abc\");`?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java basics questions (2 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-02.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Usually two. The literal \"abc\" is placed in the String constant pool, which is one object, if it is not already there. `new String(...)` then creates a second object on the heap that copies the characters. The variable points to the heap object, so `s1 == \"abc\"` is false. If \"abc\" was already in the pool, only the heap object is new. Calling `intern()` returns the pooled object.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Literal plus heap copy",
+      "why": "The literal goes to the pool and new String creates a separate heap object.",
+      "kw": [
+        "heap",
+        "pool",
+        "two objects"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Reference comparison",
+      "why": "The variable refers to the heap copy, so == against the literal is false.",
+      "kw": [
+        "==",
+        "intern",
+        "reference"
+      ]
+    }
+  ]
+}

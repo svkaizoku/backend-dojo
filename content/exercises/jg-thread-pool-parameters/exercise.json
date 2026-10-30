@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "ThreadPoolExecutor parameters",
+  "topic": "concurrency",
+  "level": "Standard",
+  "context": "What are the main parameters of ThreadPoolExecutor, and how do they interact?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java concurrency questions (3 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-03.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "corePoolSize is the number of threads kept alive. maximumPoolSize is the most threads allowed. workQueue holds tasks waiting for a free core thread. keepAliveTime is how long a thread above core size waits idle before it stops. threadFactory names and configures threads. handler is the rejection policy. A new task first starts a core thread. When all core threads are busy it goes to the queue. Only when the queue is full does the pool start threads up to the maximum, and when both are full it rejects the task.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Order of use",
+      "why": "The pool adds core threads, then queues, then extra threads, then rejects. Many people get this order wrong.",
+      "kw": [
+        "corepoolsize",
+        "queue",
+        "maximumpoolsize"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Keep-alive",
+      "why": "Idle threads above the core size are stopped after keepAliveTime.",
+      "kw": [
+        "keepalivetime",
+        "idle",
+        "core"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "The HashMap infinite loop in old JDKs",
+  "topic": "java-core",
+  "level": "Hard",
+  "context": "How could concurrent HashMap writes cause an infinite loop?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java collections questions (2 of 2)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-02.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "In Java 7 and earlier, resizing used head insertion for the linked list in each bucket. When two threads resized at the same time, the list could form a cycle. A later get on that bucket then looped forever, using CPU. Java 8 changed resize to keep the order of entries, which removes this cycle, but concurrent writes are still unsafe. The fix is the same: use ConcurrentHashMap.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Cycle during resize",
+      "why": "Concurrent resizes in Java 7 could link a bucket into a loop.",
+      "kw": [
+        "infinite loop",
+        "resize",
+        "cycle"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Still not safe in Java 8",
+      "why": "Java 8 fixed the loop, but concurrent writes can still lose data.",
+      "kw": [
+        "java 8",
+        "lost",
+        "concurrenthashmap"
+      ]
+    }
+  ]
+}

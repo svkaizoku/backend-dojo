@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Understanding AOP",
+  "topic": "spring",
+  "level": "Standard",
+  "context": "What is AOP, and how does Spring apply it?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Spring knowledge and questions",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/system-design/framework/spring/spring-knowledge-and-questions-summary.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Aspect-oriented programming moves cross-cutting concerns, such as logging, transactions, security and metrics, out of business code into aspects. Spring applies aspects at run time with proxies. A bean is wrapped in a proxy, and calls to its public methods run advice before, after or around the real method. Spring AOP only intercepts calls that go through the proxy, so self-calls inside a class are not advised.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Cross-cutting concerns",
+      "why": "Logging, transactions and security are kept out of the business methods.",
+      "kw": [
+        "cross-cutting",
+        "aspect",
+        "advice"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Proxy limits",
+      "why": "Calls that bypass the proxy, such as this.method(), don't get advice.",
+      "kw": [
+        "proxy",
+        "self-invocation",
+        "this"
+      ]
+    }
+  ]
+}

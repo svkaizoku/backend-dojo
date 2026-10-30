@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Storing passwords",
+  "topic": "spring",
+  "level": "Warm-up",
+  "context": "How should a backend store user passwords?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Spring knowledge and questions",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/system-design/framework/spring/spring-knowledge-and-questions-summary.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Never store plain text, and don't use fast hashes like MD5 or SHA-256 alone, because they can be brute-forced quickly. Use a slow, salted password hash designed for passwords: BCrypt, SCrypt, PBKDF2 or Argon2. In Spring Security, `PasswordEncoder` with `DelegatingPasswordEncoder` does this and lets you upgrade algorithms later. Compare with `matches`, never by hashing and comparing strings yourself. Encryption, which you can reverse, is the wrong tool for passwords.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Slow salted hash",
+      "why": "A salted, slow hash resists brute force. Fast hashes don't.",
+      "kw": [
+        "bcrypt",
+        "salt",
+        "argon2"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Use PasswordEncoder",
+      "why": "Spring Security's PasswordEncoder handles salts and lets you migrate algorithms.",
+      "kw": [
+        "passwordencoder",
+        "matches",
+        "delegating"
+      ]
+    }
+  ]
+}

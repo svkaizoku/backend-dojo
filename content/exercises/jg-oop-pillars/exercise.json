@@ -1,0 +1,45 @@
+{
+  "mode": "concepts",
+  "title": "Three pillars of object-oriented programming",
+  "topic": "java-core",
+  "level": "Warm-up",
+  "context": "What are the main features of object-oriented programming?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java basics questions (2 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-02.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Encapsulation hides an object's state behind methods and checks changes through them. Inheritance lets a class reuse and extend another class. Polymorphism lets code call one method on many types, and the right implementation runs for each object. Abstraction, often listed as a fourth idea, exposes only what callers need. Prefer composition over inheritance when the relation is not a true 'is-a'.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Encapsulation",
+      "why": "Keeping fields private lets the class keep its invariants.",
+      "kw": [
+        "encapsulation",
+        "private",
+        "invariant"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Polymorphism",
+      "why": "Callers depend on an interface and work with any implementation.",
+      "kw": [
+        "polymorphism",
+        "interface",
+        "implementation"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Composition",
+      "why": "Inheritance ties a subclass to its parent. Composition is usually easier to change.",
+      "kw": [
+        "composition",
+        "inheritance",
+        "is-a"
+      ]
+    }
+  ]
+}

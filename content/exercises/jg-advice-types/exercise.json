@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Advice types",
+  "topic": "spring",
+  "level": "Warm-up",
+  "context": "What are the types of advice in AOP?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Spring knowledge and questions",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/system-design/framework/spring/spring-knowledge-and-questions-summary.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Before advice runs before the method and can't stop it, except by throwing. After returning advice runs after a normal return and can read the result. After throwing advice runs when the method throws. After (finally) advice runs whether or not an exception occurred. Around advice wraps the call: it runs code before and after, decides whether to call the method, and can change the result or the exception.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Five types",
+      "why": "Before, after returning, after throwing, after and around cover all the cases.",
+      "kw": [
+        "before",
+        "around",
+        "after returning"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Around is most powerful",
+      "why": "Around advice controls whether the method runs and can change its result.",
+      "kw": [
+        "around",
+        "proceed",
+        "result"
+      ]
+    }
+  ]
+}

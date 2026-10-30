@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "ConcurrentHashMap in JDK 7 versus JDK 8",
+  "topic": "java-core",
+  "level": "Standard",
+  "context": "How does ConcurrentHashMap in JDK 8 differ from JDK 7?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java collections questions (2 of 2)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-02.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "JDK 7 split the map into a fixed number of segments, each a ReentrantLock-protected HashMap, so concurrency was limited to that many threads. JDK 8 removed segments. It locks individual bins with synchronized and uses CAS for empty bins, which gives finer locking and better throughput. JDK 8 also uses trees for long bins, which the segment design did not.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Segments removed",
+      "why": "JDK 7 capped concurrent writers at the segment count. JDK 8 locks bins instead.",
+      "kw": [
+        "segment",
+        "jdk 8",
+        "bin"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Better behaviour under collisions",
+      "why": "Trees in JDK 8 limit lookup cost in long bins.",
+      "kw": [
+        "tree",
+        "collisions",
+        "red-black"
+      ]
+    }
+  ]
+}

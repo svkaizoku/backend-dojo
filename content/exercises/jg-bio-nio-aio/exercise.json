@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "BIO, NIO and AIO",
+  "topic": "java-core",
+  "level": "Warm-up",
+  "context": "What is the difference between BIO, NIO and AIO?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java basics questions (3 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-03.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "BIO (blocking I/O) uses one thread per connection. Each read or write blocks that thread. NIO (non-blocking I/O) uses channels and selectors, so one thread can watch many connections and handle only the ready ones. AIO (asynchronous I/O, NIO.2) starts an operation and gets a callback or future when it completes. Servers such as Netty build on NIO's selector model. For most backend code, use a framework that already implements NIO.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Threads per connection",
+      "why": "BIO needs a thread per connection, which limits how many clients one server can hold.",
+      "kw": [
+        "blocking",
+        "thread per connection",
+        "bio"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Selectors",
+      "why": "NIO uses a selector so one thread can handle many ready connections.",
+      "kw": [
+        "selector",
+        "non-blocking",
+        "nio"
+      ]
+    }
+  ]
+}

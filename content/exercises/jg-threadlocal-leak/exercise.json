@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "ThreadLocal memory leaks",
+  "topic": "concurrency",
+  "level": "Hard",
+  "context": "How does a ThreadLocal leak memory, and how do you prevent it?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java concurrency questions (2 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-02.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "In a thread pool, threads live for a long time. If you set a ThreadLocal value and never remove it, the value stays in the thread's map. When the ThreadLocal instance itself is no longer referenced, its weak key is cleared, but the strong value remains, so the value can't be collected. Call `remove()` in a finally block when the task ends. Use static final ThreadLocals, or a request-scoped mechanism, so you don't create one per request.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Value outlives key",
+      "why": "The map keeps the value strongly even after the key is collected, so memory isn't freed.",
+      "kw": [
+        "leak",
+        "remove",
+        "value"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Remove in finally",
+      "why": "Calling remove at the end of each task clears the value for the next task.",
+      "kw": [
+        "remove",
+        "finally",
+        "thread pool"
+      ]
+    }
+  ]
+}

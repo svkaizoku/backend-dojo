@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Are Spring beans thread-safe?",
+  "topic": "spring",
+  "level": "Standard",
+  "context": "Are Spring beans thread-safe?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Spring knowledge and questions",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/system-design/framework/spring/spring-knowledge-and-questions-summary.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Spring does not make beans thread-safe. A singleton bean is shared by all request threads, so any mutable instance field is a shared state bug. Most service and controller beans are stateless, holding only injected dependencies, so they are safe in practice. A bean with mutable fields needs synchronisation, a new bean per use, or thread-safe types. Don't store request data in a singleton's fields.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Singleton state",
+      "why": "One singleton serves all threads, so mutable fields are shared between requests.",
+      "kw": [
+        "singleton",
+        "mutable",
+        "shared"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Stateless design",
+      "why": "Beans that only hold dependencies are safe. Keep request data in method locals or request scope.",
+      "kw": [
+        "stateless",
+        "request scope",
+        "local"
+      ]
+    }
+  ]
+}

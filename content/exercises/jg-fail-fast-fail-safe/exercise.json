@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Fail-fast and fail-safe iterators",
+  "topic": "java-core",
+  "level": "Hard",
+  "context": "What do fail-fast and fail-safe mean for collection iterators?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java collections questions (1 of 2)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/collection/java-collection-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "A fail-fast iterator, such as ArrayList's, checks a modification count. If the list changes during iteration outside the iterator, it throws ConcurrentModificationException on the next step. This is best-effort, not a guarantee. A fail-safe iterator, such as the one from CopyOnWriteArrayList or ConcurrentHashMap, works on a snapshot or tolerates changes, so it never throws, but it may not show the latest data. Remove items through the iterator's own remove method, or use removeIf.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "ConcurrentModificationException",
+      "why": "Changing a list inside a for-each loop throws on the next iteration step.",
+      "kw": [
+        "concurrentmodificationexception",
+        "fail-fast",
+        "modcount"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Safe removal",
+      "why": "Use iterator.remove() or removeIf instead of list.remove inside a loop.",
+      "kw": [
+        "iterator.remove",
+        "removeif",
+        "remove"
+      ]
+    }
+  ]
+}

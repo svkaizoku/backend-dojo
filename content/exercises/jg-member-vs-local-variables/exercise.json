@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Member variables and local variables",
+  "topic": "java-core",
+  "level": "Warm-up",
+  "context": "What is the difference between member variables and local variables?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java basics questions (1 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/basis/java-basic-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Member variables belong to a class (fields). They are either instance fields, one per object, or static fields, one per class. They get default values such as 0, false or null if you don't set them. Local variables are declared inside a method, constructor or block. They live only as long as that block runs. They have no default value, so the compiler rejects reading one before it is assigned.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Default values",
+      "why": "Fields get defaults; locals must be assigned before use, or the code does not compile.",
+      "kw": [
+        "default value",
+        "definite assignment",
+        "uninitialized"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Lifetime and scope",
+      "why": "Locals exist only inside their block, while fields live as long as the object or class.",
+      "kw": [
+        "scope",
+        "lifetime",
+        "field"
+      ]
+    }
+  ]
+}

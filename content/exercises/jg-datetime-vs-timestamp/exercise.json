@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "DATETIME versus TIMESTAMP",
+  "topic": "data",
+  "level": "Standard",
+  "context": "What is the difference between DATETIME and TIMESTAMP, and how do you choose?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): MySQL questions",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/mysql/mysql-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "DATETIME stores a date and time as written, with no time zone conversion. It covers years 1000 to 9999 and uses 8 bytes. TIMESTAMP stores UTC internally and converts to the session time zone on read. It covers 1970 to 2038 and uses 4 bytes. TIMESTAMP can be auto-updated on change. Use DATETIME for stored event times that must not shift with time zones, and TIMESTAMP for audit fields where UTC is the truth. Many teams use DATETIME for everything and store UTC.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Time zone handling",
+      "why": "TIMESTAMP converts through UTC, while DATETIME stores the literal value.",
+      "kw": [
+        "time zone",
+        "utc",
+        "datetime"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Range limits",
+      "why": "TIMESTAMP ends in 2038, so long-lived data should use DATETIME.",
+      "kw": [
+        "2038",
+        "range",
+        "timestamp"
+      ]
+    }
+  ]
+}

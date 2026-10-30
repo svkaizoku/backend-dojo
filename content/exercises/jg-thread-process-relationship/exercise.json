@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "How threads relate to processes",
+  "topic": "concurrency",
+  "level": "Warm-up",
+  "context": "How do threads and processes relate, and what are their pros and cons?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java concurrency questions (1 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "A process contains one or more threads. Threads of one process share memory, so they exchange data directly and communicate cheaply. Separate processes must use IPC such as sockets, pipes or message queues, which is slower but isolates failures. Multi-process designs are safer against crashes and memory corruption. Multi-threaded designs use less memory and switch faster, but one thread's bug can corrupt the whole process.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Shared versus isolated memory",
+      "why": "Threads share data easily. Processes need IPC and stay isolated.",
+      "kw": [
+        "ipc",
+        "shared",
+        "isolated"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Failure impact",
+      "why": "A crashing process stops alone. A crashing thread can take the whole process down.",
+      "kw": [
+        "crash",
+        "failure",
+        "process"
+      ]
+    }
+  ]
+}

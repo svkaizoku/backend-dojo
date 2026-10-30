@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "How a pool processes a task",
+  "topic": "concurrency",
+  "level": "Warm-up",
+  "context": "What is the flow when a task is submitted to a thread pool?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java concurrency questions (3 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-03.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "If fewer than corePoolSize threads are running, the pool starts a new thread for the task, even if others are idle. Otherwise it offers the task to the queue. If the queue accepts it, a worker takes it later. If the queue is full and fewer than maximumPoolSize threads run, the pool starts an extra thread. If both are full, the rejection handler runs. Remember this order: core, queue, max, reject.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Core, queue, max, reject",
+      "why": "This order is the answer interviewers listen for.",
+      "kw": [
+        "core",
+        "queue",
+        "reject"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Idle core threads",
+      "why": "Core threads are started even when others are idle, which is why a pool grows past core size only when the queue is full.",
+      "kw": [
+        "idle",
+        "core",
+        "queue full"
+      ]
+    }
+  ]
+}

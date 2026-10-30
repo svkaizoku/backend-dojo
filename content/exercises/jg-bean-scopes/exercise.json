@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Bean scopes",
+  "topic": "spring",
+  "level": "Warm-up",
+  "context": "What are the bean scopes in Spring?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Spring knowledge and questions",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/system-design/framework/spring/spring-knowledge-and-questions-summary.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "`singleton`, the default, creates one instance per container. `prototype` creates a new instance each time the bean is requested. In web apps, `request` gives one per HTTP request, `session` one per user session, and `application` one per ServletContext. `websocket` gives one per WebSocket session. Singletons are created at startup, while prototypes are created on demand, and the container does not manage their destruction.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Singleton default",
+      "why": "Most beans are singletons, so their state is shared across all requests.",
+      "kw": [
+        "singleton",
+        "default",
+        "shared"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Prototype cleanup",
+      "why": "The container doesn't call destroy for prototype beans, so close them yourself.",
+      "kw": [
+        "prototype",
+        "destroy",
+        "close"
+      ]
+    }
+  ]
+}

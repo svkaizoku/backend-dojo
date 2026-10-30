@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Is multithreading faster on one core?",
+  "topic": "concurrency",
+  "level": "Warm-up",
+  "context": "Is running several threads on one core always more efficient?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Java concurrency questions (1 of 3)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/concurrent/java-concurrent-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "No. On one core, threads share the same CPU time. Each switch has a cost: saving registers, cache pollution and scheduler overhead. CPU-bound work gets no faster and often gets slower. Multithreading helps when threads wait on I/O or sleep, because another thread can run during the wait. Pick the thread count based on whether the work is CPU-bound or I/O-bound.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Context switch cost",
+      "why": "Switching threads costs CPU time and cache, which slows pure computation.",
+      "kw": [
+        "context switch",
+        "cache",
+        "overhead"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "I/O-bound work",
+      "why": "Threads that wait on I/O free the core for others, so concurrency helps.",
+      "kw": [
+        "i/o-bound",
+        "cpu-bound",
+        "wait"
+      ]
+    }
+  ]
+}

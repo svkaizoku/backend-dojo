@@ -1,0 +1,45 @@
+{
+  "mode": "concepts",
+  "title": "MySQL logs",
+  "topic": "data",
+  "level": "Standard",
+  "context": "What are the main MySQL logs, and what does each do?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): MySQL questions",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/mysql/mysql-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "The redo log records page changes so InnoDB can replay committed work after a crash. The undo log stores old row versions, so transactions can roll back and readers can see consistent snapshots. The binary log (binlog) records every committed change at the logical level and is used for replication and point-in-time restore. The slow query log records slow statements, and the error log records server problems. Redo and undo are InnoDB internals. The binlog is what replicas read.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Redo for crash recovery",
+      "why": "Redo lets InnoDB recover committed changes after a crash.",
+      "kw": [
+        "redo",
+        "crash",
+        "recovery"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Binlog for replication",
+      "why": "Replicas apply the binary log, so it must be enabled for replication and point-in-time recovery.",
+      "kw": [
+        "binlog",
+        "binary log",
+        "replication"
+      ]
+    },
+    {
+      "sev": "minor",
+      "title": "Undo for rollback",
+      "why": "Undo supports rollback and consistent reads.",
+      "kw": [
+        "undo",
+        "rollback",
+        "consistent read"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "mode": "concepts",
+  "title": "Typical Redis applications",
+  "topic": "caching",
+  "level": "Standard",
+  "context": "What are the common uses of Redis in production?",
+  "source": {
+    "title": "JavaGuide (Snailclimb): Redis questions (1 of 2)",
+    "url": "https://github.com/Snailclimb/JavaGuide/blob/main/docs/database/redis/redis-questions-01.md",
+    "note": "Translated and condensed into English; see content/sources/javaguide/NOTICE.md."
+  },
+  "answer": "Caching database results with a TTL is the most common use. Other uses: session storage, rate limiting with INCR and EXPIRE, counters and statistics, leaderboards with sorted sets, distributed locks with SET NX PX, pub/sub notifications, and simple queues with lists or streams. Each use depends on the right data type and on handling expiry, eviction and failure of the Redis server.",
+  "points": [
+    {
+      "sev": "major",
+      "title": "Caching with TTL",
+      "why": "Cached values need an expiry so stale data eventually goes away.",
+      "kw": [
+        "cache",
+        "ttl",
+        "expire"
+      ]
+    },
+    {
+      "sev": "major",
+      "title": "Atomic counters and locks",
+      "why": "INCR and SET NX give atomic operations that rate limiters and locks rely on.",
+      "kw": [
+        "incr",
+        "set nx",
+        "lock"
+      ]
+    }
+  ]
+}

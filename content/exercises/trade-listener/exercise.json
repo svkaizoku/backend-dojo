@@ -1,0 +1,71 @@
+{
+  "title": "Trade event listener",
+  "topic": "messaging",
+  "level": "Hard",
+  "context": "Consumes executed trades from Kafka, updates the user's position, and publishes a position-updated event that the portfolio screen listens to.",
+  "files": { "java": "TradeEventListener.java", "kotlin": "TradeEventListener.kt" },
+  "issues": [
+    {
+      "sev": "major",
+      "title": "Not idempotent",
+      "at": { "java": "position.setQuantity(", "kotlin": "position.quantity += trade.quantity" },
+      "why": "Kafka delivers at least once. A redelivered trade (after a rebalance, or a crash before the offset commit) is added to the position twice.",
+      "fix": "Store processed trade ids (with a unique constraint) in the same transaction and skip duplicates.",
+      "kw": ["idempoten", "at-least-once", "at least once", "redeliver", "duplicate", "twice", "processed"]
+    },
+    {
+      "sev": "major",
+      "title": "Dual write: DB and Kafka aren't atomic",
+      "at": { "java": "kafkaTemplate.send", "kotlin": "kafkaTemplate.send" },
+      "why": "The send isn't part of the DB transaction. The event can go out and the DB then roll back, or the DB commits and the send is lost.",
+      "fix": "Use a transactional outbox: write the event to a table in the same transaction and relay it to Kafka.",
+      "kw": ["outbox", "dual write", "dual-write", "atomic", "not part of the transaction", "commit", "rollback"]
+    },
+    {
+      "sev": "major",
+      "title": "Crash on a user's first trade in a ticker",
+      "at": { "java": "Position position = positionRepository", "kotlin": "trade.ticker)!!" },
+      "why": {
+        "java": "No position exists yet, so findBy… returns null and the next line throws a NullPointerException. The message is then retried forever.",
+        "kotlin": "No position exists yet, so findBy… returns null and !! throws. The message is then retried forever."
+      },
+      "fix": "Create a new position when none exists (and add a unique constraint on user and ticker).",
+      "kw": ["null", "npe", "nullpointer", "first trade", "new position", "optional", "doesn't exist", "does not exist", "!!"]
+    },
+    {
+      "sev": "major",
+      "title": "Poison message blocks the partition",
+      "at": { "java": "objectMapper.readValue", "kotlin": "objectMapper.readValue" },
+      "why": "Malformed JSON throws on every retry, so the consumer is stuck on that offset and every later trade in the partition waits.",
+      "fix": "Configure a DefaultErrorHandler with limited retries and a dead-letter topic; use ErrorHandlingDeserializer.",
+      "kw": ["poison", "dead letter", "dead-letter", "dlt", "dlq", "deserializ", "error handler", "stuck", "malformed"]
+    },
+    {
+      "sev": "minor",
+      "title": "Concurrent updates can overwrite each other",
+      "at": { "java": "positionRepository.save(position)", "kotlin": "positionRepository.save(position)" },
+      "why": "If two consumers update the same position (for example after repartitioning), one update is lost.",
+      "fix": "Key trade messages by user id so ordering is per user, and add @Version optimistic locking.",
+      "kw": ["@version", "optimistic", "lost update", "concurrent", "partition key", "message key", "ordering"]
+    },
+    {
+      "sev": "minor",
+      "title": "Hand-made ObjectMapper",
+      "at": { "java": "new ObjectMapper()", "kotlin": "ObjectMapper()" },
+      "why": {
+        "java": "It skips Spring's configured mapper (JavaTimeModule, naming rules), so dates and fields serialise differently from the rest of the app.",
+        "kotlin": "It skips Spring's configured mapper. Without jackson-module-kotlin it can't even build Kotlin data classes, and dates serialise differently from the rest of the app."
+      },
+      "fix": "Inject the ObjectMapper bean Spring Boot configures.",
+      "kw": ["objectmapper", "javatime", "kotlinmodule", "jackson-module-kotlin", "inject the", "configured mapper"]
+    },
+    {
+      "sev": "minor",
+      "title": "JPA entity used as the event contract",
+      "at": { "java": "writeValueAsString(position)", "kotlin": "writeValueAsString(position)" },
+      "why": "Any change to the entity silently breaks consumers, and lazy fields can fail to serialise.",
+      "fix": "Publish an explicit, versioned event DTO.",
+      "kw": ["event dto", "dto", "contract", "schema", "entity"]
+    }
+  ]
+}

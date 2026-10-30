@@ -1,0 +1,54 @@
+{
+  "title": "Portfolio with coroutines",
+  "topic": "kotlin",
+  "level": "Hard",
+  "context": "Speeds up the portfolio endpoint by fetching prices concurrently with coroutines. The app is Spring MVC on Tomcat. PriceClient.latest is a blocking RestTemplate call, and value() treats a missing price as zero. Heavy users hold 300+ positions.",
+  "files": { "kotlin": "PortfolioController.kt" },
+  "refs": [
+    { "title": "Coroutines basics (kotlinlang.org)", "url": "https://kotlinlang.org/docs/coroutines-basics.html" },
+    { "title": "Coroutine exceptions and cancellation (kotlinlang.org)", "url": "https://kotlinlang.org/docs/exception-handling.html" },
+    { "title": "GlobalScope API notes (kotlinlang.org)", "url": "https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-global-scope/" }
+  ],
+  "issues": [
+    {
+      "sev": "major",
+      "title": "Blocking calls on Dispatchers.Default",
+      "at": { "kotlin": "async(Dispatchers.Default)" },
+      "why": "Dispatchers.Default has one thread per CPU core and is meant for CPU work. Blocking HTTP calls there cap concurrency at the core count and starve every other coroutine in the app that uses Default.",
+      "fix": "Use Dispatchers.IO.limitedParallelism(n) for blocking calls, or switch to a non-blocking client (WebClient with awaitSingle).",
+      "kw": ["dispatchers.io", "blocking", "starve", "cpu", "core", "limitedparallelism", "webclient"]
+    },
+    {
+      "sev": "major",
+      "title": "Unbounded fan-out to the price service",
+      "at": { "kotlin": "held.map { position ->" },
+      "why": "One request per position: a 300-position portfolio fires 300 concurrent calls per page view, which can overload or rate-limit the price service.",
+      "fix": "Use a batch price endpoint, or cap concurrency with a Semaphore or limitedParallelism.",
+      "kw": ["batch", "semaphore", "unbounded", "fan-out", "fan out", "too many", "rate limit", "concurrency limit", "300"]
+    },
+    {
+      "sev": "major",
+      "title": "runCatching swallows every failure",
+      "at": { "kotlin": "runCatching { priceClient.latest" },
+      "why": "It also catches CancellationException, which breaks coroutine cancellation, and turns any error into a null price. value() then counts the position as zero, so the user sees a wrong portfolio total with no warning.",
+      "fix": "Catch only the client's exceptions, rethrow CancellationException, and show the position as \"price unavailable\" instead of valuing it at zero.",
+      "kw": ["runcatching", "cancellationexception", "swallow", "getornull", "silently", "wrong total", "zero", "price unavailable"]
+    },
+    {
+      "sev": "major",
+      "title": "GlobalScope fire-and-forget",
+      "at": { "kotlin": "GlobalScope.launch" },
+      "why": "The job isn't tied to any lifecycle: its errors go unlogged, it outlives the request, and it is dropped on shutdown, so audit records can silently disappear.",
+      "fix": "Use an application-scoped CoroutineScope bean (SupervisorJob plus an exception handler) that is cancelled on shutdown, or publish the audit event through an outbox if it must not be lost.",
+      "kw": ["globalscope", "structured concurrency", "lifecycle", "fire and forget", "fire-and-forget", "supervisorjob", "coroutinescope", "lost"]
+    },
+    {
+      "sev": "minor",
+      "title": "runBlocking in a controller",
+      "at": { "kotlin": "= runBlocking {" },
+      "why": "runBlocking holds the Tomcat thread for the whole call, so coroutines bring no scalability benefit here, and it becomes a deadlock risk if this code is ever called from inside a coroutine.",
+      "fix": "Make the handler a suspend fun (Spring MVC supports suspend controllers) or use a plain bounded executor.",
+      "kw": ["runblocking", "suspend fun", "suspend controller", "blocks the thread", "tomcat thread"]
+    }
+  ]
+}

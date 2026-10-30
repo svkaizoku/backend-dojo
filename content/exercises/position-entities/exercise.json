@@ -1,0 +1,54 @@
+{
+  "title": "Position entities",
+  "topic": "kotlin",
+  "level": "Standard",
+  "context": "First JPA entities written in Kotlin: a portfolio and its positions, as data classes, plus the service that adds to a position after a buy. The build uses the kotlin-spring compiler plugin but not kotlin-jpa.",
+  "files": { "kotlin": "Portfolio.kt" },
+  "refs": [
+    { "title": "Kotlin no-arg compiler plugin (kotlin-jpa)", "url": "https://kotlinlang.org/docs/no-arg-plugin.html" },
+    { "title": "Kotlin all-open compiler plugin", "url": "https://kotlinlang.org/docs/all-open-plugin.html" },
+    { "title": "Building web applications with Spring Boot and Kotlin (spring.io)", "url": "https://spring.io/guides/tutorials/spring-boot-kotlin" }
+  ],
+  "issues": [
+    {
+      "sev": "major",
+      "title": "data class equals and hashCode on entities",
+      "at": { "kotlin": "data class Position(" },
+      "why": "Generated equals and hashCode use every constructor property, including the id (null until saved) and the mutable quantity. An entity changes hash after it is saved or updated, so it gets lost in HashSets, and Portfolio's hashCode walks positions, whose hashCode walks the portfolio again: a StackOverflowError.",
+      "fix": "Use plain classes for entities. Base equals on a non-null id (or a business key) and return a constant hashCode per class.",
+      "kw": ["equals", "hashcode", "data class", "hashset", "mutable", "identity"]
+    },
+    {
+      "sev": "major",
+      "title": "toString recursion and lazy loading",
+      "at": { "kotlin": "log.info(\"Updated portfolio {}\", portfolio)" },
+      "why": "The generated toString prints positions, and each Position prints its portfolio, so logging recurses until StackOverflowError. Printing also forces lazy collections to load.",
+      "fix": "Don't use data classes for entities, or override toString to print only the id and simple fields.",
+      "kw": ["tostring", "stackoverflow", "recursion", "infinite", "lazy load", "lazy-load"]
+    },
+    {
+      "sev": "major",
+      "title": "Entities need the kotlin-jpa and all-open setup",
+      "at": { "kotlin": "data class Portfolio(" },
+      "why": "Without kotlin-jpa there is no no-arg constructor, so Hibernate fails to load these entities. kotlin-spring doesn't open @Entity classes, so they stay final and Hibernate can't create lazy proxies: LAZY to-one associations quietly load eagerly.",
+      "fix": "Apply the kotlin(\"plugin.jpa\") plugin and add allOpen { annotation(\"jakarta.persistence.Entity\") } (plus MappedSuperclass and Embeddable).",
+      "kw": ["no-arg", "noarg", "kotlin-jpa", "plugin.jpa", "default constructor", "all-open", "allopen", "final class", "proxy", "proxies"]
+    },
+    {
+      "sev": "minor",
+      "title": "!! on a repository lookup",
+      "at": { "kotlin": "findByUserId(userId)!!" },
+      "why": "A user without a portfolio gets a bare NullPointerException with no context, which surfaces as a 500.",
+      "fix": "Handle the null: create the portfolio, or throw a domain exception mapped to 404 with ?: throw.",
+      "kw": ["!!", "npe", "nullpointer", "elvis", "?:", "null"]
+    },
+    {
+      "sev": "minor",
+      "title": "Loads every position to change one",
+      "at": { "kotlin": "portfolio.positions.find" },
+      "why": "Updating one position loads the whole collection. Two concurrent buys of a new ticker can also both add a position, creating duplicates.",
+      "fix": "Query the position directly (findByPortfolioIdAndTicker) and add a unique constraint on (portfolio_id, ticker).",
+      "kw": ["unique constraint", "whole collection", "loads all", "every position", "query the position", "duplicate", "findbyportfolioid"]
+    }
+  ]
+}

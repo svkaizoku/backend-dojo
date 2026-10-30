@@ -1,0 +1,86 @@
+{
+  "title": "Accounts API",
+  "topic": "spring",
+  "level": "Hard",
+  "context": "First version of the accounts API used by the mobile app: list accounts and withdraw cash.",
+  "files": { "java": "AccountController.java", "kotlin": "AccountController.kt" },
+  "refs": [
+    { "title": "Spring MVC guide (Marco Behler)", "url": "https://www.marcobehler.com/guides/spring-mvc" },
+    { "title": "Spring Security guide (Marco Behler)", "url": "https://www.marcobehler.com/guides/spring-security" }
+  ],
+  "issues": [
+    {
+      "sev": "major",
+      "title": "No authorisation",
+      "at": { "java": "@PostMapping", "kotlin": "@PostMapping" },
+      "why": "Any caller can withdraw from any account id, and GET /accounts returns every customer's account.",
+      "fix": "Take the user from the security context and check they own the account.",
+      "kw": ["authori", "authenticat", "security", "owner", "any account", "anyone", "permission"]
+    },
+    {
+      "sev": "major",
+      "title": "Lost update, no rules, logic in the controller",
+      "at": { "java": "account.setBalance(", "kotlin": "account.balance = account.balance - amount" },
+      "why": "Read, change and save with no transaction or lock: two withdrawals at once can both pass. Nothing stops negative amounts or overdrafts.",
+      "fix": "Move it into a @Transactional service method with locking (a @Version column or SELECT … FOR UPDATE) and validate the amount and balance.",
+      "kw": ["lost update", "race", "transaction", "@version", "optimistic", "for update", "overdraft", "insufficient", "negative", "service layer", "business logic"]
+    },
+    {
+      "sev": "major",
+      "title": "Floating point used for money",
+      "at": { "java": "double amount", "kotlin": "amount: Double" },
+      "why": "Floating point can't represent most decimal amounts exactly, so balances drift by fractions of a cent.",
+      "fix": "Use BigDecimal (or long minor units) end to end.",
+      "kw": ["double", "bigdecimal", "floating", "precision", "rounding"]
+    },
+    {
+      "sev": "major",
+      "title": "JPA entity returned from the API",
+      "at": { "java": "public List<Account> getAccounts()", "kotlin": "fun getAccounts()" },
+      "why": "It exposes every internal field, ties the API contract to the DB schema, and can trigger lazy-loading errors during serialisation.",
+      "fix": "Map to response DTOs.",
+      "kw": ["dto", "entity", "expose", "response object"]
+    },
+    {
+      "sev": "major",
+      "title": "Unbounded query",
+      "at": { "java": "accountRepository.findAll()", "kotlin": "accountRepository.findAll()" },
+      "why": "Loads every account into memory in one response.",
+      "fix": "Paginate (Pageable) and filter to the caller's own accounts.",
+      "kw": ["pagina", "pageable", "unbounded", "all accounts", "limit"]
+    },
+    {
+      "sev": "major",
+      "title": "Optional.get() gives a 500 instead of a 404",
+      "at": { "java": ".get();", "kotlin": "findById(id).get()" },
+      "why": "A missing id throws NoSuchElementException, which the catch-all handler turns into a confusing response.",
+      "fix": {
+        "java": "Use orElseThrow with a not-found exception mapped to 404.",
+        "kotlin": "Use findByIdOrNull(id) ?: throw a not-found exception mapped to 404."
+      },
+      "kw": ["orelsethrow", "optional", ".get()", "404", "not found", "nosuchelement", "findbyidornull"]
+    },
+    {
+      "sev": "major",
+      "title": "Catch-all handler returns 200 and leaks details",
+      "at": { "java": "@ExceptionHandler(Exception.class)", "kotlin": "@ExceptionHandler(Exception::class)" },
+      "why": "Every error comes back as HTTP 200 with the raw exception message, so clients think it worked and internals leak.",
+      "fix": "Use a @RestControllerAdvice that maps exceptions to proper status codes with a ProblemDetail body, and log server errors.",
+      "kw": ["status code", "200", "controlleradvice", "problemdetail", "leak", "internal details", "exceptionhandler"]
+    },
+    {
+      "sev": "minor",
+      "title": "Field injection",
+      "at": { "java": "@Autowired", "kotlin": "@Autowired" },
+      "why": {
+        "java": "Hides dependencies, prevents final fields, and makes unit tests need reflection or a Spring context.",
+        "kotlin": "lateinit field injection hides dependencies, allows a mutable public property, and makes unit tests need a Spring context."
+      },
+      "fix": {
+        "java": "Use constructor injection with a private final field.",
+        "kotlin": "Use constructor injection: class AccountController(private val accountRepository: AccountRepository)."
+      },
+      "kw": ["field injection", "constructor injection", "@autowired", "constructor", "lateinit"]
+    }
+  ]
+}

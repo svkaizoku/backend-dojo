@@ -1,0 +1,25 @@
+{
+  "topics": [
+    { "id": "concurrency", "name": "Concurrency & JVM" },
+    { "id": "spring", "name": "Spring & transactions" },
+    { "id": "data", "name": "Databases & SQL" },
+    { "id": "messaging", "name": "Kafka & messaging" },
+    { "id": "caching", "name": "Redis & caching" },
+    { "id": "money", "name": "Money & trading" },
+    { "id": "kotlin", "name": "Kotlin traps" }
+  ],
+  "exercises": [
+    "quote-cache",
+    "price-alerts",
+    "card-deposit",
+    "accounts-api",
+    "portfolio-report",
+    "order-history",
+    "trade-listener",
+    "instrument-cache",
+    "withdrawal-lock",
+    "fx-conversion",
+    "position-entities",
+    "portfolio-coroutines"
+  ]
+}

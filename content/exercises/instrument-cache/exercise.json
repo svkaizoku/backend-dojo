@@ -1,0 +1,52 @@
+{
+  "title": "Instrument cache",
+  "topic": "caching",
+  "level": "Standard",
+  "context": "Caches instrument details and live prices in Redis with Spring Cache, to take load off the database and the price service. The quote screen calls view() for every instrument a user opens; users can pick their display currency.",
+  "files": { "java": "InstrumentService.java", "kotlin": "InstrumentService.kt" },
+  "refs": [
+    { "title": "Why self-invocation skips Spring proxies: @Transactional in depth (Marco Behler)", "url": "https://www.marcobehler.com/guides/spring-transaction-management-transactional-in-depth" }
+  ],
+  "issues": [
+    {
+      "sev": "major",
+      "title": "@Cacheable bypassed by self-invocation",
+      "at": { "java": "Instrument instrument = findInstrument(ticker)", "kotlin": "val instrument = findInstrument(ticker)" },
+      "why": "view() calls the cached methods on the same object, which skips Spring's proxy. Nothing is ever cached, so every request still hits the database and the price service.",
+      "fix": "Move the cached methods into a separate bean and call them through it.",
+      "kw": ["self-invocation", "self invocation", "proxy", "same class", "internal call", "never cached"]
+    },
+    {
+      "sev": "major",
+      "title": "Cache key ignores the currency",
+      "at": { "java": "key = \"#ticker\"", "kotlin": "key = \"#ticker\"" },
+      "why": "The price is cached by ticker only, so a user who wants EUR can get the USD price someone else requested first.",
+      "fix": "Include every argument in the key (drop the custom key, or use key = \"#ticker + ':' + #currency\").",
+      "kw": ["key", "currency", "collision", "wrong price"]
+    },
+    {
+      "sev": "major",
+      "title": "Live prices cached with no expiry",
+      "at": { "java": "@Cacheable(value = \"prices\"", "kotlin": "@Cacheable(value = [\"prices\"]" },
+      "why": "Spring's Redis cache has no TTL by default, so a price stays cached forever and users trade on stale quotes.",
+      "fix": "Configure a per-cache TTL (a second or two for prices, longer for instrument details) with RedisCacheConfiguration.entryTtl, or don't cache live prices.",
+      "kw": ["ttl", "stale", "expir", "entryttl", "time to live", "time-to-live"]
+    },
+    {
+      "sev": "major",
+      "title": "KEYS blocks Redis",
+      "at": { "java": "redis.keys(", "kotlin": "redis.keys(" },
+      "why": "KEYS scans the whole keyspace in one go. Redis is single-threaded, so in production it stalls every other client until it finishes.",
+      "fix": "Use the cache's own clear() (configured to use SCAN), or SCAN with a cursor, or version the key prefix.",
+      "kw": ["keys *", "keys command", "scan", "blocks", "blocking", "o(n)", "single-threaded", "single threaded"]
+    },
+    {
+      "sev": "minor",
+      "title": "Cache stampede on hot keys",
+      "at": { "java": "public BigDecimal priceIn", "kotlin": "fun priceIn" },
+      "why": "When a popular price expires, every concurrent request misses at once and they all call the price service.",
+      "fix": "Use @Cacheable(sync = true) so one caller loads the value per instance, or refresh hot keys ahead of expiry.",
+      "kw": ["stampede", "thundering herd", "sync = true", "sync=true", "dogpile", "refresh ahead"]
+    }
+  ]
+}

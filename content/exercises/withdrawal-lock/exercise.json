@@ -1,0 +1,60 @@
+{
+  "title": "Withdrawal lock",
+  "topic": "caching",
+  "level": "Hard",
+  "context": "Withdrawals run on several app instances. To stop two withdrawals from the same account overlapping, the author added a Redis lock around the balance check and update. The bank payout is an HTTP call.",
+  "files": { "java": "WithdrawalService.java", "kotlin": "WithdrawalService.kt" },
+  "refs": [
+    { "title": "Spring transaction management: @Transactional in depth (Marco Behler)", "url": "https://www.marcobehler.com/guides/spring-transaction-management-transactional-in-depth" }
+  ],
+  "issues": [
+    {
+      "sev": "major",
+      "title": "Lock has no expiry",
+      "at": { "java": "setIfAbsent(lockKey", "kotlin": "setIfAbsent(lockKey" },
+      "why": "If the instance crashes or is redeployed before the delete, the key stays forever and the account can never withdraw again.",
+      "fix": "Set a lease time when acquiring: setIfAbsent(key, token, Duration.ofSeconds(30)), sized above the worst-case run time.",
+      "kw": ["ttl", "expir", "timeout", "forever", "crash", "lease", "duration"]
+    },
+    {
+      "sev": "major",
+      "title": "Lock never released on errors",
+      "at": { "java": "redis.delete(lockKey)", "kotlin": "redis.delete(lockKey)" },
+      "why": "The delete only runs on the happy path. Insufficient funds, a bank error or any exception leaves the account locked.",
+      "fix": "Release the lock in a finally block (or use a helper that always releases).",
+      "kw": ["finally", "never released", "not released", "exception", "error path", "use {", "try {"]
+    },
+    {
+      "sev": "major",
+      "title": "Any instance can release the lock",
+      "at": { "java": "lockKey, \"1\"", "kotlin": "lockKey, \"1\"" },
+      "why": "Every holder writes the same value \"1\". Once a lease expires and another instance takes the lock, the first instance's delete removes the second one's lock.",
+      "fix": "Store a random token per holder and release with a compare-and-delete Lua script, or use Redisson's RLock.",
+      "kw": ["token", "owner", "lua", "compare", "redisson", "someone else", "another instance", "uuid"]
+    },
+    {
+      "sev": "major",
+      "title": "Lock released before the transaction commits",
+      "at": { "java": "@Transactional", "kotlin": "@Transactional" },
+      "why": "The delete runs inside the transaction, before the commit. The next withdrawal can take the lock and read the old balance, so two withdrawals can still overdraw the account.",
+      "fix": "Lock in the database instead: SELECT … FOR UPDATE on the account row (or a @Version column) gives the same guarantee without Redis.",
+      "kw": ["commit", "before commit", "for update", "row lock", "optimistic", "@version", "database lock", "pessimistic"]
+    },
+    {
+      "sev": "major",
+      "title": "Payout sent inside the transaction",
+      "at": { "java": "bankClient.sendPayout", "kotlin": "bankClient.sendPayout" },
+      "why": "If the commit fails after the payout, the money has left but the balance wasn't reduced. A retry pays out twice.",
+      "fix": "Record the withdrawal as PENDING and commit, then send the payout with an idempotency key (for example through an outbox).",
+      "kw": ["outbox", "idempoten", "external call", "remote call", "http call", "commit fails", "twice", "pending"]
+    },
+    {
+      "sev": "minor",
+      "title": "Unboxing a nullable Boolean",
+      "at": { "java": "if (!locked)" },
+      "why": "setIfAbsent returns a Boolean that is null inside a Redis pipeline or transaction, so !locked throws a NullPointerException.",
+      "fix": "Use Boolean.TRUE.equals(locked).",
+      "kw": ["null", "unboxing", "npe", "boolean.true", "nullpointer"]
+    }
+  ]
+}

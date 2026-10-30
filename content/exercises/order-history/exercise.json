@@ -1,0 +1,68 @@
+{
+  "title": "Order history",
+  "topic": "data",
+  "level": "Standard",
+  "context": "Order history screen in the app: filter by ticker, sort by a column the user picks, 50 rows per page. Active traders have hundreds of thousands of orders. Runs on PostgreSQL.",
+  "files": { "java": "OrderHistoryDao.java", "kotlin": "OrderHistoryDao.kt" },
+  "refs": [
+    { "title": "JDBC guide (Marco Behler)", "url": "https://www.marcobehler.com/guides/jdbc" }
+  ],
+  "issues": [
+    {
+      "sev": "major",
+      "title": "SQL injection through the ticker",
+      "at": { "java": "AND ticker = '", "kotlin": "ticker = '$ticker'" },
+      "why": "The ticker is pasted into the SQL, so a value like x' OR '1'='1 returns other users' orders.",
+      "fix": "Use bind parameters (? placeholders or NamedParameterJdbcTemplate).",
+      "kw": ["injection", "preparedstatement", "prepared statement", "bind", "parameteri", "placeholder", "namedparameter"]
+    },
+    {
+      "sev": "major",
+      "title": "ORDER BY column is injectable too",
+      "at": { "java": "ORDER BY", "kotlin": "ORDER BY $sort" },
+      "why": "Column names can't be bound as parameters, so the sort value from the client goes into the SQL as is.",
+      "fix": "Map the client's value to a fixed allowlist of columns and directions.",
+      "kw": ["whitelist", "allowlist", "allow list", "sort column", "order by"]
+    },
+    {
+      "sev": "major",
+      "title": "Price read as a double",
+      "at": { "java": "rs.getDouble(\"price\")", "kotlin": "rs.getDouble(\"price\")" },
+      "why": "Reading a NUMERIC price as a double loses precision.",
+      "fix": "Use rs.getBigDecimal(\"price\").",
+      "kw": ["double", "bigdecimal", "precision"]
+    },
+    {
+      "sev": "major",
+      "title": "OFFSET pagination on a large table",
+      "at": { "java": "OFFSET", "kotlin": "OFFSET" },
+      "why": "OFFSET makes the database read and discard every earlier row, so deep pages get slower and slower. New orders also shift rows between pages, so users see duplicates or gaps.",
+      "fix": "Use keyset pagination: WHERE (created_at, id) < (:lastCreatedAt, :lastId) ORDER BY created_at DESC, id DESC LIMIT 50.",
+      "kw": ["keyset", "seek", "cursor", "offset", "deep page"]
+    },
+    {
+      "sev": "minor",
+      "title": "Query needs a matching index",
+      "at": { "java": "WHERE user_id = ", "kotlin": "WHERE user_id = " },
+      "why": "Filtering by user and ticker and sorting by date without a matching index means a scan and sort on every request.",
+      "fix": "Add a composite index such as (user_id, ticker, created_at) in a migration.",
+      "kw": ["index", "composite"]
+    },
+    {
+      "sev": "minor",
+      "title": "Timestamps converted with the server's time zone",
+      "at": { "java": ".toLocalDateTime()", "kotlin": ".toLocalDateTime()" },
+      "why": "toLocalDateTime uses the JVM's default zone, so the same order shows different times on servers in different zones, and the zone is lost.",
+      "fix": "Store timestamptz and read it as Instant or OffsetDateTime (rs.getObject(\"created_at\", OffsetDateTime.class)); convert to the user's zone in the client.",
+      "kw": ["time zone", "timezone", "utc", "instant", "offsetdatetime", "default zone", "timestamptz"]
+    },
+    {
+      "sev": "minor",
+      "title": "SELECT *",
+      "at": { "java": "SELECT *", "kotlin": "SELECT *" },
+      "why": "Fetches columns the screen doesn't use and breaks silently when columns are added or renamed.",
+      "fix": "Name the columns you map.",
+      "kw": ["select *", "columns"]
+    }
+  ]
+}

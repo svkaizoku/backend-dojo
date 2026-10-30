@@ -1,0 +1,52 @@
+{
+  "title": "Quote cache",
+  "topic": "concurrency",
+  "level": "Warm-up",
+  "context": "Adds an in-memory cache in front of the price service, so the quote endpoint stops calling it on every request. QuoteCache is a Spring singleton used by all request threads.",
+  "files": { "java": "QuoteCache.java", "kotlin": "QuoteCache.kt" },
+  "issues": [
+    {
+      "sev": "major",
+      "title": "HashMap shared across threads",
+      "at": { "java": "new HashMap<>()", "kotlin": "HashMap<String, Quote>()" },
+      "why": "The bean is a singleton, so every request thread reads and writes the same HashMap. Concurrent puts can corrupt it or lose entries.",
+      "fix": "Use ConcurrentHashMap, or a real cache such as Caffeine.",
+      "kw": ["thread-safe", "thread safe", "threadsafe", "concurrenthashmap", "not synchronized", "synchronized", "caffeine"]
+    },
+    {
+      "sev": "major",
+      "title": "Check-then-act race",
+      "at": { "java": "if (!cache.containsKey(ticker))", "kotlin": "if (!cache.containsKey(ticker))" },
+      "why": "Two threads can both see the key missing and both call the price service. That's the stampede the cache was meant to stop.",
+      "fix": "cache.computeIfAbsent(ticker) { priceClient.fetch(it) } on a ConcurrentHashMap.",
+      "kw": ["check-then-act", "check then act", "computeifabsent", "race", "both threads", "twice", "stampede"]
+    },
+    {
+      "sev": "major",
+      "title": "Non-atomic counter",
+      "at": { "java": "hits++", "kotlin": "hits++" },
+      "why": "hits++ is a read-modify-write. Concurrent increments get lost, and without volatile other threads may not see the new value.",
+      "fix": "AtomicInteger, LongAdder, or a Micrometer counter.",
+      "kw": ["atomic", "longadder", "hits++", "increment", "volatile", "micrometer"]
+    },
+    {
+      "sev": "major",
+      "title": "No expiry or size limit",
+      "at": { "java": "cache.put(ticker, quote)", "kotlin": "cache[ticker] = quote" },
+      "why": "Prices change every second, but entries never expire, so users get stale quotes forever. The map also grows with every ticker ever requested.",
+      "fix": "Add a TTL (a few seconds for prices) and a maximum size; Caffeine handles both.",
+      "kw": ["stale", "ttl", "expir", "evict", "unbounded", "never refresh", "outdated", "maximum size", "max size"]
+    },
+    {
+      "sev": "minor",
+      "title": "Second lookup can miss",
+      "at": { "java": "return cache.get(ticker)", "kotlin": "return cache[ticker]!!" },
+      "why": {
+        "java": "If clear() runs between the put and the final get, the method returns null even though it just fetched a quote.",
+        "kotlin": "If clear() runs between the put and the final read, !! throws a NullPointerException even though a quote was just fetched."
+      },
+      "fix": "Return the local value (or the computeIfAbsent result) instead of reading the map again.",
+      "kw": ["return null", "returns null", "second lookup", "local variable", "read again", "clear()", "!!", "npe", "nullpointer"]
+    }
+  ]
+}

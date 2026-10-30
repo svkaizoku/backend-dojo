@@ -1,0 +1,52 @@
+{
+  "title": "Portfolio report",
+  "topic": "data",
+  "level": "Warm-up",
+  "context": "Admin report listing every user's total portfolio value. Production has about 2 million users with about 15 positions each.",
+  "files": { "java": "PortfolioService.java", "kotlin": "PortfolioService.kt" },
+  "refs": [
+    { "title": "Java and databases: an overview (Marco Behler)", "url": "https://www.marcobehler.com/guides/java-databases" }
+  ],
+  "issues": [
+    {
+      "sev": "major",
+      "title": "N+1 queries",
+      "at": { "java": "user.getPositions()", "kotlin": "val total = user.positions" },
+      "why": "One query loads the users, then one more query per user loads their positions: about 2 million queries.",
+      "fix": "Use JOIN FETCH or @EntityGraph, or better, a single aggregate query.",
+      "kw": ["n+1", "n + 1", "join fetch", "entitygraph", "query per", "one query for each", "batch size", "batchsize"]
+    },
+    {
+      "sev": "major",
+      "title": "Loads every user into memory",
+      "at": { "java": "userRepository.findAll()", "kotlin": "userRepository.findAll()" },
+      "why": "2 million users plus 30 million positions as entities will exhaust the heap.",
+      "fix": "Paginate or stream (Slice, keyset pagination, or a Stream with a fetch size).",
+      "kw": ["pagina", "memory", "all users", "stream", "unbounded", "heap", "keyset", "oom"]
+    },
+    {
+      "sev": "major",
+      "title": "Aggregation done in application code",
+      "at": { "java": "total = total.add", "kotlin": "acc + p.marketValue" },
+      "why": "Summing in the app moves every position row over the network when the database could return one row per user.",
+      "fix": "SELECT user_id, SUM(market_value) … GROUP BY user_id into a projection.",
+      "kw": ["sum(", "group by", "aggregat", "projection", "in the database", "in sql", "native query"]
+    },
+    {
+      "sev": "major",
+      "title": "EAGER on a collection",
+      "at": { "java": "FetchType.EAGER", "kotlin": "FetchType.EAGER" },
+      "why": "Every query that loads a User also loads all their positions, even when they aren't needed.",
+      "fix": "Use LAZY (the default for @OneToMany) and fetch explicitly where needed.",
+      "kw": ["eager", "lazy", "fetchtype"]
+    },
+    {
+      "sev": "minor",
+      "title": "Foreign key needs an index",
+      "at": { "java": "private List<Position> positions;", "kotlin": "val positions: List<Position>" },
+      "why": "Looking up positions by user_id without an index is a full table scan per user.",
+      "fix": "Add an index on positions.user_id in a migration.",
+      "kw": ["index", "user_id", "foreign key"]
+    }
+  ]
+}

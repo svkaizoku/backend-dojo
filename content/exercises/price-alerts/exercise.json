@@ -1,0 +1,49 @@
+{
+  "title": "Price alerts",
+  "topic": "concurrency",
+  "level": "Standard",
+  "context": "Lets users set price alerts (\"tell me when AAPL reaches 250\"). AlertService is a singleton; each alert listens to the live price feed, which ticks many times per second. Users can delete alerts in the app, and alerts expire after a set time.",
+  "files": { "java": "AlertService.java", "kotlin": "AlertService.kt" },
+  "issues": [
+    {
+      "sev": "major",
+      "title": "Feed listeners are never removed",
+      "at": { "java": "priceFeed.subscribe(", "kotlin": "priceFeed.subscribe(" },
+      "why": "delete() and expiry only remove the alert from the map. The listener stays registered with the feed and keeps a reference to the alert, so memory grows with every alert ever created and deleted alerts keep firing.",
+      "fix": "Keep the subscription handle returned by subscribe and unsubscribe it in delete() and on expiry.",
+      "kw": ["unsubscribe", "listener", "subscription", "memory leak", "leak", "still fire", "deleted alert", "never removed"]
+    },
+    {
+      "sev": "major",
+      "title": "Alert fires on every tick",
+      "at": { "java": "price.compareTo(alert.target()) >= 0", "kotlin": "price >= alert.target" },
+      "why": "Once the price is above the target, every price update sends another notification, so the user gets spammed many times per second.",
+      "fix": "Fire once: remove the alert atomically before notifying (for example only notify if alerts.remove(id) returned it) and unsubscribe.",
+      "kw": ["every tick", "every update", "every price", "spam", "repeatedly", "only once", "fire once", "triggered", "multiple notifications"]
+    },
+    {
+      "sev": "major",
+      "title": "Scheduled task dies on the first exception",
+      "at": { "java": "scheduler.scheduleAtFixedRate", "kotlin": "scheduler.scheduleAtFixedRate" },
+      "why": "If expireOldAlerts throws once (for example the notifier is down), scheduleAtFixedRate silently cancels every future run, so alerts never expire again and nobody is told.",
+      "fix": "Catch and log exceptions inside the task, or use Spring's @Scheduled, which keeps running and logs errors.",
+      "kw": ["scheduleatfixedrate", "future runs", "subsequent", "stops running", "silently", "cancel", "@scheduled", "catch"]
+    },
+    {
+      "sev": "major",
+      "title": "Unbounded queue in the notification pool",
+      "at": { "java": "Executors.newFixedThreadPool(4)", "kotlin": "Executors.newFixedThreadPool(4)" },
+      "why": "newFixedThreadPool uses an unbounded queue. During a market spike, or when the notifier is slow, tasks pile up without limit until the JVM runs out of memory.",
+      "fix": "Use a ThreadPoolExecutor with a bounded queue and a rejection policy, or hand notifications to a message queue.",
+      "kw": ["unbounded", "queue", "linkedblockingqueue", "backpressure", "out of memory", "oom", "bounded"]
+    },
+    {
+      "sev": "minor",
+      "title": "Executors outside Spring's lifecycle",
+      "at": { "java": "Executors.newSingleThreadScheduledExecutor()", "kotlin": "Executors.newSingleThreadScheduledExecutor()" },
+      "why": "These thread pools are never shut down, so threads leak on context restarts (tests, hot reload) and in-flight notifications are cut off on shutdown.",
+      "fix": "Use Spring-managed TaskScheduler and ThreadPoolTaskExecutor beans, or shut the pools down in @PreDestroy.",
+      "kw": ["shutdown", "shut down", "predestroy", "lifecycle", "taskscheduler", "threadpooltaskexecutor", "spring-managed", "managed by spring"]
+    }
+  ]
+}

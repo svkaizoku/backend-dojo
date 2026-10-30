@@ -1,0 +1,63 @@
+{
+  "title": "FX conversion",
+  "topic": "money",
+  "level": "Standard",
+  "context": "Converts cash between currencies for an instant FX trade, charges our 0.15% FX fee, and returns the inverse rate shown on the receipt (source currency paid per unit received). Conversions are only allowed during London market hours.",
+  "files": { "java": "FxService.java", "kotlin": "FxService.kt" },
+  "issues": [
+    {
+      "sev": "major",
+      "title": "BigDecimal built from a double",
+      "at": { "java": "new BigDecimal(0.0015)", "kotlin": "BigDecimal(0.0015)" },
+      "why": "The double 0.0015 isn't exact, so the fee rate becomes 0.00150000000000000003122… and every fee is computed from that inexact value.",
+      "fix": "Use BigDecimal(\"0.0015\") or BigDecimal.valueOf(0.0015).",
+      "kw": ["valueof", "string constructor", "from a double", "double constructor", "0.00149", "\"0.0015\"", "not exact", "inexact"]
+    },
+    {
+      "sev": "major",
+      "title": "Division without a scale",
+      "at": { "java": "amount.divide(net)", "kotlin": "amount / net" },
+      "why": {
+        "java": "divide() without a scale throws ArithmeticException when the result doesn't terminate. 100.00 / 117.17 does, so most conversions crash.",
+        "kotlin": "Kotlin's / on BigDecimal calls divide(other, RoundingMode.HALF_EVEN), which keeps the dividend's scale. The amount has 2 decimals, so 100.00 / 117.17 gives 0.85 instead of 0.853461…, and the receipt shows a wrong rate."
+      },
+      "fix": "Divide with an explicit scale and rounding mode, for example divide(net, 8, RoundingMode.HALF_EVEN), or a MathContext.",
+      "kw": ["arithmeticexception", "non-terminating", "mathcontext", "scale", "rounding mode", "divide", "keeps the scale", "precision"]
+    },
+    {
+      "sev": "major",
+      "title": "Converted amount never rounded to the currency",
+      "at": { "java": "amount.multiply(rate)", "kotlin": "amount * rate" },
+      "why": "amount × rate has as many decimals as both inputs combined, so the credited amount can have 8+ decimal places that no ledger or bank can hold.",
+      "fix": "Round once at a defined point to the target currency's fraction digits (Currency.getDefaultFractionDigits: 2 for EUR, 0 for JPY) with a documented rounding mode.",
+      "kw": ["setscale", "currency precision", "fraction digits", "decimal places", "jpy", "round the converted", "minor units"]
+    },
+    {
+      "sev": "major",
+      "title": "Market hours checked in server local time",
+      "at": { "java": "LocalTime.now()", "kotlin": "LocalTime.now()" },
+      "why": "LocalTime.now() uses the server's zone, which is usually UTC, so the window shifts by an hour in British Summer Time. It also ignores weekends and holidays, and can't be tested.",
+      "fix": "Use ZonedDateTime.now(clock) in Europe/London with an injected Clock, and check a trading calendar for weekends and holidays.",
+      "kw": ["time zone", "timezone", "zoneid", "europe/london", "dst", "summer time", "weekend", "holiday", "clock", "utc"]
+    },
+    {
+      "sev": "minor",
+      "title": "equals compares scale",
+      "at": { "java": "a.equals(b)", "kotlin": "a == b" },
+      "why": {
+        "java": "BigDecimal.equals treats 2.0 and 2.00 as different, so equal amounts are reported as different.",
+        "kotlin": "== calls BigDecimal.equals, which treats 2.0 and 2.00 as different, so equal amounts are reported as different."
+      },
+      "fix": "Use a.compareTo(b) == 0.",
+      "kw": ["compareto", "scale", "2.00", "equals"]
+    },
+    {
+      "sev": "minor",
+      "title": "Currencies as plain strings",
+      "at": { "java": "String from, String to", "kotlin": "from: String, to: String" },
+      "why": "Typos and unsupported codes such as \"usd \" or \"XYZ\" reach the rate provider.",
+      "fix": "Use java.util.Currency (or an enum of supported currencies) and validate at the API boundary.",
+      "kw": ["java.util.currency", "currency class", "currency type", "enum", "iso 4217", "string currency"]
+    }
+  ]
+}

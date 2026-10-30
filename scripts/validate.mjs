@@ -60,7 +60,10 @@ for (const c of companiesIndex.companies) {
   if (!Array.isArray(data.process) || !data.process.length) errors.push(`company ${c.id}: "process" must be a non-empty list`);
   if (!Array.isArray(data.questions) || !data.questions.length) errors.push(`company ${c.id}: "questions" must be a non-empty list`);
   for (const q of data.questions || []) if (!q.q || !q.a || !q.topic) errors.push(`company ${c.id}: each question needs "q", "a" and "topic"`);
-  for (const n of data.news || []) if (!n.date || !n.title || !String(n.url).startsWith("https://")) errors.push(`company ${c.id}: each news item needs "date", "title" and an https "url"`);
+  for (const n of data.news || []) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(n.added || "")) errors.push(`company ${c.id}: news "${n.title}" needs "added" as YYYY-MM-DD`);
+    if (!n.published || !n.title || !String(n.url).startsWith("https://")) errors.push(`company ${c.id}: news "${n.title}" needs "published", "title" and an https "url"`);
+  }
   for (const l of data.links || []) if (!String(l.url).startsWith("https://")) errors.push(`company ${c.id}: link "${l.title}" must be https`);
 }
 

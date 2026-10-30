@@ -475,3 +475,9 @@ dialog::backdrop { background: rgb(0 0 0 / 0.5); }
 .confidence { max-width: 80ch; }
 
 .news-list { display: grid; gap: 10px; padding-left: 20px; }
+
+.news-wrap { overflow-x: auto; }
+.news-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.news-table th, .news-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.news-table th { font-family: var(--font-code); font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+.news-table td:first-child, .news-table td:nth-child(2) { white-space: nowrap; color: var(--muted); font-family: var(--font-code); font-size: 12.5px; }

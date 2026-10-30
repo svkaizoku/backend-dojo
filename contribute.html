@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Contribute · Backend Dojo</title>
+<meta name="description" content="How to add exercises, fix answer keys and improve Backend Dojo.">
+<link rel="stylesheet" href="css/app.css">
+<script type="module" src="js/contribute.js"></script>
+</head>
+<body class="home">
+<nav class="site-nav" aria-label="Site">
+  <div class="nav-inner">
+    <a class="logo" href="./">Backend Dojo</a>
+    <div class="nav-links">
+      <a href="./#how">How it works</a>
+      <a href="./#topics">Topics</a>
+      <a href="./#ai">Your AI</a>
+      <a href="contribute.html" aria-current="page">Contribute</a>
+      <a href="https://github.com/svkaizoku/backend-dojo" rel="noopener noreferrer">GitHub</a>
+      <a class="nav-cta" href="practice.html">Practice</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section class="hero page-hero">
+    <div class="wrap">
+      <p class="eyebrow">Contribute</p>
+      <h1>Help other developers practise.</h1>
+      <p class="lede">Backend Dojo is free and open source. Every exercise was written by someone who spotted a bug pattern worth teaching. Add yours, fix an answer key, or improve the app. No build tools needed.</p>
+      <div class="toc" aria-label="On this page">
+        <a href="#ways">Ways to help</a>
+        <a href="#add">Add an exercise</a>
+        <a href="#format">File format</a>
+        <a href="#good">What makes a good exercise</a>
+        <a href="#license">Licensing</a>
+        <a href="#checklist">Checklist</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="ways">
+    <div class="wrap">
+      <h2>Ways to help</h2>
+      <div class="cards">
+        <div class="card"><h3>Add an exercise</h3><p>Turn a bug you've seen in a real code review into a short pull request with an answer key.</p></div>
+        <div class="card"><h3>Improve an answer key</h3><p>A wrong line, an unclear explanation, or a missing keyword that made Quick check miss a good review.</p></div>
+        <div class="card"><h3>Report a problem</h3><p>Something broken or confusing? <a href="https://github.com/svkaizoku/backend-dojo/issues/new" rel="noopener noreferrer">Open an issue</a> with the exercise name and what you expected.</p></div>
+        <div class="card"><h3>Improve the app</h3><p>Plain HTML, CSS and JavaScript modules in <code>js/</code> and <code>css/</code>. Edit, reload, done.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="add">
+    <div class="wrap">
+      <h2>Add an exercise</h2>
+      <p class="section-lede">An exercise is one folder: the code under review in Java, Kotlin or both, plus an <code>exercise.json</code> answer key.</p>
+      <ol class="guide">
+        <li>
+          <h3>Fork and run it locally</h3>
+          <p>Fork the repo on GitHub, clone your fork, and serve the folder. Any static server works.</p>
+          <pre class="cmd">git clone https://github.com/&lt;you&gt;/backend-dojo.git
+cd backend-dojo
+python3 -m http.server 8000</pre>
+        </li>
+        <li>
+          <h3>Create a folder</h3>
+          <p>Use a short, lowercase id with dashes. It becomes the link to the exercise.</p>
+          <pre class="cmd">content/exercises/settlement-batch/
+  exercise.json
+  SettlementJob.java
+  SettlementJob.kt</pre>
+        </li>
+        <li>
+          <h3>Write the code under review</h3>
+          <p>About 20–40 lines that look like a real pull request: realistic names, no imports, no comments pointing at the bugs. Write the Kotlin version idiomatically, not as a line-by-line translation.</p>
+        </li>
+        <li>
+          <h3>Write the answer key</h3>
+          <p>Describe each planted issue in <code>exercise.json</code> (format below). Point each one at its line with a piece of text from that line.</p>
+        </li>
+        <li>
+          <h3>Register it</h3>
+          <p>Add the folder name to <code>"exercises"</code> in <code>content/index.json</code>.</p>
+        </li>
+        <li>
+          <h3>Validate and preview</h3>
+          <p>The validator checks the format and that every issue points at exactly one line. Then open the exercise and try both Quick check and the answer key.</p>
+          <pre class="cmd">node scripts/validate.mjs
+open http://localhost:8000/practice.html#settlement-batch</pre>
+        </li>
+        <li>
+          <h3>Open a pull request</h3>
+          <p>CI runs the same validator. Say in the description what the exercise teaches and where the pattern comes from.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="band" id="format">
+    <div class="wrap">
+      <h2>File format</h2>
+      <div class="contribute-grid">
+        <div class="code">
+          <div class="bar"><span>exercise.json</span></div>
+          <pre class="json">{
+  "title": "Settlement batch",
+  "topic": "data",
+  "level": "Standard",
+  "context": "Nightly job that settles trades. Runs on
+              two instances behind a scheduler.",
+  "files": { "java": "SettlementJob.java",
+             "kotlin": "SettlementJob.kt" },
+  "refs": [
+    { "title": "Further reading", "url": "https://…" }
+  ],
+  "issues": [{
+    "sev": "major",
+    "title": "Job runs twice in parallel",
+    "at": { "java": "@Scheduled(cron",
+            "kotlin": "@Scheduled(cron" },
+    "why": "Both instances run it, so trades settle twice.",
+    "fix": "Use a scheduler lock such as ShedLock.",
+    "kw": ["shedlock", "both instances", "twice"]
+  }]
+}</pre>
+        </div>
+        <div class="table-wrap">
+          <table class="ref-table">
+            <thead><tr><th>Field</th><th>What it is</th></tr></thead>
+            <tbody>
+              <tr><td><code>title</code></td><td>Short name shown in the exercise list.</td></tr>
+              <tr><td><code>topic</code></td><td>One of the topic ids below.</td></tr>
+              <tr><td><code>level</code></td><td><code>Warm-up</code>, <code>Standard</code> or <code>Hard</code>.</td></tr>
+              <tr><td><code>context</code></td><td>The PR description. Include every fact a reviewer needs, such as "singleton" or "runs on several instances".</td></tr>
+              <tr><td><code>files</code></td><td>Code file per language: <code>java</code>, <code>kotlin</code> or both.</td></tr>
+              <tr><td><code>refs</code></td><td>Optional further reading, shown under the answer key. https links only.</td></tr>
+              <tr><td><code>sev</code></td><td><code>major</code> (must fix) or <code>minor</code> (should fix). Major counts double in the score.</td></tr>
+              <tr><td><code>at</code></td><td>Text from the issue's line, per language. It must match exactly one line. Leave a language out if the issue only exists in the other.</td></tr>
+              <tr><td><code>title</code>, <code>why</code>, <code>fix</code></td><td>One string, or <code>{ "java": …, "kotlin": … }</code> when the wording differs.</td></tr>
+              <tr><td><code>kw</code></td><td>Lowercase phrases for Quick check. A review containing any of them counts as found.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <h3 class="sub">Topic ids</h3>
+      <div class="table-wrap">
+        <table class="ref-table" id="topicTable">
+          <thead><tr><th>Id</th><th>Topic</th><th>Covers</th></tr></thead>
+          <tbody><tr><td colspan="3">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="good">
+    <div class="wrap">
+      <h2>What makes a good exercise</h2>
+      <div class="cards">
+        <div class="card"><h3>Realistic</h3><p>Code a teammate could plausibly open a PR with. The bugs should come from real reviews, not puzzles.</p></div>
+        <div class="card"><h3>Findable</h3><p>Every issue can be spotted from the code and the PR description alone. State the facts that matter, such as threads, instances or data sizes.</p></div>
+        <div class="card"><h3>Focused</h3><p>4–8 issues, mostly must-fix, with a few should-fix. Skip pure style nits that a linter would catch.</p></div>
+        <div class="card"><h3>Explained</h3><p><code>why</code> describes the impact in production, and <code>fix</code> is concrete enough to act on.</p></div>
+        <div class="card"><h3>Fair to Quick check</h3><p>Keywords are specific phrases a good review would use, like "computeifabsent", not words like "bug" that match anything.</p></div>
+        <div class="card"><h3>Correct</h3><p>Check claims about library behaviour by running code when you can. A wrong answer key teaches the wrong thing.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="license">
+    <div class="wrap">
+      <h2>Licensing and sources</h2>
+      <div class="trust">
+        <div><h3>Your contribution is CC BY 4.0</h3><p>Exercises are shared under <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener noreferrer">CC BY 4.0</a> and app code under MIT. By opening a pull request you agree to license your work that way.</p></div>
+        <div><h3>Write it yourself</h3><p>Bug ideas and patterns are free to reuse. Code and text copied from books, courses or blogs usually aren't, even if they're public.</p></div>
+        <div><h3>Link, don't copy</h3><p>Point to the article or docs that explain a pattern well in <code>refs</code>.</p></div>
+        <div><h3>Open sources are fine</h3><p>Material under MIT, Apache 2.0 or CC0 can be adapted. Credit it in <code>refs</code>.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="checklist">
+    <div class="wrap">
+      <h2>Pull request checklist</h2>
+      <ul class="checklist">
+        <li><code>node scripts/validate.mjs</code> passes.</li>
+        <li>The exercise opens on the practice page, in every language it has.</li>
+        <li>Show answer key pins each issue on the right line.</li>
+        <li>A good review gets a high score with Quick check.</li>
+        <li>The code and text are your own, or come from an openly licensed source credited in <code>refs</code>.</li>
+        <li>The folder is listed in <code>content/index.json</code>.</li>
+      </ul>
+      <div class="actions">
+        <a class="btn primary big-btn" href="https://github.com/svkaizoku/backend-dojo/fork" rel="noopener noreferrer">Fork on GitHub</a>
+        <a class="btn big-btn" href="https://github.com/svkaizoku/backend-dojo/issues/new" rel="noopener noreferrer">Open an issue</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-inner">
+    <span class="logo">Backend Dojo</span>
+    <nav aria-label="Footer">
+      <a href="practice.html">Practice</a>
+      <a href="contribute.html">Contribute</a>
+      <a href="https://github.com/svkaizoku/backend-dojo" rel="noopener noreferrer">GitHub</a>
+      <a href="https://github.com/svkaizoku/backend-dojo/blob/main/LICENSE" rel="noopener noreferrer">MIT (code)</a>
+      <a href="https://github.com/svkaizoku/backend-dojo/blob/main/content/LICENSE.md" rel="noopener noreferrer">CC BY 4.0 (exercises)</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

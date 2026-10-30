@@ -56,6 +56,8 @@ in a single request.
 
 ## Add an exercise
 
+The full contributor guide is at [svkaizoku.github.io/backend-dojo/contribute.html](https://svkaizoku.github.io/backend-dojo/contribute.html). In short:
+
 Each exercise is a folder in `content/exercises/<id>/`:
 
 ```

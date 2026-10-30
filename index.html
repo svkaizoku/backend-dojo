@@ -15,9 +15,9 @@
   <div class="nav-inner">
     <a class="logo" href="./" aria-label="Backend Dojo home">backend<span>dojo</span></a>
     <div class="nav-links">
-      <a href="#modes">Practice modes</a>
-      <a href="#topics">Topics</a>
-      <a href="#ai">Your AI</a>
+      <a href="#kit">Interview kit</a>
+      <a href="#skills">Skills</a>
+      <a href="#challenges">Challenges</a>
       <a href="contribute.html">Contribute</a>
       <a href="https://github.com/svkaizoku/backend-dojo" rel="noopener noreferrer">GitHub</a>
       <a class="nav-cta" href="practice.html">Start practising</a>
@@ -26,174 +26,100 @@
 </nav>
 
 <main>
-  <section class="hero">
+  <section class="dash-hero">
     <div class="wrap hero-grid">
       <div>
         <p class="eyebrow">Free and open source</p>
-        <h1>Practise every round of the <span class="grad">backend interview.</span></h1>
-        <p class="lede">Review pull requests, write and debug code that <b>really compiles and runs</b>, explain core concepts, and sketch system designs, in Java and Kotlin. Grade yourself with the answer keys, or with the AI account you already have.</p>
+        <h1>Prepare for your backend interview.</h1>
+        <p class="lede">Practise every round in Java and Kotlin: code review, coding, debugging, concepts and system design. Earn points and skill badges as you go. Code runs against real tests, and an AI on your own account can grade your work.</p>
         <div class="actions">
-          <a class="btn primary big-btn" href="practice.html">Start practising</a>
-          <a class="btn big-btn" href="https://github.com/svkaizoku/backend-dojo" rel="noopener noreferrer">View on GitHub</a>
-        </div>
-        <div class="badges">
-          <span class="badge">Java 17+</span>
-          <span class="badge">Kotlin</span>
-          <span class="badge">Spring · Kafka · Redis · SQL</span>
-          <span class="badge">MIT License</span>
+          <a class="btn primary big-btn" href="practice.html" id="heroCta">Start practising</a>
+          <a class="btn big-btn" href="#kit">Follow the interview kit</a>
         </div>
       </div>
 
-      <figure class="terminal" aria-label="Example: running tests for the rate limiter exercise">
-        <div class="term-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>practice — RateLimiter.kt</div>
-<pre class="term-body"><span class="c"># Coding round: implement a token-bucket rate limiter</span>
-<span class="p">$</span> run tests <span class="v">RateLimiter.kt</span>
-<span class="ok">PASS</span> allows a burst up to capacity
-<span class="ok">PASS</span> refills over time
-<span class="ok">PASS</span> never refills above capacity
-<span class="ok">PASS</span> keys are independent
-<span class="no">FAIL</span> exact under concurrent calls: expected 1000, got 1013
-
-<span class="c"># Ask AI, using your own account</span>
-<span class="p">&gt;</span> why does the concurrent test fail?
-check-then-take isn't atomic: two threads can read
-the same token count. Synchronize on the bucket.<span class="cursor" aria-hidden="true"></span></pre>
-      </figure>
+      <aside class="progress-card" aria-labelledby="progressTitle">
+        <div class="pc-head">
+          <h2 id="progressTitle">Your progress</h2>
+          <span class="hint">Saved in this browser</span>
+        </div>
+        <div class="pc-score">
+          <span class="pc-num" id="scoreNum">0</span>
+          <span class="pc-of" id="scoreOf">/ 0 points</span>
+        </div>
+        <div class="bar" role="presentation"><span id="scoreBar"></span></div>
+        <dl class="pc-stats">
+          <div><dt>Solved</dt><dd id="solvedNum">0 / 0</dd></div>
+          <div><dt>Attempted</dt><dd id="attemptedNum">0</dd></div>
+          <div><dt>Badges</dt><dd id="starsNum">0 ★</dd></div>
+        </dl>
+        <ul class="pc-modes" id="modeProgress"></ul>
+      </aside>
     </div>
   </section>
 
-  <section id="why">
+  <section id="kit">
     <div class="wrap">
-      <p class="eyebrow">The problem</p>
-      <h2>Interview prep shouldn't be only puzzles.</h2>
-      <p class="section-lede">Backend interviews test how you review code, build components, fix bugs, explain trade-offs and design services. Most prep only covers algorithms.</p>
-      <div class="compare">
-        <div class="col without">
-          <h3><span class="ic" aria-hidden="true">✕</span>Usual prep</h3>
-          <ul>
-            <li>Algorithm puzzles that look nothing like production code</li>
-            <li>Bug lists in blog posts, with no way to test yourself</li>
-            <li>System design videos you only watch</li>
-            <li>Another paid subscription for AI feedback</li>
-          </ul>
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Interview preparation kit</p>
+          <h2 id="kitName">Backend interview kit</h2>
+          <p class="section-lede" id="kitDesc"></p>
         </div>
-        <span class="arrow" aria-hidden="true">→</span>
-        <div class="col with">
-          <h3><span class="ic" aria-hidden="true">✓</span>Backend Dojo</h3>
-          <ul>
-            <li>Realistic Spring, Kafka, Redis and SQL code for every round</li>
-            <li>Code that compiles and runs against tests from your browser</li>
-            <li>An answer key for everything: what matters, why, and the fix</li>
-            <li>AI grading and Ask AI on the account you already have</li>
-          </ul>
-        </div>
+        <a class="btn primary" href="practice.html" id="kitContinue">Start the kit</a>
       </div>
+      <div class="kit-bar"><div class="bar"><span id="kitBar"></span></div><span class="hint" id="kitCount"></span></div>
+      <ol class="kit" id="kitSteps"><li class="hint">Loading…</li></ol>
     </div>
   </section>
 
-  <section id="modes">
+  <section id="skills">
     <div class="wrap">
-      <p class="eyebrow">Practice modes</p>
-      <h2>Every round, one place.</h2>
-      <p class="section-lede">Five ways to practise, each with answer keys and AI feedback.</p>
-      <div class="grid-cells">
-        <a class="cell" href="practice.html" data-mode="review">
-          <span class="icon" aria-hidden="true">±</span>
-          <h3>Code review</h3>
-          <p>Review a teammate's pull request and find the planted race conditions, transaction traps and money bugs.</p>
-          <span class="more" data-count></span>
-        </a>
-        <a class="cell" href="practice.html" data-mode="coding">
-          <span class="icon alt" aria-hidden="true">&lt;/&gt;</span>
-          <h3>Coding</h3>
-          <p>Build a rate limiter or an LRU cache in the editor, then run it against real tests.</p>
-          <span class="more" data-count></span>
-        </a>
-        <a class="cell" href="practice.html" data-mode="debug">
-          <span class="icon" aria-hidden="true">!?</span>
-          <h3>Debugging</h3>
-          <p>Get code with failing tests. Find the bugs and fix them until every test passes.</p>
-          <span class="more" data-count></span>
-        </a>
-        <a class="cell" href="practice.html" data-mode="concepts">
-          <span class="icon alt" aria-hidden="true">?</span>
-          <h3>Concepts</h3>
-          <p>Explain @Transactional proxies, locking, Kafka delivery or coroutines in your own words.</p>
-          <span class="more" data-count></span>
-        </a>
-        <a class="cell" href="practice.html" data-mode="design">
-          <span class="icon" aria-hidden="true">[ ]</span>
-          <h3>System design</h3>
-          <p>Design a price alert service or an idempotent order API, then compare with a reference design.</p>
-          <span class="more" data-count></span>
-        </a>
-        <div class="cell">
-          <span class="icon alt" aria-hidden="true">AI</span>
-          <h3>Ask AI, everywhere</h3>
-          <p>A chat that sees the page you're on: the exercise, your code or answer, and your test results.</p>
+      <p class="eyebrow">Skills</p>
+      <h2>Earn a badge for every skill.</h2>
+      <p class="section-lede">Each skill collects exercises across all modes. Points add up to stars: one for every 20% of a skill's points.</p>
+      <div class="skills" id="skillCards"><p class="hint">Loading…</p></div>
+    </div>
+  </section>
+
+  <section id="challenges">
+    <div class="wrap">
+      <p class="eyebrow">Challenges</p>
+      <h2>All challenges</h2>
+      <div class="explorer">
+        <aside class="filters" aria-label="Filter challenges">
+          <label class="search"><span class="visually-hidden">Search challenges</span><input id="search" type="search" placeholder="Search challenges"></label>
+          <fieldset>
+            <legend>Status</legend>
+            <label><input type="radio" name="status" value="all" checked> All</label>
+            <label><input type="radio" name="status" value="unsolved"> Unsolved</label>
+            <label><input type="radio" name="status" value="solved"> Solved</label>
+          </fieldset>
+          <fieldset id="modeFilter"><legend>Mode</legend></fieldset>
+          <fieldset id="levelFilter"><legend>Difficulty</legend></fieldset>
+          <fieldset>
+            <legend>Skill</legend>
+            <select id="topicFilter" aria-label="Skill"><option value="">All skills</option></select>
+          </fieldset>
+        </aside>
+        <div>
+          <p class="hint" id="resultCount"></p>
+          <ul class="challenges" id="challengeList"><li class="hint">Loading…</li></ul>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="how">
-    <div class="wrap">
-      <p class="eyebrow">How it works</p>
-      <h2>Practise, check, learn.</h2>
-      <p class="section-lede">No account, no install. Your progress stays in your browser.</p>
-      <ol class="steps">
-        <li><span class="num">01</span><h3>Pick an exercise</h3><p>Choose a mode, a topic and a level, in Java or Kotlin.</p></li>
-        <li><span class="num">02</span><h3>Do the work</h3><p>Write your review or answer, or code in the editor and run the tests.</p></li>
-        <li><span class="num">03</span><h3>Grade it</h3><p>Your AI compares your work with the answer key. A free keyword check works without AI.</p></li>
-        <li><span class="num">04</span><h3>Study the key</h3><p>See every point with why it matters, the fix, a reference solution and further reading.</p></li>
-      </ol>
-    </div>
-  </section>
-
-  <section id="topics">
-    <div class="wrap">
-      <p class="eyebrow">Topics</p>
-      <h2>Built around a real backend stack.</h2>
-      <p class="section-lede">Java or Kotlin on Spring, with PostgreSQL, Kafka and Redis: the stack behind many fintech and product backends.</p>
-      <div class="cards" id="topicCards"><p class="hint">Loading topics…</p></div>
-    </div>
-  </section>
-
-  <section id="ai">
-    <div class="wrap">
-      <p class="eyebrow">Bring your own AI</p>
-      <h2>Your AI account, your data.</h2>
-      <p class="section-lede">Grading and Ask AI run on an AI account you connect, so you pay your provider directly and the site needs no server.</p>
-      <div class="grid-cells">
-        <div class="cell"><span class="icon" aria-hidden="true">OR</span><h3>OpenRouter</h3><p>Sign in with one click. One account reaches Claude, GPT, Gemini and more.</p></div>
-        <div class="cell"><span class="icon alt" aria-hidden="true">A</span><h3>Anthropic</h3><p>Paste an API key to use Claude. Claude.ai subscriptions can't be used by other apps.</p></div>
-        <div class="cell"><span class="icon" aria-hidden="true">O</span><h3>OpenAI and Gemini</h3><p>Paste an API key from the OpenAI platform or Google AI Studio.</p></div>
-      </div>
-      <div class="trust">
-        <div><h3>Key stays in your browser</h3><p>Kept for the current tab by default. Disconnect deletes it.</p></div>
-        <div><h3>No server in between</h3><p>Requests go straight from your browser to the provider you chose.</p></div>
-        <div><h3>Locked-down pages</h3><p>The site can only call the AI providers and code runners, and loads no third-party scripts.</p></div>
-        <div><h3>Where code runs</h3><p>Kotlin runs on JetBrains' compiler service; Java on Judge0, free or with your own key.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="contribute">
-    <div class="wrap contribute-grid">
+  <section id="ai" class="strip">
+    <div class="wrap strip-inner">
       <div>
-        <p class="eyebrow">Contribute</p>
-        <h2>Add the exercise you wish you'd had.</h2>
-        <p class="section-lede">Each exercise is a folder with code and a small JSON answer key. A validator checks every answer key, and a second check runs every solution against its tests.</p>
-        <a class="btn" href="contribute.html">Read the contributor guide →</a>
+        <p class="eyebrow">Bring your own AI</p>
+        <h2>Grading and Ask AI on your own account.</h2>
+        <p class="section-lede">Connect OpenRouter, Anthropic, OpenAI or Gemini. Your key stays in your browser and requests go straight to your provider. There's no server in between, and the free keyword check works without any AI.</p>
       </div>
-      <div class="terminal">
-        <div class="term-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>backend-dojo</div>
-<pre class="term-body"><span class="p">$</span> node scripts/validate.mjs
-<span class="ok">✓</span> all exercises valid
-
-<span class="p">$</span> node scripts/check-solutions.mjs
-<span class="ok">✓</span> rate-limiter [kotlin]: solution passes
-<span class="ok">✓</span> retry-backoff [java]: solution passes</pre>
+      <div class="strip-side">
+        <a class="btn" href="practice.html">Connect on the practice page</a>
+        <a class="btn" href="contribute.html">Add an exercise</a>
       </div>
     </div>
   </section>

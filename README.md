@@ -16,6 +16,9 @@ Every exercise has an answer key: what matters, why, and the fix, plus a referen
 You can grade yourself, use the free keyword check, or have an AI grade your work. **Ask AI** is a chat panel
 that sees the page you're on: the exercise, your code or answer, and your test results.
 
+The home page is a dashboard: a guided **interview kit**, **skill badges** (stars earned from points), and a
+filterable list of every challenge with its difficulty, points and your status. Progress is saved in your browser.
+
 Topics: concurrency and the JVM, Spring and transactions, databases and SQL, Kafka, Redis and caching,
 resilience, money handling, and Kotlin-specific traps.
 

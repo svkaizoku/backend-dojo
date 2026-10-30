@@ -66,5 +66,62 @@
     "structured-concurrency",
     "design-price-alerts",
     "design-order-api"
+  ],
+  "kits": [
+    {
+      "id": "backend",
+      "name": "Backend interview kit",
+      "description": "A guided path through every round, from warm-ups to system design. About two hours a step.",
+      "steps": [
+        {
+          "name": "Concurrency basics",
+          "exercises": [
+            "volatile-synchronized-atomic",
+            "quote-cache",
+            "lru-cache"
+          ]
+        },
+        {
+          "name": "Spring and transactions",
+          "exercises": [
+            "transactional-self-call",
+            "card-deposit",
+            "accounts-api"
+          ]
+        },
+        {
+          "name": "Databases",
+          "exercises": [
+            "optimistic-pessimistic-locking",
+            "portfolio-report",
+            "order-history"
+          ]
+        },
+        {
+          "name": "Messaging and caching",
+          "exercises": [
+            "kafka-duplicates",
+            "trade-listener",
+            "instrument-cache"
+          ]
+        },
+        {
+          "name": "Resilience and money",
+          "exercises": [
+            "retry-backoff",
+            "rate-limiter",
+            "average-fill-price",
+            "fx-conversion"
+          ]
+        },
+        {
+          "name": "System design",
+          "exercises": [
+            "design-order-api",
+            "design-price-alerts"
+          ]
+        }
+      ]
+    }
   ]
 }

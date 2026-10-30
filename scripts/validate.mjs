@@ -13,6 +13,13 @@ const topicIds = index.topics.map(t => t.id);
 const dirs = readdirSync(join(root, "exercises"), { withFileTypes: true }).filter(d => d.isDirectory()).map(d => d.name);
 for (const d of dirs) if (!index.exercises.includes(d)) errors.push(`${d}: folder exists but is not listed in content/index.json`);
 if (new Set(index.exercises).size !== index.exercises.length) errors.push("content/index.json lists an exercise twice");
+for (const kit of index.kits || []) {
+  for (const step of kit.steps || []) {
+    for (const id of step.exercises || []) {
+      if (!index.exercises.includes(id)) errors.push(`kit "${kit.id}", step "${step.name}": unknown exercise "${id}"`);
+    }
+  }
+}
 
 let variants = 0;
 for (const id of index.exercises) {

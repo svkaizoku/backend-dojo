@@ -20,6 +20,10 @@ export const MODES = {
     blurb: "Sketch a design for a backend service and get it reviewed." },
 };
 export const LEVELS = ["Warm-up", "Standard", "Hard"];
+// Points an exercise is worth at 100%, by level. A best score of 80% on a Standard exercise earns 16.
+export const LEVEL_POINTS = { "Warm-up": 10, "Standard": 20, "Hard": 30 };
+// A best score at or above this counts as solved.
+export const SOLVED_AT = 75;
 const SEVERITIES = ["major", "minor"];
 
 // A text field is either one string for every language or an object keyed by language.

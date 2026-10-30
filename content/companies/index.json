@@ -1,0 +1,11 @@
+{
+  "companies": [
+    {
+      "id": "getyourguide",
+      "name": "GetYourGuide",
+      "roles": ["Software Engineer (Java)", "Senior Software Engineer (Java)"],
+      "summary": "Spring Boot take-home codebase, a live pair-programming round, and questions on AI use at work.",
+      "updated": "2026-10-30"
+    }
+  ]
+}

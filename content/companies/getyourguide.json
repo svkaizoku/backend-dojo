@@ -1,0 +1,61 @@
+{
+  "name": "GetYourGuide",
+  "roles": ["Software Engineer (Java)", "Senior Software Engineer (Java)"],
+  "summary": "The backend interview gives you a small Spring Boot codebase with planted problems. You get the code shortly before a live round where you pair on it, fix it and answer questions about it.",
+  "updated": "2026-10-30",
+  "confidence": "Confirmed = from the company's prep document. Reported = candidate reports (Glassdoor, April 2026). Likely = one candidate's prep notes, not independently confirmed.",
+  "process": [
+    { "stage": "Recruiter call", "format": "Phone or video with a recruiter.", "confidence": "Reported" },
+    { "stage": "Online test", "format": "HackerRank task with about 7 days to finish. Reported task: an event registration service with add-event, register, cancel and list-registrations operations.", "confidence": "Reported" },
+    { "stage": "Codebase handed over", "format": "The repository link arrives about 24 hours before the technical interview.", "confidence": "Reported" },
+    { "stage": "Technical interview", "format": "60 minutes with one or two engineers: about 5 minutes of intro, 50 minutes of live pair programming on the codebase, and 5 minutes of Q&A. Java and Spring Boot. The prep document says the code is 'a simple project that wasn't made with best practices in mind'.", "confidence": "Confirmed" },
+    { "stage": "AI use", "format": "AI tools such as Copilot or Claude Code are allowed. Expect to explain which tool you chose for which task and why. Candidates report questions about AI use at work, tasks where engineers should not use AI, and mentoring colleagues on AI.", "confidence": "Confirmed (tools allowed); Reported (the questions)" }
+  ],
+  "topics": [
+    { "name": "Layering", "what": "What each layer owns: controllers handle HTTP, services hold business rules, repositories do data access. Why a service should not depend on a controller." },
+    { "name": "JPA and Hibernate", "what": "N+1 queries and fetch joins, read-only transactions, lazy loading outside a transaction, and how the entity mapping choices affect behaviour." },
+    { "name": "Entities", "what": "Why Lombok @Data is risky on JPA entities, id generation strategies, primitive vs wrapper types for nullable columns, and what @NotFound does." },
+    { "name": "Queries", "what": "JPQL vs native SQL, constructor expressions in JPQL, aggregate queries with a typed result, and case-insensitive search." },
+    { "name": "Errors and HTTP", "what": "@RestController vs @Controller, exception handlers mapped to the right status codes, and why a catch-all handler is a problem." },
+    { "name": "Java", "what": "Streams and lambdas, side effects in forEach, checked exceptions inside lambdas, and null handling in more than one place." },
+    { "name": "Testing", "what": "Spring test slices (@WebMvcTest, @DataJpaTest, @SpringBootTest), MockMvc vs calling controller methods directly, and why dead mocks mislead reviewers." },
+    { "name": "AI in the round", "what": "Using an AI tool well: say what you asked it, check the output, and explain the result in your own words." }
+  ],
+  "questions": [
+    { "topic": "Layering", "q": "The same mapping code appears in three service methods. How do you remove the duplication, and what is wrong with using forEach to add to a list?", "a": "Extract one mapping function and use stream().map(). forEach with an external list hides the result and invites side effects. Each mapped value should be returned, not added to a shared list." },
+    { "topic": "Layering", "q": "Why should a service not depend on a controller?", "a": "The dependency runs the wrong way. Controllers are the HTTP edge and depend on services. A service that calls a controller couples business logic to the web layer and creates cycles." },
+    { "topic": "Layering", "q": "Why should a controller not use EntityManager directly?", "a": "Data access belongs in the repository layer. A controller that writes queries skips the rules and transactions the repository and service provide, and it is harder to test." },
+    { "topic": "Queries", "q": "Lookup by id loads every row with findAll() and then filters in Java. What happens with ten million rows?", "a": "All rows are loaded into memory, which is slow and can exhaust the heap. Query by id with findById, or add a WHERE clause in JPQL." },
+    { "topic": "Queries", "q": "A search method fills one list and returns another empty list. What does it return?", "a": "Always an empty list. Items are added to one list but the other is returned. It is a copy-paste bug and is easy to miss in review." },
+    { "topic": "JPA and Hibernate", "q": "How many queries does it take to list 100 activities when each activity lazily loads its supplier?", "a": "101: one query for the activities and one per supplier (N+1). Fix it with a fetch join, for example LEFT JOIN FETCH a.supplier, or an entity graph." },
+    { "topic": "JPA and Hibernate", "q": "Why add @Transactional(readOnly = true) to read methods?", "a": "Hibernate skips dirty checking for read-only transactions, which saves work. Some setups also route read-only transactions to a replica. It is a hint, not a database-level lock." },
+    { "topic": "Java", "q": "Why can't a checked exception be thrown inside a lambda in a stream?", "a": "Standard functional interfaces such as Function don't declare checked exceptions, so the compiler rejects the throw. Use a RuntimeException subclass, or catch and wrap the checked exception inside the lambda." },
+    { "topic": "Errors and HTTP", "q": "What is the difference between @Controller and @RestController?", "a": "@Controller treats a return value as a view name unless the method has @ResponseBody. @RestController adds @ResponseBody to every method, so return values are written as the response body." },
+    { "topic": "Errors and HTTP", "q": "What is wrong with one @ExceptionHandler(Exception.class) for the whole app?", "a": "Every error becomes a 500, including a not-found case that should return 404. Add a handler per exception type with the right status code." },
+    { "topic": "Errors and HTTP", "q": "A search finds nothing. What should it return, and why is a fallback to all suppliers wrong?", "a": "An empty result with 200, because no match is a valid answer. Returning everything when nothing matches shows the wrong data. Use a case-insensitive query, for example LOWER(...) LIKE, for the match itself." },
+    { "topic": "Entities", "q": "Why is @Data dangerous on a JPA entity?", "a": "Its generated equals, hashCode and toString read every field, including lazy relations and back-references. That can trigger LazyInitializationException, or a StackOverflowError when parent and child print each other. Exclude relations and use the id for equality." },
+    { "topic": "Entities", "q": "What does @NotFound(action = IGNORE) do when the referenced row is missing?", "a": "Hibernate silently sets the association to null instead of throwing. Callers must handle null, and bad data stays hidden." },
+    { "topic": "Entities", "q": "What is the difference between GenerationType.AUTO and IDENTITY?", "a": "IDENTITY uses the database's auto-increment column. AUTO lets the provider pick, which can mean a sequence or a table, depending on the dialect. Choose the strategy on purpose." },
+    { "topic": "Entities", "q": "Why use Double rather than double in an entity?", "a": "A wrapper type can be null, which matches a nullable database column. A primitive is always set, so a null column cannot be mapped." },
+    { "topic": "Queries", "q": "What can go wrong with a JPQL constructor expression that builds a DTO?", "a": "JPQL calls the constructor by position. A missing all-args constructor fails, and a field order that differs from the select list gives wrong values with no error. Keep the order in step and put the DTO in the dto package." },
+    { "topic": "Queries", "q": "A statistics method uses SELECT * into List<Object[]>. What is wrong?", "a": "It doesn't compute statistics, it returns raw rows. Object[] is not type-safe. Use COUNT, AVG and SUM with GROUP BY, mapped to a typed DTO." },
+    { "topic": "Testing", "q": "What is the difference between @WebMvcTest, @DataJpaTest and @SpringBootTest?", "a": "@WebMvcTest loads only the web layer with mocked services. @DataJpaTest loads only persistence. @SpringBootTest loads the full context, which is slower and closer to production." },
+    { "topic": "Testing", "q": "Why is calling controller methods directly in a test weak?", "a": "It skips HTTP: no status codes, no JSON serialisation, no filters or validation. Use MockMvc.perform(get(...)) to test through the request path." },
+    { "topic": "Testing", "q": "Why add @AutoConfigureTestDatabase(replace = NONE) to a @DataJpaTest?", "a": "Without it, Spring swaps your configured datasource for an embedded one, so the project's migrations and database settings may not run in the test." },
+    { "topic": "AI in the round", "q": "When would you not use AI in the job?", "a": "When the task measures your own understanding, such as a design you will own, a security review, or explaining a production incident. Use AI to speed up known work, and check its output." }
+  ],
+  "links": [
+    { "title": "Medium: GetYourGuide Senior SWE Java interview guide (Berlin)", "url": "https://levelup.gitconnected.com/getyourguide-senior-software-engineer-java-interview-guide-berlin-b3a0c861e218", "kind": "Interview report", "checked": "403 to automated checks (open in a browser)" },
+    { "title": "Glassdoor: Senior Software Engineer interview questions", "url": "https://www.glassdoor.com/Interview/GetYourGuide-Senior-Software-Engineer-Interview-Questions-EI_IE695237.0,12_KO13,37.htm", "kind": "Interview report", "checked": "403 to automated checks (open in a browser)" },
+    { "title": "Glassdoor: Software Engineer interview questions", "url": "https://www.glassdoor.com/Interview/GetYourGuide-Software-Engineer-Interview-Questions-EI_IE695237.0,12_KO13,30.htm", "kind": "Interview report", "checked": "403 to automated checks (open in a browser)" },
+    { "title": "Official interview repo (private now)", "url": "https://github.com/getyourguide/swe-be-coding-interview", "kind": "Codebase", "checked": "404 (private)" },
+    { "title": "Public copy of the starter (Spring Boot 3.4, Gradle)", "url": "https://github.com/Sandip1509/swe-be-coding-interview", "kind": "Codebase", "checked": "200" },
+    { "title": "A candidate's solution and cheat sheet (Spring Boot 4, Maven)", "url": "https://github.com/raghava219/swe-be-coding-interview-solution", "kind": "Solution", "checked": "200" },
+    { "title": "Unofficial practice setup and research notes", "url": "https://github.com/josearesvi/gyg-interview-prep", "kind": "Practice", "checked": "200" },
+    { "title": "Research notes on the interview (docs/RESEARCH_2026.md)", "url": "https://github.com/josearesvi/gyg-interview-prep/blob/main/docs/RESEARCH_2026.md", "kind": "Research", "checked": "200" }
+  ],
+  "notes": [
+    "The starter and solution repos were downloaded without a LICENSE file. Read them for reference only. Do not copy their code or text into this project.",
+    "The practice repo's scripts/install-claude-kit.sh installs skills into ~/.claude. Read the script before running anything from it."
+  ]
+}

@@ -48,6 +48,21 @@ for (const id of index.exercises) {
   }
 }
 
+
+// Companies: the index lists each company file, and every link is https.
+const companiesDir = join(root, "companies");
+const companiesIndex = JSON.parse(readFileSync(join(companiesDir, "index.json"), "utf8"));
+for (const c of companiesIndex.companies) {
+  const file = join(companiesDir, `${c.id}.json`);
+  if (!existsSync(file)) { errors.push(`company ${c.id}: missing ${c.id}.json`); continue; }
+  const data = JSON.parse(readFileSync(file, "utf8"));
+  for (const field of ["name", "summary", "updated", "confidence"]) if (!data[field]) errors.push(`company ${c.id}: "${field}" is missing`);
+  if (!Array.isArray(data.process) || !data.process.length) errors.push(`company ${c.id}: "process" must be a non-empty list`);
+  if (!Array.isArray(data.questions) || !data.questions.length) errors.push(`company ${c.id}: "questions" must be a non-empty list`);
+  for (const q of data.questions || []) if (!q.q || !q.a || !q.topic) errors.push(`company ${c.id}: each question needs "q", "a" and "topic"`);
+  for (const l of data.links || []) if (!String(l.url).startsWith("https://")) errors.push(`company ${c.id}: link "${l.title}" must be https`);
+}
+
 if (errors.length) {
   console.error(errors.map(e => "✗ " + e).join("\n"));
   console.error(`\n${errors.length} problem(s) found.`);

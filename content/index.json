@@ -1,12 +1,40 @@
 {
   "topics": [
-    { "id": "concurrency", "name": "Concurrency & JVM" },
-    { "id": "spring", "name": "Spring & transactions" },
-    { "id": "data", "name": "Databases & SQL" },
-    { "id": "messaging", "name": "Kafka & messaging" },
-    { "id": "caching", "name": "Redis & caching" },
-    { "id": "money", "name": "Money & trading" },
-    { "id": "kotlin", "name": "Kotlin traps" }
+    {
+      "id": "concurrency",
+      "name": "Concurrency & JVM",
+      "description": "Shared state across request threads, races, thread pools and JVM memory leaks."
+    },
+    {
+      "id": "spring",
+      "name": "Spring & transactions",
+      "description": "Transactions, proxies, controllers, validation and error handling."
+    },
+    {
+      "id": "data",
+      "name": "Databases & SQL",
+      "description": "N+1 queries, pagination, injection, indexes and JDBC pitfalls."
+    },
+    {
+      "id": "messaging",
+      "name": "Kafka & messaging",
+      "description": "At-least-once delivery, idempotency, dual writes and poison messages."
+    },
+    {
+      "id": "caching",
+      "name": "Redis & caching",
+      "description": "Cache keys and TTLs, Redis commands to avoid, and distributed locks."
+    },
+    {
+      "id": "money",
+      "name": "Money & trading",
+      "description": "BigDecimal, rounding, currencies, fees and market hours."
+    },
+    {
+      "id": "kotlin",
+      "name": "Kotlin traps",
+      "description": "JPA with data classes, compiler plugins, coroutines and !!."
+    }
   ],
   "exercises": [
     "quote-cache",

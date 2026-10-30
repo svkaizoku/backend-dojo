@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://openrouter.ai https://api.anthropic.com https://api.openai.com https://generativelanguage.googleapis.com; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Practice · Backend Dojo</title>
+<meta name="description" content="Practise backend code reviews in Java and Kotlin. Grade your review with your own AI account.">
+<link rel="stylesheet" href="css/app.css">
+<script type="module" src="js/app.js"></script>
+</head>
+<body>
+<nav class="site-nav" aria-label="Site">
+  <div class="nav-inner">
+    <a class="logo" href="./">Backend Dojo</a>
+    <div class="nav-links">
+      <a href="./#how">How it works</a>
+      <a href="./#topics">Topics</a>
+      <a href="./#ai">Your AI</a>
+      <a href="./#contribute">Contribute</a>
+      <a href="https://github.com/svkaizoku/backend-dojo" rel="noopener noreferrer">GitHub</a>
+      <a class="nav-cta" href="practice.html" aria-current="page">Practice</a>
+    </div>
+  </div>
+</nav>
+<div class="page">
+  <header class="top">
+    <div class="brand">
+      <h1>Practice</h1>
+      <p>Read the pull request, write your review the way you would comment on a teammate's PR, then grade it.</p>
+    </div>
+    <div class="top-actions">
+      <div class="seg" role="group" aria-label="Language" id="langToggle"></div>
+      <button class="status" id="aiBtn" type="button" data-state="off">
+        <span class="dot" aria-hidden="true"></span><span id="aiStatus">Connect AI</span>
+      </button>
+    </div>
+  </header>
+
+  <p class="banner" id="banner" hidden></p>
+
+  <div class="layout">
+    <aside class="rail" aria-label="Exercises">
+      <div class="eyebrow">Topic</div>
+      <div class="topics" id="topics" role="group" aria-label="Topic"></div>
+      <div class="eyebrow">Exercises</div>
+      <ul class="exlist" id="exlist"></ul>
+      <div class="how">
+        <p><b>Grade with AI</b> compares your review with the answer key and rates how clearly you explain each problem. It uses the AI account you connect, so you pay your provider directly and nothing goes through this site.</p>
+        <p><b>Quick check</b> matches keywords and needs no AI. Correct its marks yourself afterwards.</p>
+      </div>
+    </aside>
+
+    <main id="main">
+      <section class="exhead">
+        <div class="meta"><span id="exTopic"></span><span aria-hidden="true">·</span><span id="exLevel"></span><span aria-hidden="true">·</span><span id="exCount"></span></div>
+        <h2 id="exTitle">Loading exercises…</h2>
+        <p class="pr" id="exContext" hidden></p>
+      </section>
+
+      <div class="work">
+        <section class="code" aria-label="Code under review">
+          <div class="bar"><span id="fileName"></span><span id="lineCount"></span></div>
+          <pre id="code"></pre>
+        </section>
+
+        <section class="pad">
+          <label for="review">Your review</label>
+          <p class="hint">Cite line numbers, say why each problem matters, and propose a fix. Put must-fix items before nits.</p>
+          <textarea id="review" spellcheck="false" placeholder="L12 (must fix): cache is a plain HashMap but the bean is a singleton shared by all request threads. Concurrent puts can corrupt it. Use ConcurrentHashMap and computeIfAbsent.
+
+L18 (nit): …"></textarea>
+          <div class="actions">
+            <button class="btn primary" id="gradeBtn" type="button">Grade with AI</button>
+            <button class="btn" id="stopBtn" type="button" hidden>Stop</button>
+            <button class="btn" id="quickBtn" type="button">Quick check</button>
+            <button class="btn" id="revealBtn" type="button">Show answer key</button>
+            <button class="btn" id="clearBtn" type="button" hidden>Clear grade</button>
+          </div>
+          <p class="msg" id="msg" aria-live="polite"></p>
+        </section>
+      </div>
+
+      <section class="results" id="results" hidden aria-label="Grade"></section>
+    </main>
+  </div>
+
+  <footer class="foot">
+    <p>Open source. Code under MIT, exercises under CC BY 4.0. Your API key never leaves your browser except to call the provider you chose.</p>
+  </footer>
+</div>
+
+<dialog id="aiDialog" aria-labelledby="aiTitle">
+  <div class="dlg">
+    <h2 id="aiTitle">Connect your AI</h2>
+    <p class="hint">Grading runs on your own AI account. Your key is stored only in this browser and is sent only to the provider you pick.</p>
+    <p class="note-box"><b>Use a capped key.</b> Create a separate key just for this site with a spending limit (an OpenRouter credit limit, an OpenAI project budget, or an Anthropic workspace limit). Browser extensions can read keys stored in a page, so delete the key in your provider's dashboard when you're done.</p>
+
+    <label for="aiProvider">Provider</label>
+    <select id="aiProvider">
+      <option value="openrouter">OpenRouter (Claude, GPT, Gemini and more)</option>
+      <option value="anthropic">Anthropic (Claude)</option>
+      <option value="openai">OpenAI</option>
+      <option value="gemini">Google Gemini</option>
+    </select>
+
+    <div id="orLogin" class="orlogin">
+      <button class="btn primary" id="orLoginBtn" type="button">Sign in with OpenRouter</button>
+      <span class="hint">or paste an OpenRouter key below</span>
+    </div>
+
+    <label for="aiKey">API key</label>
+    <input id="aiKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your key">
+    <a class="hint" id="aiKeyLink" href="https://openrouter.ai/keys" target="_blank" rel="noopener noreferrer">Get a key</a>
+
+    <label for="aiModel">Model</label>
+    <input id="aiModel" list="aiModels" autocomplete="off" spellcheck="false" placeholder="Connect to load models">
+    <datalist id="aiModels"></datalist>
+
+    <label class="check"><input id="aiRemember" type="checkbox"> Remember on this device</label>
+    <p class="hint">Unchecked, the key is forgotten when you close this tab.</p>
+
+    <div class="actions">
+      <button class="btn primary" id="aiConnectBtn" type="button">Connect</button>
+      <button class="btn" id="aiDisconnectBtn" type="button" hidden>Disconnect</button>
+      <button class="btn" id="aiCloseBtn" type="button">Close</button>
+    </div>
+    <p class="msg" id="aiMsg" aria-live="polite"></p>
+  </div>
+</dialog>
+</body>
+</html>

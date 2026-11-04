@@ -15,8 +15,9 @@
     },
     {
       "stage": "Online test",
-      "format": "HackerRank task with about 7 days to finish. Reported task: an event registration service with add-event, register, cancel and list-registrations operations.",
-      "confidence": "Reported"
+      "format": "HackerRank assessment with about 7 days to finish. Reported tasks: an event registration service with add-event, register, cancel and list-registrations operations (one review describes a 90-minute automated tech screen), and a later task to change a query so it does not return rows with duplicate values. One candidate says the tests expect thorough test cases.",
+      "confidence": "Reported (candidate reports)",
+      "source": "https://www.glassdoor.co.in/Interview/GetYourGuide-Software-Engineer-Interview-Questions-EI_IE695237.0,12_KO13,30.htm"
     },
     {
       "stage": "Codebase handed over",
@@ -32,6 +33,40 @@
       "stage": "AI use",
       "format": "AI tools such as Copilot or Claude Code are allowed. Expect to explain which tool you chose for which task and why. Candidates report questions about AI use at work, tasks where engineers should not use AI, and mentoring colleagues on AI.",
       "confidence": "Confirmed (tools allowed); Reported (the questions)"
+    }
+  ],
+  "study_plan": [
+    {
+      "focus": "1. Refresh the stack (2 days)",
+      "how": "Build a small Spring Boot app with JPA and PostgreSQL or H2. Add an entity with a lazy relation."
+    },
+    {
+      "focus": "2. Queries and N+1 (1 day)",
+      "how": "Load 100 parents with lazy children and count the queries. Fix it with a fetch join or entity graph, then count again."
+    },
+    {
+      "focus": "3. Layering and errors (2 days)",
+      "how": "Write controller, service and repository layers. Map each exception to a status code with @RestControllerAdvice. No catch-all handler."
+    },
+    {
+      "focus": "4. Entities (1 day)",
+      "how": "Practise the @Data pitfalls, IDENTITY vs AUTO, and wrapper vs primitive for nullable columns."
+    },
+    {
+      "focus": "5. Tests (1 day)",
+      "how": "Write one @WebMvcTest, one @DataJpaTest and one @SpringBootTest. Test through MockMvc. Delete any mock nothing uses."
+    },
+    {
+      "focus": "6. HackerRank practice (2 timed sessions)",
+      "how": "Solve the event registration challenge in 60 minutes, with tests. Then do a query-deduplication task the same way."
+    },
+    {
+      "focus": "7. Live codebase round (2 sessions)",
+      "how": "Use your own project with planted bugs, or write one. Practise narrating a 50-minute fix out loud: find, explain, change, test."
+    },
+    {
+      "focus": "8. AI use (1 hour)",
+      "how": "List which tool you would use for which task and why. Be ready to say what you checked in its output."
     }
   ],
   "topics": [

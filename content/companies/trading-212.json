@@ -6,7 +6,7 @@
     "Principal Backend Engineer"
   ],
   "summary": "Limited data. Candidate reports describe a short screen and a one-on-one technical round, with longer loops for senior roles. Job postings describe a Java 17/21 and Spring, Kafka and PostgreSQL stack. Glassdoor and the company careers page could not be opened from here, so the detail below comes from search summaries of those pages.",
-  "updated": "2026-10-30",
+  "updated": "2026-11-04",
   "confidence": "Reported = candidate reports seen in search summaries (Glassdoor, not opened directly). Likely = inferred from job postings or generic prep guides. Nothing here is confirmed by the company.",
   "process": [
     {
@@ -28,6 +28,16 @@
       "stage": "Longer onsite-style loop",
       "format": "Another Software Engineer report: screening, HR, a three-hour technical round onsite, then an interview with the Head of Engineering. A separate account mentions a behavioural interview and a final interview with a founder.",
       "confidence": "Reported"
+    },
+    {
+      "stage": "Backend loop from an aggregator",
+      "format": "A third-party listing says the process is a recruiter conversation, a code review, a system design round and a managerial interview. Unverified, and it does not cite a candidate.",
+      "confidence": "Likely (aggregator)"
+    },
+    {
+      "stage": "In-person technical round",
+      "format": "A February 2025 Glassdoor review describes an in-person technical interview that ran long. The questions were not especially hard, but the round was tiring.",
+      "confidence": "Reported (search summary)"
     },
     {
       "stage": "Timing",
@@ -54,6 +64,10 @@
       "what": "Preventing double booking across services. Repeatable read vs serializable isolation. Generic backend topics, not confirmed as Trading 212 questions."
     },
     {
+      "name": "System design",
+      "what": "A video upload service, like YouTube. Reported in one Glassdoor search summary (February 2025). Expect large files, storage, async processing and delivery."
+    },
+    {
       "name": "Infrastructure",
       "what": "CDNs and backward compatibility. Reported in candidate accounts."
     },
@@ -62,48 +76,119 @@
       "what": "When Go fits better than Java in a microservices setup, and the reverse. One aggregator lists this for a Principal role. Single unverified source."
     },
     {
+      "name": "Messaging",
+      "what": "Kafka consumers, at-least-once delivery and idempotent handlers. From the job postings' Kafka stack. Likely, not reported."
+    },
+    {
       "name": "Stack",
-      "what": "Java 17 or 21 with Spring, Kafka, PostgreSQL, Redis, ClickHouse, Elasticsearch, Docker and Kubernetes, AWS, Grafana. From job postings, which disagree on the Java version."
+      "what": "Java 17 or 21 with Spring, Kafka, PostgreSQL, Redis, ClickHouse, Elasticsearch, Docker and Kubernetes, AWS, Grafana. From job postings, which disagree on the Java version. Go, Node.js and TypeScript also appear on some postings."
+    }
+  ],
+  "study_plan": [
+    {
+      "focus": "1. Confirm the stack (first hour)",
+      "how": "Open two current Trading 212 backend postings. Note the Java version (17 or 21), the frameworks and the messaging tool. Build your notes around what they say, not around this page."
+    },
+    {
+      "focus": "2. Databases (about 3 days)",
+      "how": "Create a PostgreSQL table with a few million rows. Run EXPLAIN ANALYZE, add an index, run it again and explain the difference. Write the double-booking fix as one conditional UPDATE, then test two concurrent requests against it. Learn the four isolation levels and what each one prevents."
+    },
+    {
+      "focus": "3. Java runtime (about 2 days)",
+      "how": "Explain how the garbage collector finds unreachable objects, then how a leak still happens. Know the equals and hashCode contract, how HashMap uses them, and why ThreadLocal leaks in a thread pool. On Java 21, know what virtual threads change and what they do not."
+    },
+    {
+      "focus": "4. Spring and Kafka (about 2 days)",
+      "how": "Learn the rules that make @Transactional fail silently: self-invocation, non-public methods, and checked exceptions that do not roll back by default. Build a small Kafka consumer, then make it idempotent. Learn the outbox pattern and explain it in two sentences."
+    },
+    {
+      "focus": "5. System design (about 3 days)",
+      "how": "Practise the reported video upload problem and one booking or payments problem. Speak your answer out loud for 45 minutes. Start with requirements and numbers, draw the data flow, then cover failures: retries, duplicates, a slow dependency and a region outage."
+    },
+    {
+      "focus": "6. Timed mock rounds (about 2 days)",
+      "how": "Run two mocks: one 45-minute coding round and one 45-minute design round. Ask a friend to interrupt with follow-up questions. Record yourself and note where you hesitate."
+    },
+    {
+      "focus": "7. Behavioural and motivation (1 day)",
+      "how": "Prepare three stories: a production incident you fixed, a decision you pushed back on, and a time you owned a problem outside your remit. Read Trading 212's product pages and any public engineering posts, and be ready to say why a trading platform needs correct, reliable code."
     }
   ],
   "questions": [
     {
       "topic": "Databases",
+      "source": "Reported (topic)",
       "q": "What is database sharding, and what problem does it solve?",
       "a": "Sharding splits one dataset across several database instances by a key, such as user id. It spreads storage and write load when one machine can't handle them. The cost is cross-shard queries, rebalancing and harder transactions."
     },
     {
       "topic": "Databases",
+      "source": "Reported (topic)",
       "q": "How does a database index speed up a query, and what does it cost?",
       "a": "An index is a sorted structure, usually a B-tree, on one or more columns. Lookups go from scanning every row to a few tree steps. It costs extra storage, slower writes, and an index can't help a query that doesn't filter or sort on its columns."
     },
     {
       "topic": "Java runtime",
+      "source": "Reported (topic)",
       "q": "How do Java memory leaks happen, even with a garbage collector?",
       "a": "The collector frees objects that can't be reached. A leak happens when objects stay reachable by mistake, such as a static map that grows, a listener that is never removed, or a ThreadLocal that is never cleared in a pool."
     },
     {
       "topic": "Distributed systems",
+      "source": "Reported (topic)",
       "q": "How would you prevent double booking when two services can accept the same request?",
       "a": "Make the booking a single atomic step on one owner, such as a unique constraint or a conditional update (for example UPDATE ... WHERE status = 'free'). Use idempotency keys for retries. Don't rely on a read-then-write across services."
     },
     {
       "topic": "Distributed systems",
+      "source": "Likely (generic)",
       "q": "What is the difference between repeatable read and serializable isolation?",
       "a": "Repeatable read keeps the rows a transaction has read stable, but can still allow phantom rows in a range query, depending on the database. Serializable makes concurrent transactions behave as if they ran one at a time, at the cost of more blocking or retries."
     },
     {
+      "topic": "System design",
+      "source": "Reported (Glassdoor summary, Feb 2025)",
+      "q": "Design a video upload system like YouTube.",
+      "a": "Clarify first: maximum file size, resumable uploads, how fast a video must be playable, and scale. The client asks the API for a presigned upload URL and sends the file in chunks straight to object storage, so big files skip the app servers. The API stores metadata (id, owner, status) in PostgreSQL. When the upload completes, a message starts async transcoding into several resolutions. Workers write the renditions back to storage and update the status. Serve through a CDN. Cover retries, duplicate upload-complete events, and what the user sees while processing."
+    },
+    {
+      "topic": "Messaging",
+      "source": "Likely (generic)",
+      "q": "How do you stop a Kafka consumer from processing the same message twice?",
+      "a": "You can't fully. Kafka delivers at least once, so a retry or a consumer rebalance can deliver a message again. Make the handler idempotent: record the message id in the same database transaction as the side effect, under a unique constraint, or use a natural idempotent write such as an upsert. Commit the offset only after the work is saved."
+    },
+    {
+      "topic": "Java runtime",
+      "source": "Likely (generic)",
+      "q": "Why can a @Transactional method run without a transaction when it is called from the same class?",
+      "a": "Spring applies @Transactional through a proxy. A call from another method in the same class (this.method()) skips the proxy, so no transaction starts. The same happens for non-public methods, which are not proxied by default. Fix it by moving the method to another bean, or by calling it through the proxy."
+    },
+    {
       "topic": "Infrastructure",
+      "source": "Reported (topic)",
       "q": "What does backward compatibility mean for an API or a stored message format?",
       "a": "Old clients and old stored data keep working after a change. Add optional fields rather than renaming or removing them, version breaking changes, and deploy readers before writers when the format changes."
     },
     {
       "topic": "Language choice",
+      "source": "Single unverified source",
       "q": "When would Go be a better fit than Java for a microservice?",
       "a": "Go suits small services with fast start-up, low memory use and simple concurrency. Java suits teams with large existing Spring code, rich libraries and strong tooling. Pick by team skills, operations and the services' workload, not by language alone."
     }
   ],
   "links": [
+    {
+      "title": "Glassdoor: Trading 212 Interview review (February 2025, video upload question)",
+      "url": "https://www.glassdoor.com.au/Interview/Trading-212-Interview-E2365696-RVW92447983.htm",
+      "kind": "Interview report",
+      "checked": "search result only (page returned 403 when fetched)"
+    },
+    {
+      "title": "Glassdoor: Trading 212 Interview review (later review)",
+      "url": "https://www.glassdoor.com/Interview/Trading-212-Interview-E2365696-RVW104074534.htm",
+      "kind": "Interview report",
+      "checked": "search result only (page returned 403 when fetched)"
+    },
     {
       "title": "Glassdoor: Trading 212 Senior Software Engineer interview questions",
       "url": "https://www.glassdoor.com/Interview/Trading-212-Senior-Software-Engineer-Interview-Questions-EI_IE2365696.0,11_KO12,36.htm",
@@ -129,6 +214,12 @@
       "checked": "200, reviewed 2026-10-19"
     },
     {
+      "title": "Built In London: Trading 212 Senior Backend Engineer posting (stack)",
+      "url": "https://builtinlondon.uk/job/senior-backend-engineer/4470284",
+      "kind": "Job posting",
+      "checked": "search result only"
+    },
+    {
       "title": "Arc.dev: Trading 212 Senior Backend Engineer job posting (stack)",
       "url": "https://arc.dev/remote-jobs/j/trading-212-senior-backend-engineer-pmvyts4nt5",
       "kind": "Job posting",
@@ -150,6 +241,7 @@
   "notes": [
     "The careers page at trading212.com returned 403, so the company's own process and stack are unverified.",
     "Job postings disagree on the Java version (17 vs 21). Check a current posting before you prepare.",
+    "Glassdoor pages returned 403 when fetched. Questions marked 'Reported' come from search summaries of those pages, so check the source before you rely on one.",
     "Add a candidate's own account when you have one; they're the most useful source here."
   ]
 }

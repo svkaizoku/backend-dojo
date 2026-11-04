@@ -13,6 +13,12 @@ function el(tag, attrs, ...kids) {
 }
 const isHttps = u => typeof u === "string" && u.startsWith("https://");
 
+// Optional free-text file next to the company JSON. Missing file is fine.
+async function getText(path) {
+  const res = await fetch(path);
+  return res.ok ? (await res.text()).trim() : "";
+}
+
 async function getJson(path) {
   const res = await fetch(path);
   if (!res.ok) throw new Error(`${path}: ${res.status}`);
@@ -37,7 +43,7 @@ function showDetail(...nodes) {
   $("detailView").replaceChildren(...nodes.filter(Boolean));
 }
 
-function renderCompany(c) {
+function renderCompany(c, rawNotes) {
   const parts = [
     el("p", { class: "eyebrow" }, el("a", { href: "companies.html" }, "← All companies")),
     el("h1", null, c.name),
@@ -89,6 +95,9 @@ function renderCompany(c) {
           el("a", { href: l.url, target: "_blank", rel: "noopener noreferrer" }, l.title),
           el("span", { class: "hint" }, ` · ${l.kind} · checked: ${l.checked}`))))),
   ];
+  if (rawNotes) parts.push(section("Raw candidate notes",
+    el("p", { class: "hint" }, "Pasted as written, not checked or organised."),
+    el("pre", { class: "raw-notes" }, rawNotes)));
   if (c.notes?.length) parts.push(section("Notes", el("ul", null, c.notes.map(n => el("li", null, n)))));
   showDetail(...parts);
 }
@@ -108,7 +117,7 @@ async function route() {
     if (!found) throw new Error("unknown company");
     const data = await getJson(`content/companies/${found.id}.json`);
     document.title = `${data.name} · Backend Dojo`;
-    renderCompany(data);
+    renderCompany(data, await getText(`content/companies/${found.id}.txt`).catch(() => ""));
     window.scrollTo(0, 0);
   } catch {
     showDetail(el("p", { class: "hint" }, "Couldn't load that company. ",

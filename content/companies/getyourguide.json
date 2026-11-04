@@ -10,29 +10,39 @@
   "process": [
     {
       "stage": "Recruiter call",
-      "format": "Phone or video with a recruiter.",
+      "format": "About 30 minutes with a recruiter: CV screen, the position and why GetYourGuide. Generic questions. One candidate says the recruiter forgot to send the coding test for five days until they followed up by email.",
       "confidence": "Reported"
     },
     {
       "stage": "Online test",
-      "format": "HackerRank assessment with about 7 days to finish. Reported tasks: an event registration service with add-event, register, cancel and list-registrations operations (one review describes a 90-minute automated tech screen), and a later task to change a query so it does not return rows with duplicate values. One candidate says the tests expect thorough test cases.",
+      "format": "HackerRank assessment with about 7 days to finish. Reported tasks: an event registration service with add-event, register, cancel and list-registrations operations (one review describes a 90-minute automated tech screen), and a later task to change a query so it does not return rows with duplicate values. One candidate says the tests expect thorough test cases. Other reports: one LeetCode-medium task in about 1 hour, and a string manipulation task. One candidate found it hard but passed.",
       "confidence": "Reported (candidate reports)",
       "source": "https://www.glassdoor.co.in/Interview/GetYourGuide-Software-Engineer-Interview-Questions-EI_IE695237.0,12_KO13,30.htm"
     },
     {
       "stage": "Codebase handed over",
-      "format": "The repository link arrives about 24 hours before the technical interview.",
+      "format": "The repository link arrives about 24 hours before the technical interview, and you must set it up beforehand. It is public on GetYourGuide's GitHub page. Java and Spring Boot with a few endpoints.",
       "confidence": "Reported"
     },
     {
       "stage": "Technical interview",
-      "format": "60 minutes with one or two engineers: about 5 minutes of intro, 50 minutes of live pair programming on the codebase, and 5 minutes of Q&A. Java and Spring Boot. The prep document says the code is 'a simple project that wasn't made with best practices in mind'.",
-      "confidence": "Confirmed"
+      "format": "60 minutes with one or two engineers: about 5 minutes of intro, 50 minutes of live pair programming on the codebase, and 5 minutes of Q&A. Java and Spring Boot. The prep document says the code is 'a simple project that wasn't made with best practices in mind'. Reported tasks: fix an endpoint that throws a NullPointerException or returns 500, modify endpoints, write tests, solve a task with maps, change a query so it returns no rows with a duplicate value in column1, and answer SQL, indexing and Streams questions. Reports differ: some ran 45 minutes, and one candidate failed on the SQL part.",
+      "confidence": "Confirmed (format); Reported (tasks)"
     },
     {
       "stage": "AI use",
-      "format": "AI tools such as Copilot or Claude Code are allowed. Expect to explain which tool you chose for which task and why. Candidates report questions about AI use at work, tasks where engineers should not use AI, and mentoring colleagues on AI.",
+      "format": "AI tools such as Copilot or Claude Code are allowed. Expect to explain which tool you chose for which task and why. Reported: they want prompts that are specific, not generic, and tests for everything the AI changes. One candidate advises using AI only to show a smart prompt strategy. Reported questions: AI use at work, tasks where engineers should not use AI, and mentoring a colleague on AI.",
       "confidence": "Confirmed (tools allowed); Reported (the questions)"
+    },
+    {
+      "stage": "Behavioral round",
+      "format": "About 1 hour with an engineering manager. Basic behavioral questions. Reported by one candidate (Zurich, July 2025).",
+      "confidence": "Reported"
+    },
+    {
+      "stage": "Outcome",
+      "format": "Reports mention stack ranking: several candidates pass the technical round and the team picks one. Feedback can be vague. One candidate had the next technical round cancelled a day before because the position was filled. One candidate was not invited further after the pairing round. Timelines range from 6 days to 3 weeks.",
+      "confidence": "Reported"
     }
   ],
   "study_plan": [
@@ -101,6 +111,10 @@
     {
       "name": "AI in the round",
       "what": "Using an AI tool well: say what you asked it, check the output, and explain the result in your own words."
+    },
+    {
+      "name": "Production query tuning",
+      "what": "How to investigate a slow query in production: measure first, read the execution plan, check indexes and row counts, then fix and re-measure."
     }
   ],
   "questions": [
@@ -208,6 +222,56 @@
       "topic": "AI in the round",
       "q": "When would you not use AI in the job?",
       "a": "When the task measures your own understanding, such as a design you will own, a security review, or explaining a production incident. Use AI to speed up known work, and check its output."
+    },
+    {
+      "topic": "AI in the round",
+      "q": "What is your experience with using AI at work?",
+      "a": "Name the tools, the tasks you give them, and one concrete result. Say what you check in the output, such as tests and review, and where it failed you."
+    },
+    {
+      "topic": "AI in the round",
+      "q": "Tell me about a time you mentored a colleague on using AI.",
+      "a": "Use one real story: the colleague's problem, what you showed (specific prompts, giving context, asking for tests, reviewing the output), and how their work changed. Avoid a generic tips list."
+    },
+    {
+      "topic": "AI in the round",
+      "q": "You are asked to use AI to improve a controller class. What do you prompt?",
+      "a": "Be specific: state the problem, the layer rules, the behaviour to keep, and ask for tests with the change. Then read the diff, run the tests, and explain it in your own words. A generic 'improve this code' prompt shows little."
+    },
+    {
+      "topic": "Errors and HTTP",
+      "q": "An endpoint throws a NullPointerException, or returns 500. How do you find and fix it?",
+      "a": "Reproduce the call, read the stack trace to the exact line, and find which value is null and why. Fix the cause, such as a missing check, a bad mapping or an Optional ignored, not a catch-all. Add a test that fails before the fix, and return the right status, such as 404 when nothing is found."
+    },
+    {
+      "topic": "Production query tuning",
+      "q": "A query is slow in production. How do you investigate, troubleshoot and fix it?",
+      "a": "Find the query from slow-query logs or monitoring. Run EXPLAIN (ANALYZE) and look for full scans, bad join order and row estimates that are far off. Check indexes, N+1 patterns, missing WHERE clauses and stale statistics. Change one thing, such as an index or a rewritten query, test on production-like data, and measure again."
+    },
+    {
+      "topic": "Queries",
+      "q": "Change a query so it does not return rows with a duplicate value in column1.",
+      "a": "Clarify which row to keep per value. Use GROUP BY column1 with aggregates, or ROW_NUMBER() OVER (PARTITION BY column1 ORDER BY ...) and keep row 1. Plain DISTINCT removes only fully identical rows, so it is usually not enough."
+    },
+    {
+      "topic": "Java",
+      "q": "A task needs a Map. How do you solve it, for example grouping or counting?",
+      "a": "Use computeIfAbsent for grouping, merge or getOrDefault for counting, or Collectors.groupingBy and counting with streams. Pick HashMap for lookup, LinkedHashMap for insertion order and TreeMap for sorted keys."
+    },
+    {
+      "topic": "Java",
+      "q": "HackerRank: build an event registration system with addEvent(eventId, eventType, capacity, requirements), registerParticipant(eventId, participantId, email, skillLevel), cancelRegistration(eventId, participantId) and findRegisteredEvents(participantId).",
+      "a": "Keep a Map<eventId, Event> and a Map<participantId, Set<eventId>> for fast lookup. Register must reject an unknown event, a full event, a duplicate registration and a skill level below the requirements. Cancel removes from both maps. Write tests for each rejection and for cancel then re-register."
+    },
+    {
+      "topic": "Java",
+      "q": "Basic questions on Streams, lambdas, Optional, HashSet and Maps.",
+      "a": "Know map, filter and collect; Optional.map and orElseThrow instead of get; HashSet for uniqueness with O(1) lookup and the equals and hashCode contract; and HashMap internals."
+    },
+    {
+      "topic": "Queries",
+      "q": "What do you know about database indexing and query performance?",
+      "a": "An index speeds up reads on the columns you filter, join or sort on, and costs writes and space. Know B-tree indexes, composite column order, covering indexes, and when the planner ignores an index, such as a function on the column."
     }
   ],
   "links": [
@@ -263,7 +327,8 @@
   "notes": [
     "The starter and solution repos were downloaded without a LICENSE file. Read them for reference only. Do not copy their code or text into this project.",
     "The practice repo's scripts/install-claude-kit.sh installs skills into ~/.claude. Read the script before running anything from it.",
-    "News is append-only. Each item has an 'added' date (when recorded) and a 'published' date. Existing items are never rewritten or removed."
+    "News is append-only. Each item has an 'added' date (when recorded) and a 'published' date. Existing items are never rewritten or removed.",
+    "Candidate reports vary by year and office (Berlin and Zurich, 2025 and 2026): the order of the online test and the codebase round differs, and not every candidate got both."
   ],
   "news": [
     {

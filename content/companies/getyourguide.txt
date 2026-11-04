@@ -1,0 +1,25 @@
+It was hr session first and then a live coding and debugging round where I was given a repository first that I had to setup prior and then they asked me few questions from that. For example - an api was giving null pointer, I had to fix that. Then came up another question where I had to use maps to solve
+
+1. What is your experience with using AI at work? 2. For which tasks an engineer should not use AI? 3. Tell me about an experience when you have mentored your colleague regarding the use of AI? 4. Hackerrank test: Create an Event Registration System. Implement methods addEvent(eventId, eventType, capacity, requirements), registerParticipant(eventId, participantId, email, skillLevel), cancelRegistration(eventId, participantId), and findRegisteredEvents(participantId). 5. Suppose a query is not performing well in production. How would you investigate, troubleshoot & fix it? 6. Hit an endpoint of a REST Api, you get 500 error, troubleshoot & fix it. 7. Use some AI to improve the code of the controller class. (They want to see that your prompts to the AI are not too generic. You always add test cases for everything.) 8. Modify the code so that it this method does not return rows with duplicate value in column1.
+
+---
+Berlin, January 2026. Applied online. The process took more than a week.
+Medium level interview. Do not complicate the system design, keep it simple as they focus on completion of design rather than a great solution. Over all the process is not so long but you may get rejected over a vague reason.
+
+---
+Berlin, May 2025. Applied online. The process took 6 days.
+The first recruiter interview went well, but she said she would send me the coding interview right after the screening. However, she missed it for five days until I followed up by email. This delayed my overall process. I had a coding interview, and it was a bit hard, but I was able to exceed the pass mark. Then the next technical interview was scheduled, but they postponed it, and one day before the interview, they canceled it, saying the position had already been filled.
+Question: String manipulation related coding question.
+
+---
+First quick call with one of the recruiters, then a take home task, after that a small 45 min task with a developer working there. They give you a codebase a day before and then during the interview they will give you tasks. After that I wasn't invited and therefore am not sure what happens after.
+Question: There's a bug in one of the endpoints. Can you check what's wrong and fix it?
+
+---
+Zurich, July 2025. Applied online. The process took three weeks.
+Multiple rounds: #1: Discussion with HR recruiter if your CV passes screening, around 30m, about the position and why GYG #2: Online Assessment, can't remember the time exactly, I think 1h and one LeetCode medium. #3: After passing the assessment, you get a project one day before the technical interview, but really you can find it on their GitHub, as the project is public. In my case, it was a Java Spring Boot app with a few endpoints. During the technical interview, you are asked to modify endpoints, write tests and perform SQL queries (this is where I failed, as I mainly did SQL queries with AI through my career :)) ) #4: Surprisingly, I passed, and moved to the last stage, a 1h behavioral interview with an EM. Basic behavioral questions here. After a few days, I got feedback that unfortunately they went with another candidate, as multiple candidates pass technicals and they stack rank them. The HR offered a feedback call but I had to decline due to other interviews & commitments. It was a nice and relatively fast interview process.
+Question: Basic Java Spring Boot questions & SQL queries.
+
+---
+Started with a recruiter round - 30 minutes. Generic questions. And then for the coding round, a github code repo was shared 1 day before that can be found on their Github page. Allowed to use AI assistant. Tech stack - Java, spring boot
+Question: During the coding interview I was asked basic questions based on java Streams, Lambdas, Optional, HashSet, Maps, Spring Boot concepts, DB Indexing, Query Performance, etc. I'd suggest to not use AI assistant at all although it's allowed. Or maybe just use to showcase how you use AI with some smart prompt strategies.

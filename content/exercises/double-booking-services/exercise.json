@@ -1,0 +1,16 @@
+{
+  "mode": "concepts",
+  "title": "Preventing double booking across services",
+  "topic": "data",
+  "level": "Standard",
+  "companies": ["trading-212"],
+  "context": "Two services can accept the same booking request, and the mobile app retries when a response is lost. How do you make sure a slot is booked at most once? Cover the data model, the retry path and what the client sees.",
+  "answer": "Give the slot one owner and make the booking one atomic step in that owner's database. Put a unique constraint on the slot for active bookings. Give each request an idempotency key, stored with the booking under a unique constraint, so a retry returns the stored result instead of booking again. Don't check availability in one service and write in another, because the check goes stale between them. If the request must cross a service boundary, send it to the owner, or use an outbox and let the owner consume the event with an idempotent handler. The client sends the same key on retry, and a 409 means someone else already booked the slot.",
+  "points": [
+    { "sev": "major", "title": "One owner and one atomic step", "why": "A single owner that writes the booking in one transaction is the only place that can say who won.", "kw": ["one owner", "single owner", "atomic", "same database", "owner"] },
+    { "sev": "major", "title": "Unique constraint on the slot", "why": "A unique key on the slot for active bookings stops a second booking at the database.", "kw": ["unique constraint", "unique key", "unique index"] },
+    { "sev": "major", "title": "Idempotency key for retries", "why": "The same key on a retry returns the stored result instead of creating a second booking.", "kw": ["idempotency key", "idempotency-key", "retry", "same key"] },
+    { "sev": "major", "title": "No check-then-write across services", "why": "Checking availability in one service and writing in another leaves a window where both can succeed.", "kw": ["check then", "stale", "across services", "read-then-write", "race"] },
+    { "sev": "minor", "title": "Clear answer to the client", "why": "A 409 or a status the app can show tells the user the slot is gone.", "kw": ["409", "already booked", "conflict", "status"] }
+  ]
+}

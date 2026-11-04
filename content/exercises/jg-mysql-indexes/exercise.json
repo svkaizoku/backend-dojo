@@ -2,6 +2,7 @@
   "mode": "concepts",
   "title": "MySQL indexes",
   "topic": "data",
+  "companies": ["trading-212"],
   "level": "Hard",
   "context": "How do MySQL indexes work, and when do they stop being used?",
   "source": {

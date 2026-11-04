@@ -2,6 +2,7 @@
   "mode": "concepts",
   "title": "@Transactional and self-calls",
   "topic": "spring",
+  "companies": ["trading-212"],
   "level": "Standard",
   "context": "A @Service has a method a() that calls this.b(). b() is annotated @Transactional(propagation = Propagation.REQUIRES_NEW). Does b() run in its own new transaction? Explain why, and how you would fix it.",
   "answer": "No. Spring implements @Transactional with a proxy around the bean. Only calls that come in through the proxy get transaction handling; a() calling b() on `this` goes straight to the target object, so the annotation on b() is ignored and b() simply joins whatever transaction a() is in (or none). To fix it, move b() to a separate bean and inject it, use TransactionTemplate to start the new transaction programmatically, or (rarely) switch to AspectJ weaving, which works on self-calls.",

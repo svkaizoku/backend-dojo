@@ -34,7 +34,7 @@ function section(title, ...kids) {
 function showDetail(...nodes) {
   $("listView").hidden = true;
   $("detailView").hidden = false;
-  $("detailView").replaceChildren(...nodes);
+  $("detailView").replaceChildren(...nodes.filter(Boolean));
 }
 
 function renderCompany(c) {
@@ -50,7 +50,14 @@ function renderCompany(c) {
         el("li", null,
           el("strong", null, s.stage),
           el("span", { class: "pill" }, s.confidence),
-          el("p", null, s.format))))),
+          el("p", null, s.format),
+          isHttps(s.source) ? el("p", { class: "hint" }, el("a", { href: s.source, target: "_blank", rel: "noopener noreferrer" }, "Source")) : null)))),
+    c.study_plan?.length ? section("How to prepare",
+      el("ol", { class: "steps" }, c.study_plan.map(s =>
+        el("li", null,
+          el("strong", null, s.focus),
+          el("p", null, s.how)))))
+      : null,
     section("Topics to prepare",
       el("dl", { class: "topic-list" }, c.topics.flatMap(t => [
         el("dt", null, t.name), el("dd", null, t.what)]))),
@@ -58,7 +65,8 @@ function renderCompany(c) {
       el("p", { class: "hint" }, "Answers are our own summaries. Try the question first, then open the answer."),
       c.questions.map(qa => el("details", { class: "qa" },
         el("summary", null, el("span", { class: "pill" }, qa.topic), " ", qa.q),
-        el("p", null, qa.a)))),
+        el("p", null, qa.a),
+        qa.source ? el("p", { class: "hint" }, `Source: ${qa.source}`) : null))),
     c.news?.length ? section("Latest news",
       el("p", { class: "hint" }, "Append-only: newest entries appear first. Added is when we recorded the item; Published is the date shown by the source."),
       el("div", { class: "news-wrap" },

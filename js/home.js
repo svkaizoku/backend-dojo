@@ -123,22 +123,25 @@ function renderSkills(exercises, topics) {
 }
 
 /* ---------- challenge explorer ---------- */
-function renderFilters(topics) {
+function renderFilters(topics, companies) {
   $("modeFilter").append(...Object.entries(MODES).filter(([, m]) => !m.hidden).map(([id, m]) =>
     el("label", null, el("input", { type: "checkbox", name: "mode", value: id, checked: true }), ` ${m.name}`)));
   $("levelFilter").append(...LEVELS.map(level =>
     el("label", null, el("input", { type: "checkbox", name: "level", value: level, checked: true }), ` ${level}`)));
   $("topicFilter").append(...topics.map(t => el("option", { value: t.id }, t.name)));
+  $("companyFilter").append(...companies.map(c => el("option", { value: c.id }, c.name)));
 }
 
-function renderChallenges(exercises, topics) {
+function renderChallenges(exercises, topics, companies) {
   const q = $("search").value.trim().toLowerCase();
   const status = document.querySelector('input[name="status"]:checked').value;
   const modes = new Set([...document.querySelectorAll('input[name="mode"]:checked')].map(i => i.value));
   const levels = new Set([...document.querySelectorAll('input[name="level"]:checked')].map(i => i.value));
   const topic = $("topicFilter").value;
+  const company = $("companyFilter").value;
   const shown = exercises.filter(ex =>
     modes.has(ex.mode) && levels.has(ex.level) && (!topic || ex.topic === topic) &&
+    (!company || ex.companies?.includes(company)) &&
     (status === "all" || (status === "solved") === (statusOf(ex) === "solved")) &&
     (!q || `${ex.title} ${ex.context}`.toLowerCase().includes(q)));
   $("resultCount").textContent = `${plural(shown.length, "challenge")}`;
@@ -146,10 +149,11 @@ function renderChallenges(exercises, topics) {
     const s = statusOf(ex);
     const langs = Object.keys(ex.files || {}).map(l => LANGS[l].name).join(", ");
     const topicName = topics.find(t => t.id === ex.topic)?.name || ex.topic;
+    const companyNames = (ex.companies || []).map(id => companies.find(c => c.id === id)?.name || id).join(", ");
     return el("li", { class: "ch" },
       el("div", { class: "ch-main" },
         el("a", { class: "ch-title", href: link(ex.id) }, ex.title),
-        el("p", { class: "ch-meta" }, [MODES[ex.mode].name, topicName, langs].filter(Boolean).join(" · "))),
+        el("p", { class: "ch-meta" }, [MODES[ex.mode].name, topicName, langs, companyNames && `Company: ${companyNames}`].filter(Boolean).join(" · "))),
       el("div", { class: "ch-facts" },
         el("span", { class: `pill lvl-${LEVELS.indexOf(ex.level)}` }, ex.level),
         el("span", { class: "ch-pts" }, `${LEVEL_POINTS[ex.level]} pts`),
@@ -167,13 +171,14 @@ async function main() {
   }))).filter(ex => ex && MODES[ex.mode] && !MODES[ex.mode].hidden && LEVEL_POINTS[ex.level]);
   const byId = Object.fromEntries(exercises.map(ex => [ex.id, ex]));
   const topics = index.topics;
+  const companies = index.companies || [];
 
   renderProgress(exercises, topics);
   renderKit(index.kits?.[0], byId);
   renderSkills(exercises, topics);
-  renderFilters(topics);
-  renderChallenges(exercises, topics);
-  const rerender = () => renderChallenges(exercises, topics);
+  renderFilters(topics, companies);
+  renderChallenges(exercises, topics, companies);
+  const rerender = () => renderChallenges(exercises, topics, companies);
   $("search").addEventListener("input", rerender);
   document.querySelector(".filters").addEventListener("change", rerender);
 }

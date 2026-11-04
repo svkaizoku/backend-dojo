@@ -9,6 +9,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..", "content");
 const errors = [];
 const index = JSON.parse(readFileSync(join(root, "index.json"), "utf8"));
 const topicIds = index.topics.map(t => t.id);
+const companyIds = (index.companies || []).map(c => c.id);
 
 const dirs = readdirSync(join(root, "exercises"), { withFileTypes: true }).filter(d => d.isDirectory()).map(d => d.name);
 for (const d of dirs) if (!index.exercises.includes(d)) errors.push(`${d}: folder exists but is not listed in content/index.json`);
@@ -30,6 +31,7 @@ for (const id of index.exercises) {
   try { ex = JSON.parse(readFileSync(file, "utf8")); } catch (e) { errors.push(`${id}: exercise.json is not valid JSON (${e.message})`); continue; }
   const found = checkExercise(id, ex, topicIds);
   errors.push(...found);
+  for (const c of ex.companies || []) if (!companyIds.includes(c)) errors.push(`${id}: company tag "${c}" is not listed in content/index.json`);
   if (found.length) continue;
   if (!ex.files) {
     errors.push(...buildVariant(id, ex, null, null).errors);

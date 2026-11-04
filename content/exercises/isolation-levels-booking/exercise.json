@@ -1,0 +1,16 @@
+{
+  "mode": "concepts",
+  "title": "Isolation levels and double booking",
+  "topic": "data",
+  "level": "Standard",
+  "companies": ["trading-212"],
+  "context": "Two requests try to book the same seat. Both transactions read the seat as free, then both write it as booked. Which isolation level prevents this, which ones don't, and what would you use in a booking flow?",
+  "answer": "Both transactions read the seat as free, then both write it as booked. READ COMMITTED (PostgreSQL's default) allows this. REPEATABLE READ stops the lost update on the same row, because the second writer fails, but it doesn't cover every read-then-write pattern. SERIALIZABLE detects the dangerous pattern and aborts one transaction, so the client must retry. A simpler fix is to let the database pick one winner: UPDATE seats SET status = 'BOOKED' WHERE id = ? AND status = 'FREE', then check the row count, or add a unique constraint on the booked seat. The loser gets an 'already booked' answer with no retry loop.",
+  "points": [
+    { "sev": "major", "title": "Read then write is the bug", "why": "Both transactions read the seat as free before either writes, so each check is stale when it commits.", "kw": ["read then write", "stale", "lost update", "check then act", "race"] },
+    { "sev": "major", "title": "READ COMMITTED allows it", "why": "Each statement sees only committed data at that moment, so both reads can see the seat as free.", "kw": ["read committed"] },
+    { "sev": "major", "title": "SERIALIZABLE prevents it, with retries", "why": "The database aborts one transaction, and the application must retry it.", "kw": ["serializable", "retry", "serialization failure", "aborts"] },
+    { "sev": "major", "title": "Conditional update or unique constraint", "why": "One statement with the status check, or a unique key, lets the database pick the winner without a retry loop.", "kw": ["conditional update", "where status", "unique constraint", "row count", "affected rows", "unique key"] },
+    { "sev": "minor", "title": "Repeatable read is not enough", "why": "It stops lost updates on one row but does not cover every read-then-write pattern.", "kw": ["repeatable read", "snapshot", "write skew"] }
+  ]
+}

@@ -3,39 +3,71 @@
   "title": "Event registration service",
   "topic": "java-core",
   "level": "Standard",
-  "companies": ["getyourguide"],
-  "context": "Implement an in-memory event registration service: add an event with a capacity, register and cancel users, and list the registrations. The doc comment lists the rules; the tests check them. This is modelled on a HackerRank event registration task reported for GetYourGuide's backend interview.",
-  "files": { "java": "EventRegistry.java" },
-  "tests": { "java": "EventRegistryTests.java" },
-  "solution": { "java": "EventRegistrySolution.java" },
+  "companies": [
+    "getyourguide"
+  ],
+  "context": "Implement an in-memory event registration system: add events with a type, capacity and skill requirements, register and cancel participants, and list the events a participant is registered for. The doc comment lists the rules; the tests check them. This is modelled on the HackerRank task reported for GetYourGuide's backend interview (addEvent, registerParticipant, cancelRegistration, findRegisteredEvents). The reports don't say what requirements and skillLevel mean, so this version treats them as a minimum and an actual whole-number level.",
+  "files": {
+    "java": "EventRegistry.java"
+  },
+  "tests": {
+    "java": "EventRegistryTests.java"
+  },
+  "solution": {
+    "java": "EventRegistrySolution.java"
+  },
   "points": [
     {
       "sev": "major",
-      "title": "Per-event map of users",
-      "why": "A map from event id to its registrations gives direct lookup. A set per event stops a user registering twice.",
-      "fix": "HashMap of event id to a LinkedHashSet of user ids. LinkedHashSet keeps registration order.",
-      "kw": ["hashmap", "linkedhashset", "map", "set"]
+      "title": "Two maps: events and participants",
+      "why": "One map from event id to the event gives direct lookup. A second map from participant id to event ids answers findRegisteredEvents without scanning every event.",
+      "fix": "HashMap of event id to an Event (type, capacity, requirements, LinkedHashSet of participants) and HashMap of participant id to a LinkedHashSet of event ids. LinkedHashSet keeps registration order.",
+      "kw": [
+        "hashmap",
+        "linkedhashset",
+        "map",
+        "set",
+        "computeifabsent"
+      ]
     },
     {
       "sev": "major",
-      "title": "Check capacity and duplicates before adding",
-      "why": "Without these checks a full event takes another user, and a repeated user is counted twice.",
-      "fix": "Return false when the event is full or the user is already registered.",
-      "kw": ["capacity", "contains", "size()", "duplicate", "already"]
+      "title": "Check capacity, duplicates and skill before adding",
+      "why": "Without these checks a full event takes another participant, a repeated participant is counted twice, and an unqualified one gets in.",
+      "fix": "Return false when skillLevel < requirements, the event is full, or add() on the participant set returns false. Update the participant's event set only after the add succeeds.",
+      "kw": [
+        "capacity",
+        "contains",
+        "size()",
+        "duplicate",
+        "already",
+        "skill",
+        "requirements"
+      ]
     },
     {
       "sev": "major",
-      "title": "Cancel reports whether a registration was removed",
-      "why": "The result of remove tells the caller whether the user was registered, and the seat frees up for the next user.",
-      "fix": "return users.remove(userId);",
-      "kw": ["remove", "return"]
+      "title": "Cancel updates both maps",
+      "why": "If cancel only removes the participant from the event, findRegisteredEvents still lists the event and the two maps disagree.",
+      "fix": "Remove from the event's participants; if that returned true, also remove the event id from the participant's set and return true.",
+      "kw": [
+        "remove",
+        "return",
+        "both"
+      ]
     },
     {
       "sev": "minor",
-      "title": "Unknown events fail loudly",
-      "why": "A typo in an event id should not look like an empty event.",
-      "fix": "One lookup helper that throws IllegalArgumentException, used by every method that takes an event id.",
-      "kw": ["illegalargumentexception", "unknown", "find", "lookup"]
+      "title": "Validate input and fail loudly",
+      "why": "A typo in an event id should not look like an empty event, and a bad email should not be stored.",
+      "fix": "One find helper that throws IllegalArgumentException for unknown events, plus an email check, before any map is changed.",
+      "kw": [
+        "illegalargumentexception",
+        "unknown",
+        "find",
+        "lookup",
+        "email"
+      ]
     }
   ]
 }

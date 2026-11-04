@@ -2,6 +2,7 @@
   "mode": "design",
   "title": "Idempotent order placement",
   "topic": "resilience",
+  "companies": ["trading-212"],
   "level": "Hard",
   "context": "Design the API and backend flow for placing a stock order from the mobile app. Mobile networks drop responses, so the app retries, and users double-tap. Each order must reach the exchange at most once, the user's cash must be reserved before sending, and the app must be able to show the order's status. Describe the API, data model, order states, and how you handle retries and failures.",
   "answer": "The client generates an idempotency key per order attempt and sends it with POST /orders. The server stores the key with a unique constraint and a hash of the request; a retry with the same key returns the stored result (or 409 while the first request is still in flight, or 422 if the body differs). In one database transaction it validates the order, reserves cash with a row lock or version check, inserts the order as PENDING, and writes an outbox event. A sender delivers outbox events to the exchange with the order id as client order id, so the exchange can reject duplicates. Exchange responses move the order through SUBMITTED, then FILLED, PARTIALLY_FILLED, REJECTED or CANCELLED, releasing or settling the reservation. A reconciliation job compares local state with the exchange to fix orders stuck after timeouts, and every state change is audited. The app polls GET /orders/{id} or receives updates over a push or websocket channel.",

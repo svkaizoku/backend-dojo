@@ -192,7 +192,12 @@
     "kt-object-companion",
     "kt-operator-overloading",
     "kt-property-delegation",
-    "kt-val-and-read-only-collections"
+    "kt-val-and-read-only-collections",
+    "isolation-levels-booking",
+    "double-booking-services"
+  ],
+  "companies": [
+    { "id": "trading-212", "name": "Trading 212" }
   ],
   "kits": [
     {

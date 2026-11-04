@@ -50,7 +50,8 @@ function renderCompany(c) {
         el("li", null,
           el("strong", null, s.stage),
           el("span", { class: "pill" }, s.confidence),
-          el("p", null, s.format))))),
+          el("p", null, s.format),
+          isHttps(s.source) ? el("p", { class: "hint" }, el("a", { href: s.source, target: "_blank", rel: "noopener noreferrer" }, "Source")) : null)))),
     c.study_plan?.length ? section("How to prepare",
       el("ol", { class: "steps" }, c.study_plan.map(s =>
         el("li", null,

@@ -11,8 +11,9 @@
   "process": [
     {
       "stage": "Screening call",
-      "format": "Phone screen. One report: about 6 basic computer science questions in about 15 minutes.",
-      "confidence": "Reported"
+      "format": "Phone screen. One Software Engineer report (Sofia office): 6 basic computer science questions in about 15 minutes. The questions were not listed.",
+      "confidence": "Reported (search summary)",
+      "source": "https://www.glassdoor.com/Interview/Trading-212-Software-Engineer-Interview-Questions-EI_IE2365696.0,11_KO12,29.htm"
     },
     {
       "stage": "One-on-one or skills test",
